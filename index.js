@@ -73,3 +73,15 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply({ content: 'There was an error while executing this command.', ephemeral: true });
 	}
 });
+
+//code to execute when a button is pressed
+client.on('interactionCreate', interaction => {
+	//if not button return
+	if (!interaction.isButton()) return;
+
+	//execute code depending on the button that was pressed
+	if (interaction.customId === 'verification'){
+		
+	}
+
+});
