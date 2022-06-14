@@ -1,16 +1,19 @@
 {
-	"clientId": "982171760990507070",
-	"guildId": "975724243385978920",
+	"clientId": "975724243385978920",
+	"guildId": "982171760990507070",
 
 	"maintianerId": "726034169209290813",
 
 	"announcerRole": "[A] Administrator",
-	"announcementEmbedColor": "#b4aeae",
+	"announcementEmbedColor": "#FFA338",
 
 	"pollEmbedColor": "#b4aeae",
 
-	"diceRollerEmbedColor": "#b4aeae",
+	"diceRollerEmbedColor": "#F11E32",
 
-	"userInfoEmbedColor": "#b4aeae",
-	"serverInfoEmbedColor": "#b4aeae"
+	"userInfoEmbedColor": "#4BCDDD",
+	"serverInfoEmbedColor": "#b4aeae",
+
+	"verificationEmbedColor": "#b4aeae",
+	"verificationRole": ""
 }
