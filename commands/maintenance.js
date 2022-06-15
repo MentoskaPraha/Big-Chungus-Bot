@@ -50,7 +50,7 @@ module.exports = {
 				const embed = new MessageEmbed()
 					.setColor(verificationEmbedColor)
 					.setTitle('Join the Big Chungus Religion!')
-					.setDescription(`By clicking the button to below and joining the religion you agree to all of our rules. If you break these rules the council has the right to banish you from the religion.`)
+					.setDescription(`By clicking the button to below and joining the religion you agree to all of our rules. If you break these rules The Council has the right to banish you from the religion.`)
 					.setThumbnail(interaction.guild.iconURL())
 
 				const row = new MessageActionRow()
