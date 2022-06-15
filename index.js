@@ -10,7 +10,7 @@ const { token } = require('./token.json');
 
 // Create a new client instance
 console.log('Creating new client instance...');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS], disableEveryone: false});
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], disableEveryone: false});
 client.commands = new Collection();
 
 // When the client is ready, run this code (only once)
