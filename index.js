@@ -5,11 +5,12 @@ console.log('Preparing for bot activation...');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
+const { verificationRoleId } = require('./config.json');
 const { token } = require('./token.json');
 
 // Create a new client instance
 console.log('Creating new client instance...');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], disableEveryone: false});
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS], disableEveryone: false});
 client.commands = new Collection();
 
 // When the client is ready, run this code (only once)
@@ -81,7 +82,7 @@ client.on('interactionCreate', interaction => {
 
 	//execute code depending on the button that was pressed
 	if (interaction.customId === 'verification'){
-		
+		let role = interaction.guild.roles.cache.find(role => role.id === verificationRoleId);
+		interaction.member.roles.add(role);
 	}
-
 });

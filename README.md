@@ -4,7 +4,7 @@ This is the official bot of the Big Chungus Religion. It is used to preform vari
 Please check LICENSE for information about copyright, distribution rights, etc.
 
 When hosting the bot yourself create a "token.json" file and add the following to it:
-`{ "token": "YOUR TOKEN HERE"}`
+`{ "token": "YOUR TOKEN HERE"}`. Make sure you add it to your ".gitignore" file if you're using any version of git.
 
 # Bot Commands
 By default each MP-Discord-Bot comes with the following commands, however these can can be removed/customized or custom commands can be added.
