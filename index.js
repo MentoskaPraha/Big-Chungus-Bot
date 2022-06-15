@@ -82,7 +82,16 @@ client.on('interactionCreate', interaction => {
 
 	//execute code depending on the button that was pressed
 	if (interaction.customId === 'verification'){
-		let role = interaction.guild.roles.cache.find(role => role.id === verificationRoleId);
+		//find the role needed
+		const role = interaction.guild.roles.cache.find(role => role.id === verificationRoleId);
+
+		//add the role to the user
 		interaction.member.roles.add(role);
+
+		//log it to the console
+		console.log(`${interaction.user.tag} has been verified.`);
+
+		//reply to the user
+		interaction.reply({content: 'Roles succesfully updated.', ephemeral: true});
 	}
 });
