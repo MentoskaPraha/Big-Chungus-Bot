@@ -57,9 +57,9 @@ module.exports = {
             
             //send the embed into the selected channel and ping if option is set to true
             if(ping){
-                channel.send({content: `New Announcement by ${interaction.member.name}, ${mention}.`, embeds: [embed] });
+                channel.send({content: `New Announcement by ${interaction.user.username}, ${mention}.`, embeds: [embed] });
             } else{
-                channel.send({content: `New Announcement by ${interaction.member.name}.`, embeds: [embed] });
+                channel.send({content: `New Announcement by ${interaction.user.username}.`, embeds: [embed] });
             }
             
             //give confirmation to the user that the command was successful
