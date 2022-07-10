@@ -1,7 +1,9 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
+const emojiRegex = require('emoji-regex');
 const { pollEmbedColor } = require('../config.json');
+
 
 //command information
 module.exports = {
@@ -16,27 +18,97 @@ module.exports = {
             )
         .addStringOption(option=>
             option.setName('answer_1')
-                .setDescription('The first answer to your question.')
+                .setDescription('The 1st answer to your question.')
                 .setRequired(true)
         )
         .addStringOption(option=>
             option.setName('answer_2')
-                .setDescription('The second answer to your question.')
+                .setDescription('The 2nd answer to your question.')
                 .setRequired(true)
         )
         .addStringOption(option=>
             option.setName('answer_3')
-                .setDescription('The third answer to your question.')
+                .setDescription('The 3rd answer to your question.')
                 .setRequired(false)
         )
         .addStringOption(option=>
             option.setName('answer_4')
-                .setDescription('The fourth answer to your question.')
+                .setDescription('The 4th answer to your question.')
                 .setRequired(false)
         )
         .addStringOption(option=>
             option.setName('answer_5')
-                .setDescription('The fifth answer to your question.')
+                .setDescription('The 5th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_6')
+                .setDescription('The 6th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_7')
+                .setDescription('The 7th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_8')
+                .setDescription('The 8th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_9')
+                .setDescription('The 9th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_10')
+                .setDescription('The 10th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_11')
+                .setDescription('The 11th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_12')
+                .setDescription('The 12th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_13')
+                .setDescription('The 13th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_14')
+                .setDescription('The 14th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_15')
+                .setDescription('The 15th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_16')
+                .setDescription('The 16th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_17')
+                .setDescription('The 17th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_18')
+                .setDescription('The 18th answer to your question.')
+                .setRequired(false)
+        )
+        .addStringOption(option=>
+            option.setName('answer_19')
+                .setDescription('The 19th answer to your question.')
                 .setRequired(false)
         ),
        
@@ -47,60 +119,61 @@ module.exports = {
 
         //get the user input
         const question = interaction.options.getString('question');
-        const answer_1 = interaction.options.getString('answer_1');
-        const answer_2 = interaction.options.getString('answer_2');
-        const answer_3 = interaction.options.getString('answer_3');
-        const answer_4 = interaction.options.getString('answer_4');
-        const answer_5 = interaction.options.getString('answer_5');
+        const answers = [];
+
+        for(var i = 1; i < 20; i++){
+           answers.push(interaction.options.getString('answer_' + i)); 
+        }
+
+        //create empty array answer emojis
+        const answerEmojis = [];
+        for(var i = 0; answers[i] != null; i++){
+            answerEmojis.push(null);
+        }
+
+        //get custom emojis if applicable and remove them from answers
+        const re = emojiRegex();
+        let match
+        
+        for(var i = 0; answers[i] != null; i++){
+            match = re.exec(answers[i]);
+            if(match != null){
+                answerEmojis[i] = match[0];
+                answers[i] = answers[i].replace(match[0], '');
+            }
+        }
+
+        //get default emojis if custom not applicable
+        const alpha = Array.from(Array(26)).map((e, i) => i + 97);
+        const alphabet = alpha.map((x) => String.fromCharCode(x));
+        
+        for(var i = 0; i < answerEmojis.length; i++){
+            if(answerEmojis[i] === null){
+                answerEmojis[i] = ':regional_indicator_' + alphabet[i] +':';
+            }
+        }
         
         //create the description for the poll embed
-        var embedDescription = `:one: ${answer_1}\n\n:two: ${answer_2}`;
+        var embedDescription = ``;
 
-        if(answer_3 !== null) embedDescription += `\n\n:three: ${answer_3}`;
-
-        if(answer_4 !== null) embedDescription += `\n\n:four: ${answer_4}`;
-
-        if(answer_5 !== null) embedDescription += `\n\n:five: ${answer_5}`;
+        for(var i = 0; answers[i] != null; i++){
+            embedDescription += `${answerEmojis[i]} ${answers[i]}\n\n`
+        }
 
         //create the poll embed
         const embed = new MessageEmbed()
             .setColor(pollEmbedColor)
             .setTitle(`${question}`)
-            .setDescription(embedDescription)
+            .setDescription(embedDescription);
         
         //send the message
-        interaction.editReply({ content: `Poll by ${interaction.user.tag}.`, embeds: [embed]})
+        interaction.editReply({ content: `Poll by ${interaction.user.username}.`, embeds: [embed]})
 
         //add the reactions
         const message = await interaction.fetchReply();
-
-        if(answer_5 !== null){
-            message.react('1️⃣')
-			    .then(() => message.react('2️⃣'))
-			    .then(() => message.react('3️⃣'))
-                .then(() => message.react('4️⃣'))
-                .then(() => message.react('5️⃣'))
-			    .catch(error => console.error('One of the emojis failed to react:', error));
-        } else{
-            if(answer_4 !== null){
-                message.react('1️⃣')
-                    .then(() => message.react('2️⃣'))
-                    .then(() => message.react('3️⃣'))
-                    .then(() => message.react('4️⃣'))
-                    .catch(error => console.error('One of the emojis failed to react:', error));
-            } else{
-                if(answer_3 !== null){
-                    message.react('1️⃣')
-                        .then(() => message.react('2️⃣'))
-                        .then(() => message.react('3️⃣'))
-                        .catch(error => console.error('One of the emojis failed to react:', error));
-                } else{
-                        message.react('1️⃣')
-                            .then(() => message.react('2️⃣'))
-                            .catch(error => console.error('One of the emojis failed to react:', error));
-                }
-            }
-        }
+        answerEmojis.forEach(async (ae) => {
+            await message.react(ae);
+        });
 
         //log that the command has been run to the command line
         console.log(`${interaction.user.tag} has created a new poll.`);
