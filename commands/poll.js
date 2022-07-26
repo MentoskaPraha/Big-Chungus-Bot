@@ -10,7 +10,7 @@ module.exports = {
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName('poll')
-		.setDescription('Creates a poll.')
+		.setDescription('Creates a poll. You can not add custom emojis to your answers!')
         .addStringOption(option =>
             option.setName('question')
                 .setDescription('The question you will ask.')
@@ -125,31 +125,19 @@ module.exports = {
            answers.push(interaction.options.getString('answer_' + i)); 
         }
 
-        //create empty array answer emojis
+        //create empty array answer emojis (done for easy future adding of custom emojis)
         const answerEmojis = [];
         for(var i = 0; answers[i] != null; i++){
             answerEmojis.push(null);
         }
 
-        //get custom emojis if applicable and remove them from answers
-        const re = emojiRegex();
-        let match
-        
-        for(var i = 0; answers[i] != null; i++){
-            match = re.exec(answers[i]);
-            if(match != null){
-                answerEmojis[i] = match[0];
-                answers[i] = answers[i].replace(match[0], '');
-            }
-        }
-
-        //get default emojis if custom not applicable
+        //get emojis
         const alpha = Array.from(Array(26)).map((e, i) => i + 97);
         const alphabet = alpha.map((x) => String.fromCharCode(x));
         
         for(var i = 0; i < answerEmojis.length; i++){
             if(answerEmojis[i] === null){
-                answerEmojis[i] = ':regional_indicator_' + alphabet[i] +':';
+                answerEmojis[i] = ':regional_indicator_' + alphabet[i] + ':';
             }
         }
         
