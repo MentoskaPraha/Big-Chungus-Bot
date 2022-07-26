@@ -110,7 +110,12 @@ module.exports = {
             option.setName('answer_19')
                 .setDescription('The 19th answer to your question.')
                 .setRequired(false)
-        ),
+        )
+        .addAttachmentOption(option=>
+            option.setName('answer_20')
+                .setDescription('The 20th answer to your question.')
+                .setRequired(false)
+            ),
        
     //on command run execute the following
     async execute(interaction){
@@ -137,7 +142,7 @@ module.exports = {
         
         for(var i = 0; i < answerEmojis.length; i++){
             if(answerEmojis[i] === null){
-                answerEmojis[i] = ':regional_indicator_' + alphabet[i] + ':';
+                answerEmojis[i] = ":regional_indicator_" + alphabet[i] + ":";
             }
         }
         
