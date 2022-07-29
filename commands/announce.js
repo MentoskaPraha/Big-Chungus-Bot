@@ -10,45 +10,42 @@ module.exports = {
 		.setName('announce')
 		.setDescription('Allows you to create an announcement.')
         .addStringOption(option =>
-            option.setName('title')
-                .setDescription('The title of the announcement.')
-                .setRequired(true)
-            )
-        .addStringOption(option =>
             option.setName('announcement')
                 .setDescription('The announcement itself.')
                 .setRequired(true)
             )
         .addChannelOption(option =>
             option.setName('channel')
-                .setDescription('Select which channel the announcement will be sent into.')
+                .setDescription('The channel the announcement will be sent to.')
                 .setRequired(true)
             )
-        .addBooleanOption(option =>
-            option.setName('ping')
-                .setDescription('Whether to ping the role/person selected in the mention option.')
-                .setRequired(true)
-            )
+        .addStringOption(option =>
+            option.setName('title')
+                .setDescription('The title of the announcement.')
+                .setRequired(false)
+            )    
         .addMentionableOption(option =>
-            option.setName('mention')
-                .setDescription('The role/person that will be pinged. Only works if ping is true.')
-                .setRequired(true)
+            option.setName('ping')
+                .setDescription('The role/person that will be pinged.')
+                .setRequired(false)
             ),
         
     //when command is called run the following
     async execute(interaction){
         //check if user has permissions to make the announcement
-        if (interaction.member.roles.cache.some(role => role.name === announcerRole)) {
+        if (interaction.member.roles.cache.some(role => role.id === announcerRole)) {
             //defer the reply
             await interaction.deferReply({ephemeral: true});
 
             //get all of the options
             const title = interaction.options.getString('title');
             const announcemnt = interaction.options.getString('announcement');
-            const ping = interaction.options.getBoolean('ping');
-            const mention = interaction.options.getMentionable('mention');
+            const ping = interaction.options.getMentionable('ping');
             const channel = interaction.options.getChannel('channel');
             
+            //if user didn't specify title set default title
+            if (title === null) title = 'New Announcement!'
+
             //create the embed
             const embed = new MessageEmbed()
                 .setColor(announcementEmbedColor)
@@ -56,10 +53,10 @@ module.exports = {
                 .setDescription(announcemnt)
             
             //send the embed into the selected channel and ping if option is set to true
-            if(ping){
-                channel.send({content: `New Announcement by ${interaction.member.name}, ${mention}.`, embeds: [embed] });
+            if(ping != null){
+                channel.send({content: `New Announcement by ${interaction.member.username}, ${ping}.`, embeds: [embed] });
             } else{
-                channel.send({content: `New Announcement by ${interaction.member.name}.`, embeds: [embed] });
+                channel.send({content: `New Announcement by ${interaction.member.username}.`, embeds: [embed] });
             }
             
             //give confirmation to the user that the command was successful

@@ -1,7 +1,7 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const emojiRegex = require('emoji-regex');
+const { emojiGetter } = require('emoji-name-map');
 const { pollEmbedColor } = require('../config.json');
 
 
@@ -136,7 +136,7 @@ module.exports = {
             answerEmojis.push(null);
         }
 
-        //get emojis
+        //get default emojis
         const alpha = Array.from(Array(26)).map((e, i) => i + 97);
         const alphabet = alpha.map((x) => String.fromCharCode(x));
         
@@ -161,6 +161,11 @@ module.exports = {
         
         //send the message
         interaction.editReply({ content: `Poll by ${interaction.user.username}.`, embeds: [embed]})
+
+        //get unicode emojis
+        for(var i = 0; i < answerEmojis.length; i++){
+            answerEmojis[i] = emojiGetter.get(answerEmojis[i]);
+        }
 
         //add the reactions
         const message = await interaction.fetchReply();
