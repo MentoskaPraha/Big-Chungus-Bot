@@ -8,7 +8,7 @@ module.exports = {
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName('announce')
-		.setDescription('Allows you to create an announcement.')
+		.setDescription('Creates an announcement.')
         .addStringOption(option =>
             option.setName('announcement')
                 .setDescription('The announcement itself.')
@@ -26,7 +26,7 @@ module.exports = {
             )    
         .addMentionableOption(option =>
             option.setName('ping')
-                .setDescription('The role/person that will be pinged.')
+                .setDescription('The role/person that will be pinged, leave blank to not ping anyone.')
                 .setRequired(false)
             ),
         
