@@ -13,10 +13,10 @@ By default each Big-Chungus-Bot comes with the following commands, however these
 - Maintenance = Commands for maintaining the bots functions (none can not be removed).
     - Ping = Gives the latency of the bot.
     - Terminate = Terminate the bot's code.
-    - Verification = Creates the message needed for verification to function.
+    - Verification = Creates the message needed for the verification to function.
 - Announce = Make a cool embed announcement.
 - Roll = Roll any number of dice with any number of sides.
-- Poll = non-functional
-- Info = Get information about something
-    - User = Get information about a user
-    - Server = Get information about the server you are in
+- Poll = Creates a poll with 2 - 20 answers.
+- Info = Get information about something.
+    - User = Get information about a user.
+    - Server = Get information about the server you are in.
