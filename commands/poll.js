@@ -130,20 +130,13 @@ module.exports = {
            answers.push(interaction.options.getString('answer_' + i)); 
         }
 
-        //create empty array answer emojis (done for easy future adding of custom emojis)
-        const answerEmojis = [];
-        for(var i = 0; answers[i] !== null; i++){
-            answerEmojis.push(null);
-        }
-
         //get emojis
         const alpha = Array.from(Array(26)).map((e, i) => i + 97);
         const alphabet = alpha.map((x) => String.fromCharCode(x));
-        
-        for(var i = 0; i < answerEmojis.length; i++){
-            if(answerEmojis[i] === null){
-                answerEmojis[i] = ":" + alphabet[i] + ":";
-            }
+
+        const answerEmojis = [];
+        for(var i = 0; answers[i] !== null; i++){
+            answerEmojis.push(":" + alphabet[i] + ":");
         }
         
         //create the description for the poll embed
