@@ -1,7 +1,7 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { emojiGetter } = require('emoji-name-map');
+const emojiGetter = require('emoji-name-map');
 const { pollEmbedColor } = require('../config.json');
 
 
@@ -126,7 +126,7 @@ module.exports = {
         const question = interaction.options.getString('question');
         const answers = [];
 
-        for(var i = 1; i < 20; i++){
+        for(var i = 1; i !== 20; i++){
            answers.push(interaction.options.getString('answer_' + i)); 
         }
 
@@ -136,13 +136,13 @@ module.exports = {
             answerEmojis.push(null);
         }
 
-        //get default emojis
+        //get emojis
         const alpha = Array.from(Array(26)).map((e, i) => i + 97);
         const alphabet = alpha.map((x) => String.fromCharCode(x));
         
         for(var i = 0; i < answerEmojis.length; i++){
             if(answerEmojis[i] === null){
-                answerEmojis[i] = ":regional_indicator_" + alphabet[i] + ":";
+                answerEmojis[i] = ":" + alphabet[i] + ":";
             }
         }
         
