@@ -15,7 +15,7 @@ client.commands = new Collection();
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
-	client.user.setPresence({ activities: [{ name: 'Poll Command Update!'}], status: 'online' });
+	client.user.setPresence({ activities: [{ name: 'Poll Command Update', type: 'LISTENING'}], status: 'online' });
 	console.log('The bot is ready!');
 });
 
