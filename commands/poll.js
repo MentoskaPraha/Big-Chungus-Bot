@@ -132,7 +132,7 @@ module.exports = {
 
         //create empty array answer emojis (done for easy future adding of custom emojis)
         const answerEmojis = [];
-        for(var i = 0; answers[i] != null; i++){
+        for(var i = 0; answers[i] !== null; i++){
             answerEmojis.push(null);
         }
 
@@ -149,7 +149,7 @@ module.exports = {
         //create the description for the poll embed
         var embedDescription = ``;
 
-        for(var i = 0; answers[i] != null; i++){
+        for(var i = 0; answers[i] !== null; i++){
             embedDescription += `${answerEmojis[i]} ${answers[i]}\n\n`
         }
 

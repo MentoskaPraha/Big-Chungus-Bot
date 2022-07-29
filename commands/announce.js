@@ -53,7 +53,7 @@ module.exports = {
                 .setDescription(announcemnt)
             
             //send the embed into the selected channel and ping if option is set to true
-            if(ping != null){
+            if(ping !== null){
                 channel.send({content: `New Announcement by ${interaction.member.username}, ${ping}.`, embeds: [embed] });
             } else{
                 channel.send({content: `New Announcement by ${interaction.member.username}.`, embeds: [embed] });
