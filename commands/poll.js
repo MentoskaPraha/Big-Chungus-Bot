@@ -119,7 +119,7 @@ module.exports = {
     //on command run execute the following
     async execute(interaction){
         //tell the user the command is disabled
-        await interaction.reply({content: 'This command is temporarely disabled', ephemeral: true});
+        await interaction.reply({content: 'This command is temporarely disabled.', ephemeral: true});
         return;
 
     
