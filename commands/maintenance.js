@@ -30,7 +30,23 @@ module.exports = {
 	
 	//run this code if the command is called
 	async execute(interaction) {
-		//check if the user can terminate the bot
+		//if the command is the ping command run the following
+		if(interaction.options.getSubcommand() === 'ping'){
+			//get latency
+			const apiLatency = Math.round(interaction.client.ws.ping);
+			const botLatency = Math.floor(Date.now() - interaction.createdAt);
+
+			//respond to the user
+			await interaction.reply(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nBot Latency is around ${botLatency}ms.`);
+
+			//log it to the command console
+			console.log(`API Latency is around ${apiLatency}ms. Bot Latency is around ${botLatency}ms.`);
+
+			//end command execution
+			return;
+		}
+
+		//check if the user can use maintinence commands
 		if(interaction.user.id === maintianerId){
             //if the subcommand is terminate run the following
             if (interaction.options.getSubcommand() === 'terminate'){
