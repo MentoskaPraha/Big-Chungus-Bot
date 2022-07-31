@@ -133,12 +133,12 @@ module.exports = {
 
         //get emojis
         const emojis = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱',
-            '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
+            '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹'];
 
         //get the embed description
         var embedDescription = `${emojis[0]} ${answers[0]}`;
         for(var i = 1; answers[i] !== null; i++){
-            embedDescription += `${emojis[i]} ${answers[i]}`; 
+            embedDescription += `\n\n${emojis[i]} ${answers[i]}`;
         }
 
         var embed = new MessageEmbed()
@@ -147,10 +147,13 @@ module.exports = {
             .setDescription(embedDescription);
 
         //send poll
-        await interaction.editReply({content: `Poll by ${interaction.user.username}.`, embed: [embed]});
+        await interaction.editReply({content: `Poll by ${interaction.user.username}.`, embeds: [embed]});
 
         //add reactions
-        
+        const message = await interaction.fetchReply();
+        for(var i = 0; answers[i] !== null; i++){
+            await message.react(emojis[i]);
+        }
 
         //log that the command has been run to the command line
         console.log(`${interaction.user.tag} has created a new poll.`);
