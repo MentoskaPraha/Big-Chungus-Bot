@@ -1,9 +1,7 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const emojiGetter = require('emoji-name-map');
 const { pollEmbedColor } = require('../config.json');
-
 
 //command information
 module.exports = {
@@ -111,7 +109,7 @@ module.exports = {
                 .setDescription('The 19th answer to your question.')
                 .setRequired(false)
         )
-        .addAttachmentOption(option=>
+        .addStringOption(option=>
             option.setName('answer_20')
                 .setDescription('The 20th answer to your question.')
                 .setRequired(false)
@@ -119,6 +117,8 @@ module.exports = {
        
     //on command run execute the following
     async execute(interaction){
+        //tell the user the command is disabled
+   
         //defer the reply
         await interaction.deferReply();
 
@@ -126,45 +126,34 @@ module.exports = {
         const question = interaction.options.getString('question');
         const answers = [];
 
-        for(var i = 1; i !== 20; i++){
+        for(var i = 1; interaction.options.getString('answer_' + i) !== null; i++){
            answers.push(interaction.options.getString('answer_' + i)); 
         }
+        answers.push(null);
 
         //get emojis
-        const alpha = Array.from(Array(26)).map((e, i) => i + 97);
-        const alphabet = alpha.map((x) => String.fromCharCode(x));
+        const emojis = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱',
+            '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹'];
 
-        const answerEmojis = [];
-        for(var i = 0; answers[i] !== null; i++){
-            answerEmojis.push(":" + alphabet[i] + ":");
-        }
-        
-        //create the description for the poll embed
-        var embedDescription = ``;
-
-        for(var i = 0; answers[i] !== null; i++){
-            embedDescription += `${answerEmojis[i]} ${answers[i]}\n\n`
+        //get the embed description
+        var embedDescription = `${emojis[0]} ${answers[0]}`;
+        for(var i = 1; answers[i] !== null; i++){
+            embedDescription += `\n\n${emojis[i]} ${answers[i]}`;
         }
 
-        //create the poll embed
-        const embed = new MessageEmbed()
+        var embed = new MessageEmbed()
             .setColor(pollEmbedColor)
-            .setTitle(`${question}`)
+            .setTitle(question)
             .setDescription(embedDescription);
-        
-        //send the message
-        interaction.editReply({ content: `Poll by ${interaction.user.username}.`, embeds: [embed]})
 
-        //get unicode emojis
-        for(var i = 0; i < answerEmojis.length; i++){
-            answerEmojis[i] = emojiGetter.get(answerEmojis[i]);
-        }
+        //send poll
+        await interaction.editReply({content: `Poll by ${interaction.user.username}.`, embeds: [embed]});
 
-        //add the reactions
+        //add reactions
         const message = await interaction.fetchReply();
-        answerEmojis.forEach(async (ae) => {
-            await message.react(ae);
-        });
+        for(var i = 0; answers[i] !== null; i++){
+            await message.react(emojis[i]);
+        }
 
         //log that the command has been run to the command line
         console.log(`${interaction.user.tag} has created a new poll.`);
