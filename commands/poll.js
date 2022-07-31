@@ -4,7 +4,6 @@ const { MessageEmbed } = require('discord.js');
 const emojiGetter = require('emoji-name-map');
 const { pollEmbedColor } = require('../config.json');
 
-
 //command information
 module.exports = {
 	//build the command
@@ -111,7 +110,7 @@ module.exports = {
                 .setDescription('The 19th answer to your question.')
                 .setRequired(false)
         )
-        .addAttachmentOption(option=>
+        .addStringOption(option=>
             option.setName('answer_20')
                 .setDescription('The 20th answer to your question.')
                 .setRequired(false)
@@ -119,6 +118,11 @@ module.exports = {
        
     //on command run execute the following
     async execute(interaction){
+        //tell the user the command is disabled
+        await interaction.reply({content: 'This command is temporarely disabled', ephemeral: true});
+        return;
+
+    
         //defer the reply
         await interaction.deferReply();
 
