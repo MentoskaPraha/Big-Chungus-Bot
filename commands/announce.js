@@ -38,7 +38,7 @@ module.exports = {
             await interaction.deferReply({ephemeral: true});
 
             //get all of the options
-            const title = interaction.options.getString('title');
+            var title = interaction.options.getString('title');
             const announcemnt = interaction.options.getString('announcement');
             const ping = interaction.options.getMentionable('ping');
             const channel = interaction.options.getChannel('channel');
@@ -54,9 +54,9 @@ module.exports = {
             
             //send the embed into the selected channel and ping if option is set to true
             if(ping !== null){
-                channel.send({content: `New Announcement by ${interaction.member.username}, ${ping}.`, embeds: [embed] });
+                channel.send({content: `New Announcement by ${interaction.user.username}, ${ping}.`, embeds: [embed] });
             } else{
-                channel.send({content: `New Announcement by ${interaction.member.username}.`, embeds: [embed] });
+                channel.send({content: `New Announcement by ${interaction.user.username}.`, embeds: [embed] });
             }
             
             //give confirmation to the user that the command was successful
