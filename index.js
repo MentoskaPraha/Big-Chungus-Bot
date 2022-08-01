@@ -5,12 +5,11 @@ console.log('Preparing for bot activation...');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
-const { verificationRoleId } = require('./config.json');
-const { token } = require('./token.json');
+const { token } = require('./configuration/token.json');
 
 // Create a new client instance
 console.log('Creating new client instance...');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], disableEveryone: false});
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_SCHEDULED_EVENTS], disableEveryone: false});
 client.commands = new Collection();
 client.otherInteractions = new Collection();
 

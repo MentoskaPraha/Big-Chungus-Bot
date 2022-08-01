@@ -1,7 +1,7 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { pollEmbedColor } = require('../config.json');
+const { pollEmbedColor } = require('../configuration/config.json');
 
 //command information
 module.exports = {

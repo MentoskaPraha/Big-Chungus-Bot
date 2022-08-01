@@ -15,5 +15,8 @@
 	"serverInfoEmbedColor": "#b4aeae",
 
 	"verificationEmbedColor": "#b4aeae",
-	"verificationRoleId": "975740439812526160"
+	"verificationRoleId": "975740439812526160",
+
+	"eventAnnouncementEmbedColor": "#FFA338",
+	"eventAnnouncementChannelId": "975745226448699422"
 }

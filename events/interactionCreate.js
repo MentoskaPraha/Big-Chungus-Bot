@@ -24,27 +24,19 @@ module.exports = {
 
         //if interaction is a button run the following and return
 	    if (interaction.isButton()){
+            //get the button that was pressed
+            const button = interaction.client.otherInteractions.get(interaction.customId);
+
             //execute code depending on the button that was pressed
-	        if (interaction.customId === 'verification'){
-                //get button code
-		        const otherInteractions = interaction.client.otherInteractions.get('verification');
-
-                //run the code needed for the interaction
-                try {
-                    await otherInteractions.execute(interaction);
-                } catch (error) {
-                    console.error(error);
-                    await interaction.reply({ content: 'There was an error while pressing this button.', ephemeral: true });
-                }
-
-                //prevent other code from being run
-                return;
-	        }
+            try {
+                await button.execute(interaction);
+            } catch (error) {
+                console.error(error);
+                await interaction.reply({ content: 'There was an error while pressing this button.', ephemeral: true });
+            }
 
             //prevent other code from being run
             return;
         }
-
-
 	}
 };

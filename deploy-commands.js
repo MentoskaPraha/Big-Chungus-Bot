@@ -4,8 +4,8 @@ console.log('Prepareing...');
 //create needed variables
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { clientId, guildId } = require('./config.json');
-const { token } = require('./token.json');
+const { clientId, guildId } = require('./configuration/config.json');
+const { token } = require('./configuration/token.json');
 const fs = require('node:fs');
 const path = require('node:path');
 

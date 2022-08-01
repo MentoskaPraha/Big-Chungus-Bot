@@ -2,7 +2,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageButton } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
-const { maintianerId, verificationEmbedColor } = require('../config.json');
+const { maintianerId, verificationEmbedColor } = require('../configuration/config.json');
 
 //command information
 module.exports = {

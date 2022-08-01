@@ -1,7 +1,7 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { announcerRole, announcementEmbedColor } = require('../config.json');
+const { announcerRole, announcementEmbedColor } = require('../configuration/config.json');
 
 //command information
 module.exports = {
@@ -52,12 +52,16 @@ module.exports = {
                 .setTitle(title)
                 .setDescription(announcemnt)
             
-            //send the embed into the selected channel and ping if option is set to true
+            //create the message depending on the ping state
+            var message = null;
             if(ping !== null){
-                channel.send({content: `New Announcement by ${interaction.user.username}, ${ping}.`, embeds: [embed] });
+                message = `New Announcement by ${interaction.user.username}, ${ping}.`;
             } else{
-                channel.send({content: `New Announcement by ${interaction.user.username}.`, embeds: [embed] });
+                message = `New Announcement by ${interaction.user.username}.`;
             }
+
+            //send the message to the channel
+            channel.send({content: message, embeds: embed});
             
             //give confirmation to the user that the command was successful
             await interaction.editReply({content: 'Your announcement has been sent.\nYou will need to publish it manually if it was sent in an announcement channel, this is for security reasons.', ephemeral: true});
