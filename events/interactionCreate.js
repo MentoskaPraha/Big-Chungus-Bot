@@ -8,7 +8,10 @@ module.exports = {
 	        const command = interaction.client.commands.get(interaction.commandName);
 
 	        //if the command does not exist return
-	        if (!command) return;
+	        if (!command){
+                await interaction.reply({content: 'Could not find command in database, please contact MentoskaPraha immediately!', ephemeral: true});
+                return;
+            } 
 
             //check the commands folder for the command and run it's code
 	        try {
@@ -26,6 +29,12 @@ module.exports = {
 	    if (interaction.isButton()){
             //get the button that was pressed
             const button = interaction.client.otherInteractions.get(interaction.customId);
+
+            //if the button does not exist return
+            if (!button){ 
+                await interaction.reply({content: 'Could not find button in database, please contact MentoskaPraha immediately!', ephemeral: true});
+                return;
+            }
 
             //execute code depending on the button that was pressed
             try {
