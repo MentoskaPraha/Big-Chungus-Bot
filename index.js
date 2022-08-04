@@ -59,6 +59,6 @@ client.login(token);
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
-	client.user.setPresence({ activities: [{ name: 'Poll Command Update', type: 'LISTENING'}], status: 'online' });
+	client.user.setPresence({ activities: [{ name: 'Event Update', type: 'LISTENING'}], status: 'online' });
 	console.log('The bot is ready!');
 });
