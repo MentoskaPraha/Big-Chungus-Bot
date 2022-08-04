@@ -9,14 +9,14 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('announce')
 		.setDescription('Creates an announcement.')
-        .addStringOption(option =>
-            option.setName('announcement')
-                .setDescription('The announcement itself.')
-                .setRequired(true)
-            )
         .addChannelOption(option =>
             option.setName('channel')
                 .setDescription('The channel the announcement will be sent to.')
+                .setRequired(true)
+            )
+        .addStringOption(option =>
+            option.setName('announcement')
+                .setDescription('The announcement itself.')
                 .setRequired(true)
             )
         .addStringOption(option =>
@@ -62,7 +62,7 @@ module.exports = {
 
             //send the message to the channel
             channel.send({content: message, embeds: [embed]}).then(sent => {
-                sent.crosspost();
+                if(channel.type === 'GuildNews') sent.crosspost();
             });
             
             //give confirmation to the user that the command was successful
