@@ -61,10 +61,12 @@ module.exports = {
             }
 
             //send the message to the channel
-            channel.send({content: message, embeds: embed});
+            channel.send({content: message, embeds: [embed]}).then(sent => {
+                sent.crosspost();
+            });
             
             //give confirmation to the user that the command was successful
-            await interaction.editReply({content: 'Your announcement has been sent.\nYou will need to publish it manually if it was sent in an announcement channel, this is for security reasons.', ephemeral: true});
+            await interaction.editReply({content: 'Your announcement has been sent and published.', ephemeral: true});
             console.log(`${interaction.user.tag} made an anouncement.`);
             return;
                 
