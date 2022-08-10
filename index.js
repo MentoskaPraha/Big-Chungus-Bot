@@ -1,3 +1,6 @@
+//configure enviroment variables
+require('dotenv').config();
+
 //tell the user that the bot is preparing
 console.log('Preparing for bot activation...');
 
@@ -5,7 +8,6 @@ console.log('Preparing for bot activation...');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./configuration/token.json');
 
 // Create a new client instance
 console.log('Creating new client instance...');
@@ -55,7 +57,7 @@ console.log('Preforming final preparations...');
 
 // Login to Discord with your client's token
 console.log('Logging in...');
-client.login(token);
+client.login(process.env.DISCORD_BOT_TOKEN);
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
