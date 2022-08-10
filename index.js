@@ -64,3 +64,26 @@ client.once('ready', () => {
 	client.user.setPresence({ activities: [{ name: 'Event Update', type: 'LISTENING'}], status: 'online' });
 	console.log('The bot is ready!');
 });
+
+
+//run code for creating a website
+console.log('Creating website...');
+//libraries
+const { express } = require('express');
+
+//create new website
+const site = express;
+
+//set what it should do when a request is made
+console.log('Setting up website...');
+site.get("/", (request, response) => {
+	//show this file when the "/" is requested
+	response.sendFile(__dirname+"/website/index.html");
+});
+
+//start listening on the specified port
+console.log('Opening port...');
+site.listen(process.env.PORT || 5000);
+
+//let the user know all is functional
+console.log('Website is ready!\nAll systems are functional.');
