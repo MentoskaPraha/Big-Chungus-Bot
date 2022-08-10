@@ -86,7 +86,7 @@ app.get("/", function (request, response){
 
 //start the server
 console.log('Starting website server...');
-app.listen(procces.env.PORT || 8080);
+app.listen(process.env.PORT || 8080);
 
 //let the user know the website is ready
 console.log('The website is ready!')
