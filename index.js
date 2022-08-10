@@ -61,7 +61,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
-	client.user.setPresence({ activities: [{ name: 'Event Update', type: 'LISTENING'}], status: 'online' });
+	client.user.setPresence({ activities: [{ name: 'Hosting Update', type: 'LISTENING'}], status: 'online' });
 	console.log('The bot is ready!');
 });
 
