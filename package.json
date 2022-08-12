@@ -4,8 +4,10 @@
   "description": "The official custom bot for the Big Chungus Religion. This bot is coded by MentoskaPraha and maintained by Pilot64.",
   "main": "index.js",
   "scripts": {
+    "prestart": "node deploy-cmds.js",
     "start": "node index.js",
-    "test": "node index.js"
+    "pretest": "node test-deploy-cmds.js",
+    "test": "node test-index.js"
   },
   "keywords": [
     "discord",

@@ -4,8 +4,7 @@ console.log('Prepareing...');
 //create needed variables
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { clientId, guildId } = require('./configuration/config.json');
-const { token } = require('./configuration/token.json');
+const { clientId, guildId } = require('./configuration/test-config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -27,7 +26,7 @@ for (const file of commandFiles) {
 console.log('Registering application commands...')
 
 //publish the commands to Discord
-const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_BOT_TOKEN);
+const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TEST_BOT_TOKEN);
 
 rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
 	.then(() => console.log('Successfully registered application commands!'))
