@@ -34,7 +34,7 @@ module.exports = {
 		if(interaction.options.getSubcommand() === 'ping'){
 			//get latency
 			const apiLatency = Math.round(interaction.client.ws.ping);
-			const botLatency = Math.floor(Date.now() - interaction.createdAt);
+			const botLatency = Math.floor(Math.abs(Date.now() - interaction.createdAt));
 
 			//respond to the user
 			await interaction.reply(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nBot Latency is around ${botLatency}ms.`);
