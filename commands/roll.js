@@ -1,7 +1,7 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const{ diceRollerEmbedColor } = require('../configuration/config.json');
+const{ diceRollerEmbedColor } = require('../configuration/embedColors.json');
 
 //command information
 module.exports = {

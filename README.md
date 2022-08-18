@@ -3,14 +3,13 @@ This is the official bot of the Big Chungus Religion. It is used to preform vari
 
 Please check LICENSE for information about copyright, distribution rights, etc.
 
-When hosting the bot yourself make sure you add your the following to your `.env` file:
-`DISCORD_BOT_TOKEN="YOUR-TOKEN-HERE"`
+This software is not meant for public use, therefor instructions for hosting will not be provided.
 
 # Branches
-Each branch in the project is for a seperate update, the code running on the cloud is in the main branch.
+Each branch in the project is for a seperate update, the code running on the cloud is in the release branch, and the code in the main branch is the code for the update that is due to release.
 
 # Bot Commands
-By default each Big-Chungus-Bot comes with the following commands, however these can can be removed/customized or custom commands can be added.
+By default the Big-Chungus-Bot comes with the following commands, however these can can be removed/customized or custom commands can be added.
 
 
 - Maintenance = Commands for maintaining the bots functions (none can not be removed).
@@ -23,3 +22,10 @@ By default each Big-Chungus-Bot comes with the following commands, however these
 - Info = Get information about something.
     - User = Get information about a user.
     - Server = Get information about the server you are in.
+
+# Bot Function
+By default the Big-Chungus-Bot comes with the following functions, however these can can be removed/customized or custom functions can be added. Functions are all the other interactions and actions the bot preforms on his own.
+
+
+- Verification = Upon clicking a button the user will recieve a new role.
+- Auto Event Announcement = When a new Discord Event is created the bot will announce it in a selected channel.

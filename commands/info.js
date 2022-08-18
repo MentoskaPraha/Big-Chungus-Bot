@@ -1,7 +1,7 @@
 //libraries
 const { SlashCommandBuilder, time } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/config.json');
+const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/embedColors.json');
 
 //command information
 module.exports = {

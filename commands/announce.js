@@ -1,7 +1,8 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { announcerRole, announcementEmbedColor } = require('../configuration/config.json');
+const { announcerRole } = require('../configuration/otherIDs.json');
+const { announcementEmbedColor } = require('../configuration/embedColors.json');
 
 //command information
 module.exports = {

@@ -1,4 +1,4 @@
-const { verificationRoleId } = require('../configuration/config.json')
+const { verificationRoleId } = require('../configuration/otherIDs.json')
 
 module.exports = {
     name: 'verification',

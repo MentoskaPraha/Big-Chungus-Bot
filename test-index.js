@@ -64,29 +64,3 @@ client.once('ready', () => {
 	client.user.setPresence({ activities: [{ name: 'Hosting Update', type: 'LISTENING'}], status: 'online' });
 	console.log('The bot is ready!');
 });
-
-
-//run code for creating a website
-console.log('Creating website...');
-
-//get express
-console.log('Retrieving express.js...');
-var express = require("express");
-
-//create new app of off express
-console.log('Creating new app...');
-var app = express();
- 
-//define the route for "/" and request handling
-console.log('Creating event handling...')
-app.get("/", function (request, response){
-    //show this file when the "/" is requested
-    response.sendFile(__dirname+"/website/index.html");
-});
-
-//start the server
-console.log('Starting website server...');
-app.listen(process.env.PORT || 8080);
-
-//let the user know the website is ready
-console.log('The website is ready!')

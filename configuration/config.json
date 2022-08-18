@@ -1,21 +1,4 @@
 {
 	"clientId": "982171760990507070",
-	"guildId": "975724243385978920",
-
-	"maintianerId": "726034169209290813",
-
-	"announcerRole": "975739921342017616",
-	"announcementEmbedColor": "#FFA338",
-
-	"pollEmbedColor": "#E7B727",
-
-	"diceRollerEmbedColor": "#F11E32",
-
-	"userInfoEmbedColor": "#4BCDDD",
-	"serverInfoEmbedColor": "#b4aeae",
-
-	"verificationEmbedColor": "#b4aeae",
-	"verificationRoleId": "975740439812526160",
-
-	"eventAnnouncementChannelId": "975745226448699422"
+	"guildId": "975724243385978920"
 }
