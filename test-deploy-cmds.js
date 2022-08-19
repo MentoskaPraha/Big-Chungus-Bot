@@ -1,3 +1,6 @@
+//configure enviroment variables
+require('dotenv').config();
+
 //tell the user that the process has begun
 console.log('Prepareing...');
 
@@ -26,7 +29,7 @@ for (const file of commandFiles) {
 console.log('Registering application commands...')
 
 //publish the commands to Discord
-const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TEST_BOT_TOKEN);
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TEST_BOT_TOKEN);
 
 rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
 	.then(() => console.log('Successfully registered application commands!'))
