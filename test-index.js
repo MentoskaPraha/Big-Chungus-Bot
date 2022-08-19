@@ -14,6 +14,7 @@ console.log('Creating new client instance...');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_SCHEDULED_EVENTS], disableEveryone: false});
 client.commands = new Collection();
 client.otherInteractions = new Collection();
+client.functions = new Collection();
 
 //add the commands to the client command collection
 console.log('Adding commands to the clients command collection...');
@@ -50,6 +51,17 @@ for (const file of interactionFiles) {
 	const filePath = path.join(interactionPath, file);
 	const interaction = require(filePath);
 	client.otherInteractions.set(interaction.name, interaction);
+}
+
+//add functions to the client function collection
+console.log('Adding functions to the clients function collection...');
+const functionPath = path.join(__dirname, 'functions');
+const functionFiles = fs.readdirSync(functionPath).filter(file => file.endsWith('.js'));
+
+for (const file of functionFiles) {
+	const filePath = path.join(functionPath, file);
+	const botFunction = require(filePath);
+	client.functions.set(botFunction.name, botFunction);
 }
 
 //let the user know that the bot is almost ready

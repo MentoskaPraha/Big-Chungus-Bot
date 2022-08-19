@@ -1,8 +1,6 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
 const { announcerRole } = require('../configuration/otherIDs.json');
-const { announcementEmbedColor } = require('../configuration/embedColors.json');
 
 //command information
 module.exports = {
@@ -40,37 +38,21 @@ module.exports = {
 
             //get all of the options
             var title = interaction.options.getString('title');
-            const announcemnt = interaction.options.getString('announcement');
+            const announcement = interaction.options.getString('announcement');
             const ping = interaction.options.getMentionable('ping');
             const channel = interaction.options.getChannel('channel');
             
-            //if user didn't specify title set default title
-            if (title === null) title = 'New Announcement!'
-
-            //create the embed
-            const embed = new MessageEmbed()
-                .setColor(announcementEmbedColor)
-                .setTitle(title)
-                .setDescription(announcemnt)
-            
-            //create the message depending on the ping state
-            var message = null;
-            if(ping !== null){
-                message = `New Announcement by ${interaction.user.username}, ${ping}.`;
-            } else{
-                message = `New Announcement by ${interaction.user.username}.`;
-            }
-
-            //send the message to the channel
-            channel.send({content: message, embeds: [embed]}).then(sent => {
-                if(channel.type === 'GuildNews') sent.crosspost();
-            });
+            //make the announcement
+            try {
+		        await interaction.client.functions.get('sendAnnouncement').execute(title, announcement, ping, channel, interaction.user, true);
+	        } catch (error) {
+		        console.error(error);
+		        await interaction.editReply({ content: 'There was an error while executing this command.', ephemeral: true });
+	        }
             
             //give confirmation to the user that the command was successful
             await interaction.editReply({content: 'Your announcement has been sent and published.', ephemeral: true});
-            console.log(`${interaction.user.tag} made an anouncement.`);
-            return;
-                
+            console.log(`${user.tag} made an anouncement.`);
         } else{
             //give error if user does not have permissions
             await interaction.reply({content: 'You do not have permissions to run this command.', ephemeral: true});
