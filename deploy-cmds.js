@@ -31,6 +31,6 @@ console.log('Registering application commands...')
 //publish the commands to Discord
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
 
-rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+rest.put(Routes.applicationCommands(clientId), { body: commands })
 	.then(() => console.log('Successfully registered application commands!'))
 	.catch(console.error);
