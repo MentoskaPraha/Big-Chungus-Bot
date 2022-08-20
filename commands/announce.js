@@ -52,7 +52,7 @@ module.exports = {
             
             //give confirmation to the user that the command was successful
             await interaction.editReply({content: 'Your announcement has been sent and published.', ephemeral: true});
-            console.log(`${user.tag} made an anouncement.`);
+            console.log(`${interaction.user.tag} made an anouncement.`);
         } else{
             //give error if user does not have permissions
             await interaction.reply({content: 'You do not have permissions to run this command.', ephemeral: true});
