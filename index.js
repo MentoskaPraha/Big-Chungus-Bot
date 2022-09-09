@@ -66,7 +66,6 @@ for (const file of functionFiles) {
 
 //let the user know that the bot is almost ready
 console.log('Preforming final preparations...');
-client.functions.userDatabase
 
 // Login to Discord with your client's token
 console.log('Logging in...');
