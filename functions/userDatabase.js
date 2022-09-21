@@ -5,7 +5,7 @@ const Sequelize = require('sequelize');
 const db = new Sequelize('users', 'admin', 'wordpass12', {
     host: 'localhost',
     dialect: 'sqlite',
-    loggong: 'false',
+    logging: 'false',
     storage: 'database.sqlite'
 });
 
