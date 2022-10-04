@@ -5,7 +5,7 @@ const { announcementEmbedColor } = require('../configuration/embedColors.json');
 //function code
 module.exports = {
     name: 'sendAnnouncement',
-    execute (title, announcement, ping, channel,user, crosspost) {
+    execute (title, announcement, ping, channel, user, crosspost) {
         //if user didn't specify title set default title
         if (title === null) title = 'New Announcement!'
 

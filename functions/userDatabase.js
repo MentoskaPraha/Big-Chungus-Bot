@@ -1,91 +1,51 @@
-//library
-const Sequelize = require('sequelize');
+//dependancies
+const { Sequelize, DataTypes} = require('sequelize');
 
 //database
-const db = new Sequelize('users', 'admin', 'wordpass12', {
-    host: 'localhost',
+const sequelize = new Sequelize('userDB', 'admin', 'AeroMaster64Stinks', {
     dialect: 'sqlite',
-    logging: 'false',
-    storage: 'database.sqlite'
+    host: 'localhost',
+    storage: 'database/userDb.sqlite',
+    logging: true
 });
 
-//database entries
-const dbEntry = db.define('users', {
+//table
+const userDB = sequelize.define('users', {
     id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         unique: true,
-        defaultVaule: 0
+        primaryKey: true
     },
     title: {
-        type: Sequelize.STRING,
-        defaultValue: "",
+        type: DataTypes.STRING,
+        defaultValue: null,
+        allowNull: true,
     },
     birthday: {
-        type: Sequelize.DATEONLY,
-        defaultValue: 0
+        type: DataTypes.DATEONLY,
+        defaultValue: null,
+        allowNull: true
     },
-    PersonalVcId: {
-        type: Sequelize.INTEGER,
-        unique: true,
-        defaultValue: 0
-    },
+    color: {
+        type: DataTypes.INTEGER,
+        defaultValue: null,
+        allowNull: true
+    }
 });
 
-//the functions that will allow the system to interact with the database
+//functions to interact with database
 module.exports = {
-    async initUserDb(){
-        await dbEntry.sync();
+    name: 'userDB',
+    syncDB(){
+        userDB.sync().then(() => console.log("User database has been synced!"));
     },
 
-    addEntry(id, title, birthday, PersonalVcId){
-        //create a new entry
-        try {
-            const entry = dbEntry.new({
-                id: id,
-                title: title,
-                birthday: birthday,
-                PersonalVcId: PersonalVcId 
-            });
-
-            return 0;
-        } catch (error) {
-            if (error.name === 'SequelizeUniqueConstraintError') {
-				return 1;
-			}
-
-			return 2;
-        }
-    },
-
-    async getEntry(id){
-        //get a vailid tag
-        const entry = await dbEntry.findOne({where: {id: id}});
-
-        if(!entry) return null;
-
-        return entry;
-    },
-
-    async editEntry(id, newTitle, newBirthday, newPersonalVcId){
-        //edit a tag
-        var editedTags = 0;
-
-        if(newTitle != null){
-            editedTags += dbEntry.update({ title: newTitle }, { where: { id: id } });
-        }
-
-        if(newBirthday != null){
-            editedTags += dbEntry.update({ title: newTitle }, { where: { id: id } });
-        }
-
-        if(newPersonalVcId != null){
-            editedTags += dbEntry.update({ title: newTitle }, { where: { id: id } });
-        }
-
-        if(!editedTags >= 1){
-            return 1;
-        }
-
-        return 0;
+    create(id, title, birthday, color){
+        userDB.create({
+            id: id,
+            title: title,
+            birthday: birthday,
+            color: color
+        }).then(() => console.log("New User was added to database."));
     }
 }

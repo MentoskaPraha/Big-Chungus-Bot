@@ -1,6 +1,6 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { announcerRole } = require('../configuration/otherIDs.json');
+const { announcerRoleId } = require('../configuration/otherIDs.json');
 
 //command information
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
     //when command is called run the following
     async execute(interaction){
         //check if user has permissions to make the announcement
-        if (interaction.member.roles.cache.some(role => role.id === announcerRole)) {
+        if (interaction.member.roles.cache.some(role => role.id === announcerRoleId)) {
             //defer the reply
             await interaction.deferReply({ephemeral: true});
 
