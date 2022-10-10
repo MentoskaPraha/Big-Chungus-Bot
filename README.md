@@ -11,7 +11,6 @@ Each branch in the project is for a seperate update, the code running on the clo
 # Bot Commands
 By default the Big-Chungus-Bot comes with the following commands, however these can can be removed/customized or custom commands can be added.
 
-
 - Maintenance = Commands for maintaining the bots functions (none can not be removed).
     - Ping = Gives the latency of the bot.
     - Terminate = Terminate the bot's code.
@@ -25,7 +24,6 @@ By default the Big-Chungus-Bot comes with the following commands, however these 
 
 # Bot Function
 By default the Big-Chungus-Bot comes with the following functions, however these can can be removed/customized or custom functions can be added. Functions are all the other interactions and actions the bot preforms on his own.
-
 
 - Verification = Upon clicking a button the user will recieve a new role.
 - Auto Event Announcement = When a new Discord Event is created the bot will announce it in a selected channel.

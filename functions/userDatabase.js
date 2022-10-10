@@ -1,5 +1,4 @@
 //dependancies
-const { EmbedAssertions } = require('@discordjs/builders');
 const { Sequelize, DataTypes} = require('sequelize');
 
 //database

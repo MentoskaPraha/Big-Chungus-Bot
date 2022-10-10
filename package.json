@@ -1,7 +1,7 @@
 {
   "name": "big-chungus-bot",
-  "version": "1.2.0",
-  "description": "The official custom bot for the Big Chungus Religion. This bot is coded by MentoskaPraha and maintained by Pilot64.",
+  "version": "1.3.0 - Alpha",
+  "description": "It's a Big CHungus themed Discord Bot, what more do you want?",
   "main": "index.js",
   "scripts": {
     "prestart": "node deploy-cmds.js",
