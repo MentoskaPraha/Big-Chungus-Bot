@@ -1,12 +1,13 @@
 //dependancies
 const { Sequelize, DataTypes} = require('sequelize');
+const log = require('../logger.js');
 
 //database
 const sequelize = new Sequelize('userDB', 'admin', 'AeroMaster64Stinks', {
     dialect: 'sqlite',
     host: 'localhost',
     storage: 'database/userDb.sqlite',
-    logging: true
+    logging: false
 });
 
 //table
@@ -37,7 +38,7 @@ const userDB = sequelize.define('users', {
 module.exports = {
     name: 'userDB',
     async syncDB(){
-        await userDB.sync().then(() => console.log("User database has been synced!"));
+        await userDB.sync().then(() => log.info("User database has been synced!"));
     },
 
     async create(id){
@@ -46,9 +47,7 @@ module.exports = {
             title: null,
             birthday: null,
             color: null
-        }).then(() => console.log("New User was added to database."));
-
-        return 0;
+        }).then(() => log.info(`User(${id}) was added to the database`));
     },
 
     edit(id, newTitle, newBirthday, newColor){
@@ -58,9 +57,12 @@ module.exports = {
     async delete(id){
         user = await userDB.findOne({where: {id: id}});
 
-        if(user == null) return 1;
+        if(user == null){
+            log.warn(`User(${id}) for deletion was no found.`);
+            return 1;
+        }
 
-        await userDB.destroy({where: {id: id}}).then(() => console.log("User was deleted."));
+        await userDB.destroy({where: {id: id}}).then(() => log.info(`User(${id}) was deleted.`));
         return 0;
     }
 }

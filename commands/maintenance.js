@@ -4,6 +4,7 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 const { maintianerId } = require('../configuration/otherIDs.json');
 const {verificationEmbedColor } = require('../configuration/embedColors.json');
+const log = require('../logger.js');
 
 //command information
 module.exports = {
@@ -41,7 +42,7 @@ module.exports = {
 			await interaction.reply(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nBot Latency is around ${botLatency}ms.`);
 
 			//log it to the command console
-			console.log(`API Latency is around ${apiLatency}ms. Bot Latency is around ${botLatency}ms.`);
+			log.info(`API Latency is around ${apiLatency}ms. Bot Latency is around ${botLatency}ms.`);
 
 			//end command execution
 			return;
@@ -55,7 +56,7 @@ module.exports = {
 			    await interaction.reply({content: 'Terminating...', ephemeral: true});
 
                 //log the termination to the console
-			    console.log(`Bot is being terminated by ${interaction.user.tag}.`);
+			    log.info(`Bot is being terminated by ${interaction.user.tag}.`);
 
                 //terminate the bot
         	    process.exit(0);  
@@ -85,7 +86,7 @@ module.exports = {
 				channel.send({ embeds: [embed], components: [row] });
 
 				//log it to the console
-				console.log(`${interaction.user.tag} created a new verification message.`);
+				log.info(`${interaction.user.tag} created a new verification message.`);
 
 				//respond to the user that action was successful
 				await interaction.reply({content: 'Verification message created successfully!', ephemeral: true});
@@ -98,7 +99,7 @@ module.exports = {
 			await interaction.reply({content: 'You do not have permissions to run this command.', ephemeral: true});
             
             //log action
-			console.log(`${interaction.user.tag} attempted to access maintenance commands.`);
+			log.warn(`${interaction.user.tag} attempted to access maintenance commands.`);
 		}
 	},
 };

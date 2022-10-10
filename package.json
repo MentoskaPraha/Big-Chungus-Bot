@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prestart": "node deploy-cmds.js",
-    "start": "node index.js",
-    "pretest": "node test-deploy-cmds.js",
-    "test": "node test-index.js"
+    "start": "node index.js"
   },
   "keywords": [
     "discord",
@@ -22,6 +20,8 @@
     "discord-api-types": "^0.33.1",
     "discord.js": "^13.7.0",
     "dotenv": "^16.0.1",
+    "pino": "^8.6.1",
+    "pino-pretty": "^9.1.1",
     "sequelize": "^6.21.4",
     "sqlite3": "^5.1.2"
   }

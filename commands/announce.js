@@ -1,6 +1,7 @@
 //libraries
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { announcerRoleId } = require('../configuration/otherIDs.json');
+const log = require('../logger.js');
 
 //command information
 module.exports = {
@@ -46,17 +47,17 @@ module.exports = {
             try {
 		        await interaction.client.functions.get('sendAnnouncement').execute(title, announcement, ping, channel, interaction.user, true);
 	        } catch (error) {
-		        console.error(error);
+		        log.error(error);
 		        await interaction.editReply({ content: 'There was an error while executing this command.', ephemeral: true });
 	        }
             
             //give confirmation to the user that the command was successful
             await interaction.editReply({content: 'Your announcement has been sent and published.', ephemeral: true});
-            console.log(`${interaction.user.tag} made an anouncement.`);
+            log.info(`${interaction.user.tag} made an anouncement.`);
         } else{
             //give error if user does not have permissions
             await interaction.reply({content: 'You do not have permissions to run this command.', ephemeral: true});
-            console.log(`${interaction.user.tag} attempted to run "/announce".`);
+            log.warn(`${interaction.user.tag} attempted to run "/announce".`);
             return;
         }
     }

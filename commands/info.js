@@ -2,6 +2,7 @@
 const { SlashCommandBuilder, time } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/embedColors.json');
+const log = require('../logger.js');
 
 //command information
 module.exports = {
@@ -44,7 +45,7 @@ module.exports = {
 			await interaction.reply({embeds: [embed]});
 
 			//log that command was run
-			console.log(`${interaction.user.tag} requested information about ${user.tag}.`);
+			log.info(`${interaction.user.tag} requested information about ${user.tag}.`);
 
 			//prevent unecessery checks
 			return;
@@ -66,7 +67,7 @@ module.exports = {
 			await interaction.reply({embeds: [embed]});
 
 			//log that command was run
-			console.log(`${interaction.user.tag} requested information about ${interaction.guild.name}.`);
+			log.info(`${interaction.user.tag} requested information about ${interaction.guild.name}.`);
 
 			//prevent unecessery checks
 			return;

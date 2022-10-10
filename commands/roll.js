@@ -2,6 +2,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const{ diceRollerEmbedColor } = require('../configuration/embedColors.json');
+const log = require('../logger.js');
 
 //command information
 module.exports = {
@@ -54,6 +55,6 @@ module.exports = {
         await interaction.reply({embeds: [embed]});
 
         //log it into the command line
-        console.log(`${interaction.user.tag} has used the dice roller.`);
+        log.info(`${interaction.user.tag} has used the dice roller.`);
     }
 };

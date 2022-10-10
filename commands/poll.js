@@ -2,6 +2,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const { pollEmbedColor } = require('../configuration/embedColors.json');
+const log = require('../logger.js');
 
 //command information
 module.exports = {
@@ -156,6 +157,6 @@ module.exports = {
         }
 
         //log that the command has been run to the command line
-        console.log(`${interaction.user.tag} has created a new poll.`);
+        log.info(`${interaction.user.tag} has created a new poll.`);
     }
 };
