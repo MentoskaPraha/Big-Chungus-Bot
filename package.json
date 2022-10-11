@@ -4,6 +4,7 @@
   "description": "It's a Big CHungus themed Discord Bot, what more do you want?",
   "main": "index.js",
   "scripts": {
+    "test": "node index.js",
     "prestart": "node deploy-cmds.js",
     "start": "node index.js"
   },

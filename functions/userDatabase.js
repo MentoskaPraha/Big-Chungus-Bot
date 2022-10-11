@@ -60,14 +60,17 @@ module.exports = {
 
         if(newTitle != null){
             await userDB.update({title: newTitle}, {where: {id: id}});
+            log.info(`The title part of the userDb entry on user-${id} has been updated.`);
         }
 
         if(newBirthday != null){
             await userDB.update({birthday: newBirthday}, {where: {id: id}});
+            log.info(`The birthday part of the userDb entry on user-${id} has been updated.`);
         }
 
         if(newColor != null){
             await userDB.update({color: newColor}, {where: {id: id}});
+            log.info(`The color part of the userDb entry on user-${id} has been updated.`);
         }
 
         return 0;
