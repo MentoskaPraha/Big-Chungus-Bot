@@ -1,5 +1,4 @@
 //get libraries
-const fs = require('fs');
 const pino = require('pino');
 const pretty = require('pino-pretty');
 
