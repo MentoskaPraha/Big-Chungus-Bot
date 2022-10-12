@@ -1,8 +1,11 @@
 node_modules
 .env
 .vscode
-token.json
 package-lock.json
 .DS_Store
-database
-logs
+volume
+LICENSE
+README.md
+.gitignore
+Dockerfile
+.dockerignore

@@ -6,7 +6,7 @@ const log = require('../logger.js');
 const sequelize = new Sequelize('userDB', 'admin', 'AeroMaster64Stinks', {
     dialect: 'sqlite',
     host: 'localhost',
-    storage: 'database/userDb.sqlite',
+    storage: 'volume/database/userDb.sqlite',
     logging: false
 });
 
