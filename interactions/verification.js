@@ -1,4 +1,5 @@
-const { verificationRoleId } = require('../configuration/otherIDs.json')
+const { verificationRoleId } = require('../configuration/otherIDs.json');
+const log = require('../logger.js');
 
 module.exports = {
     name: 'verification',
@@ -10,7 +11,7 @@ module.exports = {
         interaction.member.roles.add(role);
 
         //log it to the console
-        console.log(`${interaction.user.tag} has been verified.`);
+        log.info(`${interaction.user.tag} has been verified.`);
 
         //reply to the user
         interaction.reply({content: 'Roles succesfully updated.', ephemeral: true});

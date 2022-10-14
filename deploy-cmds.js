@@ -34,4 +34,4 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN)
 
 rest.put(Routes.applicationCommands(clientId), { body: commands })
 	.then(() => log.info('Successfully registered application commands!'))
-	.catch(log.warn("There was an error while registering bot commands!"));
+	.catch(console.error());

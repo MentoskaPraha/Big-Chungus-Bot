@@ -1,5 +1,5 @@
 //libraries
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, ChannelType } = require('discord.js');
 const { announcementEmbedColor } = require('../configuration/embedColors.json');
 
 //function code
@@ -7,13 +7,13 @@ module.exports = {
     name: 'sendAnnouncement',
     execute (title, announcement, ping, channel, user, crosspost) {
         //if user didn't specify title set default title
-        if (title === null) title = 'New Announcement!'
+        if (title === null) title = 'New Announcement!';
 
         //create the embed
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(announcementEmbedColor)
             .setTitle(title)
-            .setDescription(announcement)
+            .setDescription(announcement);
         
         //create the message depending on the ping state
         var message = null;
@@ -25,7 +25,7 @@ module.exports = {
 
         //send the message to the channel
         channel.send({content: message, embeds: [embed]}).then(sent => {
-            if(channel.type === 'GuildNews' && crosspost) sent.crosspost();
+            if(channel.type === ChannelType.GuildAnnouncement) sent.crosspost();
         });
     }
 };

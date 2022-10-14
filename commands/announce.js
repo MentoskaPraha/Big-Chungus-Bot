@@ -9,6 +9,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('announce')
 		.setDescription('Creates an announcement.')
+        .setDMPermission(false)
         .addChannelOption(option =>
             option.setName('channel')
                 .setDescription('The channel the announcement will be sent to.')
@@ -38,7 +39,7 @@ module.exports = {
             await interaction.deferReply({ephemeral: true});
 
             //get all of the options
-            var title = interaction.options.getString('title');
+            const title = interaction.options.getString('title');
             const announcement = interaction.options.getString('announcement');
             const ping = interaction.options.getMentionable('ping');
             const channel = interaction.options.getChannel('channel');

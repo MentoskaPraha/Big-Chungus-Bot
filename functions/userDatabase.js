@@ -15,7 +15,8 @@ const userDB = sequelize.define('users', {
     id: {
         type: DataTypes.INTEGER,
         unique: true,
-        primaryKey: true
+        primaryKey: true,
+        allowNull: false
     },
     title: {
         type: DataTypes.STRING,
@@ -28,6 +29,11 @@ const userDB = sequelize.define('users', {
         allowNull: true
     },
     color: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        allowNull: true
+    },
+    colorRoleId: {
         type: DataTypes.INTEGER,
         defaultValue: null,
         allowNull: true
@@ -42,18 +48,28 @@ module.exports = {
     },
 
     async create(id){
+        const user = await userDB.findOne({where: {id: id}});
+
+        if(user != null){ 
+            log.warn(`User-${id} already exists in userDb.`);
+            return 1;
+        }
+
         await userDB.create({
             id: id,
             title: null,
             birthday: null,
-            color: null
-        }).then(() => log.info(`User(${id}) was added to the database userDb.`));
+            color: null,
+            colorRoleId: null
+        }).then(() => log.info(`User-${id} was added to userDb.`));
+
+        return 0;
     },
 
     async edit(id, newTitle, newBirthday, newColor){
         const user = await userDB.findOne({where: {id: id}});
 
-        if(user == null){
+        if(user === null){
             log.warn(`The userDb entry on user-${id} has not been found for editing.`);
             return 1;
         }
@@ -79,7 +95,7 @@ module.exports = {
     async read(id){
         const user = await userDB.findOne({where: {id: id}});
 
-        if(user == null){
+        if(user === null){
             log.warn(`The userDb entry on user-${id} has not been found for accessing.`);
             return 1;
         }
@@ -91,12 +107,12 @@ module.exports = {
     async delete(id){
         const user = await userDB.findOne({where: {id: id}});
 
-        if(user == null){
+        if(user === null){
             log.warn(`The userDb entry on user-${id} has not been found for deletion.`);
             return 1;
         }
 
-        await userDB.destroy({where: {id: id}}).then(() => log.info(`User(${id}) was deleted from userDb.`));
+        await userDB.destroy({where: {id: id}}).then(() => log.info(`User-${id} was deleted from the userDb.`));
         return 0;
     }
 }

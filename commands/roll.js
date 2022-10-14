@@ -1,6 +1,5 @@
 //libraries
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const{ diceRollerEmbedColor } = require('../configuration/embedColors.json');
 const log = require('../logger.js');
 
@@ -10,6 +9,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('roll')
 		.setDescription('Rolls a dice of any size.')
+        .setDMPermission(true)
         .addIntegerOption(option =>
             option.setName('dice_size')
                 .setDescription('The size of the dice. Can be between 2 and 100.')
@@ -46,7 +46,7 @@ module.exports = {
         }
         
         //put it into an embed
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(diceRollerEmbedColor)
             .setTitle('Dice Roller Results')
             .setDescription(resultsMessage)

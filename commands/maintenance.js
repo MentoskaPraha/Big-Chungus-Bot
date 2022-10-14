@@ -1,7 +1,5 @@
 //libraries
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageButton } = require('discord.js');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const { maintianerId } = require('../configuration/otherIDs.json');
 const {verificationEmbedColor } = require('../configuration/embedColors.json');
 const log = require('../logger.js');
@@ -65,17 +63,17 @@ module.exports = {
 			//if the subcommand is verification run the following
 			if (interaction.options.getSubcommand() === 'verification'){
 				//create the message
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setColor(verificationEmbedColor)
 					.setTitle('Join the Big Chungus Religion!')
 					.setDescription(`By clicking the button below and joining the religion you agree to all of our rules. If you break these rules The Council has the right to banish you from the religion.`)
 					.setThumbnail(interaction.guild.iconURL())
 
-				const row = new MessageActionRow()
+				const row = new ActionRowBuilder()
 					.addComponents(
-						new MessageButton()
+						new ButtonBuilder()
 							.setCustomId('verification')
-							.setStyle('SUCCESS')
+							.setStyle(ButtonStyle.Success)
 							.setLabel('Join')
 					)
 				

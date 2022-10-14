@@ -1,7 +1,7 @@
 // Require the necessary libraries
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const log = require('./logger.js');
 
 //configure enviroment variables
@@ -12,7 +12,7 @@ log.info("Preparing for bot activation...");
 
 // Create a new client instance
 log.info('Creating new client instance...');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_SCHEDULED_EVENTS], disableEveryone: false});
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildScheduledEvents], disableEveryone: false});
 client.commands = new Collection();
 client.otherInteractions = new Collection();
 client.functions = new Collection();

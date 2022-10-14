@@ -1,6 +1,5 @@
 //libraries
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { pollEmbedColor } = require('../configuration/embedColors.json');
 const log = require('../logger.js');
 
@@ -10,6 +9,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('poll')
 		.setDescription('Creates a poll. You can not add custom emojis to your answers!')
+        .setDMPermission(true)
         .addStringOption(option =>
             option.setName('question')
                 .setDescription('The question you will ask.')
@@ -142,7 +142,7 @@ module.exports = {
             embedDescription += `\n\n${emojis[i]} ${answers[i]}`;
         }
 
-        var embed = new MessageEmbed()
+        var embed = new EmbedBuilder()
             .setColor(pollEmbedColor)
             .setTitle(question)
             .setDescription(embedDescription);

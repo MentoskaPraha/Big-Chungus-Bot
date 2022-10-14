@@ -1,4 +1,4 @@
-const { eventAnnouncementChannelId, guildId } = require('../configuration/config.json');
+const { eventAnnouncementChannelId } = require('../configuration/config.json');
 const log = require('../logger.js');
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
         const message = `**New Event!**\nhttps://discord.com/events/${guildScheduledEvent.guild.id}/${guildScheduledEvent.id}`;
 
         //get the event announcement channel
-        const channel = guildScheduledEvent.client.guilds.cache.get(guildId).channels.cache.get(eventAnnouncementChannelId);
+        const channel = guildScheduledEvent.guild.channels.fetch(eventAnnouncementChannelId);
 
         //send the announcement message and publish it
         channel.send(message).then(sent => {
