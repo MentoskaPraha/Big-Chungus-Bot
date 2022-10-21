@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
-ENV DISCORD_BOT_TOKEN 0000
+ARG DiscordBotToken
 
-CMD ["npm", "test"]
+ENV DISCORD_BOT_TOKEN ${DiscordBotToken}
+
+CMD ["npm", "start"]

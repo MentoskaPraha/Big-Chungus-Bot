@@ -1,6 +1,7 @@
 //libraries
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, EmbedBuilder, ChannelType } = require('discord.js');
 const { announcerRoleId } = require('../configuration/otherIDs.json');
+const { announcementEmbedColor } = require('../configuration/embedColors.json');
 const log = require('../logger.js');
 
 //command information
@@ -39,18 +40,33 @@ module.exports = {
             await interaction.deferReply({ephemeral: true});
 
             //get all of the options
-            const title = interaction.options.getString('title');
+            var title = interaction.options.getString('title');
             const announcement = interaction.options.getString('announcement');
             const ping = interaction.options.getMentionable('ping');
             const channel = interaction.options.getChannel('channel');
             
             //make the announcement
-            try {
-		        await interaction.client.functions.get('sendAnnouncement').execute(title, announcement, ping, channel, interaction.user, true);
-	        } catch (error) {
-		        log.error(error);
-		        await interaction.editReply({ content: 'There was an error while executing this command.', ephemeral: true });
-	        }
+            //if user didn't specify title set default title
+            if (title === null) title = 'New Announcement!';
+
+            //create the embed
+            const embed = new EmbedBuilder()
+                .setColor(announcementEmbedColor)
+                .setTitle(title)
+                .setDescription(announcement);
+        
+            //create the message depending on the ping state
+            var message = null;
+            if(ping !== null){
+                message = `New Announcement by ${interaction.user.username}, ${ping}.`;
+            } else{
+                message = `New Announcement by ${interaction.user.username}.`;
+            }
+
+            //send the message to the channel
+            channel.send({content: message, embeds: [embed]}).then(sent => {
+                if(channel.type === ChannelType.GuildAnnouncement) sent.crosspost();
+            });
             
             //give confirmation to the user that the command was successful
             await interaction.editReply({content: 'Your announcement has been sent and published.', ephemeral: true});

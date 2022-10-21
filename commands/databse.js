@@ -1,5 +1,5 @@
 //libraries
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const log = require('../logger.js');
 
 //command information

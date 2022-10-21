@@ -66,7 +66,7 @@ module.exports = {
         return 0;
     },
 
-    async edit(id, newTitle, newBirthday, newColor){
+    async edit(id, newTitle, newBirthday, newColor, newColorRoleId){
         const user = await userDB.findOne({where: {id: id}});
 
         if(user === null){
@@ -87,6 +87,11 @@ module.exports = {
         if(newColor != null){
             await userDB.update({color: newColor}, {where: {id: id}});
             log.info(`The color part of the userDb entry on user-${id} has been updated.`);
+        }
+
+        if(newColorRoleId != null){
+            await userDB.update({colorRoleId: newColorRoleId}, {where: {id: id}});
+            log.info(`The colorRoleId part of the userDb entry on user-${id} has been updated.`);
         }
 
         return 0;
