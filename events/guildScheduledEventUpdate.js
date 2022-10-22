@@ -38,7 +38,7 @@ module.exports = {
 
             //send the message into that channel
             channel.send({content: message}).then(sent => {
-               //if(channel.type === ChannelType.GuildAnnouncement) sent.crosspost();
+               if(channel.type === ChannelType.GuildAnnouncement) sent.crosspost();
             });
 
             //log the action to the console
@@ -58,7 +58,7 @@ module.exports = {
 
             //send the message into that channel
             channel.send({content: message}).then(sent => {
-               //if(channel.type === ChannelType.GuildAnnouncement) sent.crosspost();
+               if(channel.type === ChannelType.GuildAnnouncement) sent.crosspost();
             });
 
             //log the action to the console
