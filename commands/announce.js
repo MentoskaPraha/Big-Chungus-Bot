@@ -58,9 +58,9 @@ module.exports = {
             //create the message depending on the ping state
             var message = null;
             if(ping !== null){
-                message = `New Announcement by ${interaction.user.username}, ${ping}.`;
+                message = `New Announcement by ${await interaction.client.functions.get('userDB').getTitle(interaction.user.id)} ${interaction.user.username}, ${ping}.`;
             } else{
-                message = `New Announcement by ${interaction.user.username}.`;
+                message = `New Announcement by ${await interaction.client.functions.get('userDB').getTitle(interaction.user.id)} ${interaction.user.username}.`;
             }
 
             //send the message to the channel

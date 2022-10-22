@@ -32,7 +32,7 @@ module.exports = {
             const user = interaction.options.getUser('user');
 
 			//create information
-			var userInfo = `Username: ${user.username}\nTag: ${user.tag}\nUser ID: ${user.id}\nIs User a Bot: ${user.bot}\nUser joined Discord: <t:${Math.floor(user.createdTimestamp / 1000)}:D>`;
+			const userInfo = `Username: ${user.username}\nTag: ${user.tag}\nUser ID: ${user.id}\nIs User a Bot: ${user.bot}\nUser joined Discord: <t:${Math.floor(user.createdTimestamp / 1000)}:D>\nTitle: ${await interaction.client.functions.get('userDB').getTitle(interaction.user.id)}`;
 
 			//create response message
 			const embed = new EmbedBuilder()
@@ -54,7 +54,7 @@ module.exports = {
 		//if the command server is run do the following
 		if (interaction.options.getSubcommand() === 'server'){
 			//create information
-			var serverInfo = `Server Name: ${interaction.guild.name}\nServer Id: ${interaction.guild.id}\nMember Count: ${interaction.guild.memberCount}\nServer Created: <t:${Math.floor(interaction.guild.createdTimestamp / 1000)}:D>`;
+			const serverInfo = `Server Name: ${interaction.guild.name}\nServer Id: ${interaction.guild.id}\nMember Count: ${interaction.guild.memberCount}\nServer Created: <t:${Math.floor(interaction.guild.createdTimestamp / 1000)}:D>`;
 
 			//create response message
 			const embed = new EmbedBuilder()

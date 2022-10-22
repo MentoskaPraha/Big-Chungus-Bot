@@ -16,7 +16,7 @@ module.exports = {
                 return;
             } 
 
-            //check the commands folder for the command and run it's code
+            //run the commands code
 	        try {
 		        await command.execute(interaction);
 	        } catch (error) {

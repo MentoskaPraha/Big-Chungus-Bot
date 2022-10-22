@@ -138,7 +138,7 @@ module.exports = {
 
         //get the embed description
         var embedDescription = `${emojis[0]} ${answers[0]}`;
-        for(var i = 1; answers[i] !== null; i++){
+        for(var i = 1; answers[i] != null; i++){
             embedDescription += `\n\n${emojis[i]} ${answers[i]}`;
         }
 
@@ -148,11 +148,11 @@ module.exports = {
             .setDescription(embedDescription);
 
         //send poll
-        await interaction.editReply({content: `Poll by ${interaction.user.username}.`, embeds: [embed]});
+        await interaction.editReply({content: `Poll by ${await interaction.client.functions.get('userDB').getTitle(interaction.user.id)} ${interaction.user.username}.`, embeds: [embed]});
 
         //add reactions
         const message = await interaction.fetchReply();
-        for(var i = 0; answers[i] !== null; i++){
+        for(var i = 0; answers[i] != null; i++){
             await message.react(emojis[i]);
         }
 
