@@ -12,7 +12,14 @@ log.info("Preparing for bot activation...");
 
 // Create a new client instance
 log.info('Creating new client instance...');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildScheduledEvents], disableEveryone: false});
+const client = new Client({ 
+	intents: [
+		GatewayIntentBits.Guilds, 
+		GatewayIntentBits.GuildMessages, 
+		GatewayIntentBits.GuildScheduledEvents
+	], 
+	disableEveryone: false
+});
 client.commands = new Collection();
 client.otherInteractions = new Collection();
 client.functions = new Collection();

@@ -34,7 +34,7 @@ const userDB = sequelize.define('users', {
         allowNull: true
     },
     colorRoleId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         defaultValue: null,
         allowNull: true
     }
