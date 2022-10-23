@@ -21,7 +21,7 @@ const client = new Client({
 	disableEveryone: false
 });
 client.commands = new Collection();
-client.otherInteractions = new Collection();
+//client.otherInteractions = new Collection();
 client.functions = new Collection();
 
 //add the commands to the client command collection
@@ -51,7 +51,7 @@ for (const file of eventFiles) {
 }
 
 //add other interactions to the client other interaction collection
-log.info('Adding other interaction to the clients other interaction collection...');
+/*log.info('Adding other interaction to the clients other interaction collection...');
 const interactionPath = path.join(__dirname, 'interactions');
 const interactionFiles = fs.readdirSync(interactionPath).filter(file => file.endsWith('.js'));
 
@@ -59,7 +59,7 @@ for (const file of interactionFiles) {
 	const filePath = path.join(interactionPath, file);
 	const interaction = require(filePath);
 	client.otherInteractions.set(interaction.name, interaction);
-}
+}*/
 
 //add functions to the client function collection
 log.info('Adding functions to the clients function collection...');
