@@ -48,6 +48,7 @@ module.exports = {
 			    log.info(`Bot is being terminated by ${interaction.user.tag}.`);
 
                 //terminate the bot
+				await interaction.client.destroy();
         	    process.exit(0);  
             }
 		} else{

@@ -1,7 +1,7 @@
 // Require the necessary libraries
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, ActivityType } = require('discord.js');
 const log = require('./logger.js');
 
 //configure enviroment variables
@@ -82,6 +82,6 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
-	client.user.setPresence({ activities: [{ name: 'Hosting Update', type: 'LISTENING'}], status: 'online' });
+	client.user.setPresence({ activities: [{ name: 'The Big Chungus Relegion', type: ActivityType.Watching}], status: 'online' });
 	log.info('The bot is ready!');
 });
