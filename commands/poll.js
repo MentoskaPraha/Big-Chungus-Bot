@@ -1,7 +1,7 @@
 //libraries
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { pollEmbedColor } = require('../configuration/embedColors.json');
+const log = require('../logger.js');
 
 //command information
 module.exports = {
@@ -9,6 +9,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('poll')
 		.setDescription('Creates a poll. You can not add custom emojis to your answers!')
+        .setDMPermission(true)
         .addStringOption(option =>
             option.setName('question')
                 .setDescription('The question you will ask.')
@@ -137,25 +138,25 @@ module.exports = {
 
         //get the embed description
         var embedDescription = `${emojis[0]} ${answers[0]}`;
-        for(var i = 1; answers[i] !== null; i++){
+        for(var i = 1; answers[i] != null; i++){
             embedDescription += `\n\n${emojis[i]} ${answers[i]}`;
         }
 
-        var embed = new MessageEmbed()
+        var embed = new EmbedBuilder()
             .setColor(pollEmbedColor)
             .setTitle(question)
             .setDescription(embedDescription);
 
         //send poll
-        await interaction.editReply({content: `Poll by ${interaction.user.username}.`, embeds: [embed]});
+        await interaction.editReply({content: `Poll by ${await interaction.client.functions.get('userDB').getTitle(interaction.user.id)} ${interaction.user.username}.`, embeds: [embed]});
 
         //add reactions
         const message = await interaction.fetchReply();
-        for(var i = 0; answers[i] !== null; i++){
+        for(var i = 0; answers[i] != null; i++){
             await message.react(emojis[i]);
         }
 
         //log that the command has been run to the command line
-        console.log(`${interaction.user.tag} has created a new poll.`);
+        log.info(`${interaction.user.tag} has created a new poll.`);
     }
 };

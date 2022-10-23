@@ -1,23 +1,31 @@
+// Require the necessary libraries
+const fs = require('node:fs');
+const path = require('node:path');
+const { Client, Collection, GatewayIntentBits, ActivityType } = require('discord.js');
+const log = require('./logger.js');
+
 //configure enviroment variables
 require('dotenv').config();
 
 //tell the user that the bot is preparing
-console.log('Preparing for bot activation...');
-
-// Require the necessary libraries
-const fs = require('node:fs');
-const path = require('node:path');
-const { Client, Collection, Intents } = require('discord.js');
+log.info("Preparing for bot activation...");
 
 // Create a new client instance
-console.log('Creating new client instance...');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_SCHEDULED_EVENTS], disableEveryone: false});
+log.info('Creating new client instance...');
+const client = new Client({ 
+	intents: [
+		GatewayIntentBits.Guilds, 
+		GatewayIntentBits.GuildMessages, 
+		GatewayIntentBits.GuildScheduledEvents
+	], 
+	disableEveryone: false
+});
 client.commands = new Collection();
 client.otherInteractions = new Collection();
 client.functions = new Collection();
 
 //add the commands to the client command collection
-console.log('Adding commands to the clients command collection...');
+log.info('Adding commands to the clients command collection...');
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
@@ -28,7 +36,7 @@ for (const file of commandFiles) {
 }
 
 //add events to the client event collections
-console.log('Adding events to the client event collection...')
+log.info('Adding events to the client event collection...');
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
@@ -43,7 +51,7 @@ for (const file of eventFiles) {
 }
 
 //add other interactions to the client other interaction collection
-console.log('Adding other interaction to the clients other interaction collection...');
+log.info('Adding other interaction to the clients other interaction collection...');
 const interactionPath = path.join(__dirname, 'interactions');
 const interactionFiles = fs.readdirSync(interactionPath).filter(file => file.endsWith('.js'));
 
@@ -54,7 +62,7 @@ for (const file of interactionFiles) {
 }
 
 //add functions to the client function collection
-console.log('Adding functions to the clients function collection...');
+log.info('Adding functions to the clients function collection...');
 const functionPath = path.join(__dirname, 'functions');
 const functionFiles = fs.readdirSync(functionPath).filter(file => file.endsWith('.js'));
 
@@ -65,14 +73,15 @@ for (const file of functionFiles) {
 }
 
 //let the user know that the bot is almost ready
-console.log('Preforming final preparations...');
+log.info('Preforming final preparations...');
+client.functions.get('userDB').syncDB();
 
 // Login to Discord with your client's token
-console.log('Logging in...');
+log.info('Logging in...');
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
-	client.user.setPresence({ activities: [{ name: 'Hosting Update', type: 'LISTENING'}], status: 'online' });
-	console.log('The bot is ready!');
+	client.user.setPresence({ activities: [{ name: 'The Big Chungus Relegion', type: ActivityType.Watching}], status: 'online' });
+	log.info('The bot is ready!');
 });

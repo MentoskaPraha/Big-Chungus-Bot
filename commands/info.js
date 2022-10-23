@@ -1,7 +1,7 @@
 //libraries
-const { SlashCommandBuilder, time } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/embedColors.json');
+const log = require('../logger.js');
 
 //command information
 module.exports = {
@@ -9,6 +9,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('info')
 		.setDescription('Gives information about something')
+		.setDMPermission(false)
 		.addSubcommand(subcommand =>
 			subcommand.setName('user')
 				.setDescription('Get information about a user.')
@@ -31,10 +32,10 @@ module.exports = {
             const user = interaction.options.getUser('user');
 
 			//create information
-			var userInfo = `Username: ${user.username}\nTag: ${user.tag}\nUser ID: ${user.id}\nIs User a Bot: ${user.bot}\nUser joined Discord: <t:${Math.floor(user.createdTimestamp / 1000)}:D>`;
+			const userInfo = `Username: ${user.username}\nTag: ${user.tag}\nUser ID: ${user.id}\nIs User a Bot: ${user.bot}\nUser joined Discord: <t:${Math.floor(user.createdTimestamp / 1000)}:D>\nTitle: ${await interaction.client.functions.get('userDB').getTitle(interaction.user.id)}`;
 
 			//create response message
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor(userInfoEmbedColor)
 				.setDescription(userInfo)
 				.setTitle(`Information about ${user.username}`)
@@ -44,7 +45,7 @@ module.exports = {
 			await interaction.reply({embeds: [embed]});
 
 			//log that command was run
-			console.log(`${interaction.user.tag} requested information about ${user.tag}.`);
+			log.info(`${interaction.user.tag} requested information about ${user.tag}.`);
 
 			//prevent unecessery checks
 			return;
@@ -53,10 +54,10 @@ module.exports = {
 		//if the command server is run do the following
 		if (interaction.options.getSubcommand() === 'server'){
 			//create information
-			var serverInfo = `Server Name: ${interaction.guild.name}\nServer Id: ${interaction.guild.id}\nMember Count: ${interaction.guild.memberCount}\nServer Created: <t:${Math.floor(interaction.guild.createdTimestamp / 1000)}:D>`;
+			const serverInfo = `Server Name: ${interaction.guild.name}\nServer Id: ${interaction.guild.id}\nMember Count: ${interaction.guild.memberCount}\nServer Created: <t:${Math.floor(interaction.guild.createdTimestamp / 1000)}:D>`;
 
 			//create response message
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor(serverInfoEmbedColor)
 				.setDescription(serverInfo)
 				.setTitle(`Information about ${interaction.guild.name}`)
@@ -66,7 +67,7 @@ module.exports = {
 			await interaction.reply({embeds: [embed]});
 
 			//log that command was run
-			console.log(`${interaction.user.tag} requested information about ${interaction.guild.name}.`);
+			log.info(`${interaction.user.tag} requested information about ${interaction.guild.name}.`);
 
 			//prevent unecessery checks
 			return;

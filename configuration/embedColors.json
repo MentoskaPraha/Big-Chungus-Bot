@@ -6,7 +6,5 @@
 	"diceRollerEmbedColor": "#F11E32",
 
     "userInfoEmbedColor": "#4BCDDD",
-	"serverInfoEmbedColor": "#B4AEAE",
-
-    "verificationEmbedColor": "#B4AEAE"
+	"serverInfoEmbedColor": "#B4AEAE"
 }
