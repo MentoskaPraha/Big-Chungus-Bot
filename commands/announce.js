@@ -36,11 +36,8 @@ module.exports = {
     async execute(interaction){
         //check if user has permissions to make the announcement
         if (interaction.member.roles.cache.some(role => role.id === announcerRoleId)) {
-            //defer the reply
-            await interaction.deferReply({ephemeral: true});
-
             //get all of the options
-            var title = interaction.options.getString('title');
+            let title = interaction.options.getString('title');
             const announcement = interaction.options.getString('announcement');
             const ping = interaction.options.getMentionable('ping');
             const channel = interaction.options.getChannel('channel');
@@ -56,7 +53,7 @@ module.exports = {
                 .setDescription(announcement);
         
             //create the message depending on the ping state
-            var message = null;
+            let message = null;
             if(ping !== null){
                 message = `New Announcement by ${await interaction.client.functions.get('userDB').getTitle(interaction.user.id)} ${interaction.user.username}, ${ping}.`;
             } else{

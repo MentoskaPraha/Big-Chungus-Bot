@@ -38,9 +38,6 @@ module.exports = {
         
     //when command is called run the following
     async execute(interaction){
-        //defer the reply
-        await interaction.deferReply({ephemeral: true});
-
         //get the subcommand that was run
         if(interaction.options.getSubcommand() === 'create'){
             //get the user from the database

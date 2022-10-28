@@ -32,17 +32,17 @@ module.exports = {
             const user = interaction.options.getUser('user');
 
 			//create information
-			const userInfo = `Username: ${user.username}\nTag: ${user.tag}\nUser ID: ${user.id}\nIs User a Bot: ${user.bot}\nUser joined Discord: <t:${Math.floor(user.createdTimestamp / 1000)}:D>\nTitle: ${await interaction.client.functions.get('userDB').getTitle(interaction.user.id)}`;
+			const userInfo = `Username: ${user.username}\nTag: ${user.tag}\nUser ID: ${user.id}\nIs User a Bot: ${user.bot}\nUser joined Discord: <t:${Math.floor(user.createdTimestamp / 1000)}:D>\nTitle: ${await interaction.client.functions.get('userDB').getTitle(user.id)}`;
 
 			//create response message
 			const embed = new EmbedBuilder()
 				.setColor(userInfoEmbedColor)
 				.setDescription(userInfo)
 				.setTitle(`Information about ${user.username}`)
-				.setThumbnail(user.displayAvatarURL())
+				.setThumbnail(user.displayAvatarURL());
 
 			//send response
-			await interaction.reply({embeds: [embed]});
+			await interaction.editReply({embeds: [embed]});
 
 			//log that command was run
 			log.info(`${interaction.user.tag} requested information about ${user.tag}.`);
@@ -61,7 +61,7 @@ module.exports = {
 				.setColor(serverInfoEmbedColor)
 				.setDescription(serverInfo)
 				.setTitle(`Information about ${interaction.guild.name}`)
-				.setThumbnail(interaction.guild.iconURL())
+				.setThumbnail(interaction.guild.iconURL());
 
 			//send response
 			await interaction.reply({embeds: [embed]});

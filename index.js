@@ -4,9 +4,6 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, ActivityType } = require('discord.js');
 const log = require('./logger.js');
 
-//configure enviroment variables
-require('dotenv').config();
-
 //tell the user that the bot is preparing
 log.info("Preparing for bot activation...");
 
@@ -75,6 +72,14 @@ for (const file of functionFiles) {
 //let the user know that the bot is almost ready
 log.info('Preforming final preparations...');
 client.functions.get('userDB').syncDB();
+
+//register the commands
+const registerCmds = client.functions.get('deploy-cmds');
+try {
+	await registerCmds.execute();
+} catch (error) {
+	console.error(error);
+}
 
 // Login to Discord with your client's token
 log.info('Logging in...');

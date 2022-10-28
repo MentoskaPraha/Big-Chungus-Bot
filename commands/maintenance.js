@@ -28,7 +28,7 @@ module.exports = {
 			const botLatency = Math.floor(Math.abs(Date.now() - interaction.createdAt));
 
 			//respond to the user
-			await interaction.reply(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nBot Latency is around ${botLatency}ms.`);
+			await interaction.editReply(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nBot Latency is around ${botLatency}ms.`);
 
 			//log it to the command console
 			log.info(`API Latency is around ${apiLatency}ms. Bot Latency is around ${botLatency}ms.`);
@@ -42,7 +42,7 @@ module.exports = {
             //if the subcommand is terminate run the following
             if (interaction.options.getSubcommand() === 'terminate'){
                 //tell the user that the bot is being terminated
-			    await interaction.reply({content: 'Terminating...', ephemeral: true});
+			    await interaction.editReply({content: 'Terminating...', ephemeral: true});
 
                 //log the termination to the console
 			    log.info(`Bot is being terminated by ${interaction.user.tag}.`);
@@ -53,7 +53,7 @@ module.exports = {
             }
 		} else{
 			//respond if error message if user does not have termination permission
-			await interaction.reply({content: 'You do not have permissions to run this command.', ephemeral: true});
+			await interaction.editReply({content: 'You do not have permissions to run this command.', ephemeral: true});
             
             //log action
 			log.warn(`${interaction.user.tag} attempted to access maintenance commands.`);

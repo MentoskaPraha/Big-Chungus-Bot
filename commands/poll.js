@@ -118,16 +118,11 @@ module.exports = {
        
     //on command run execute the following
     async execute(interaction){
-        //tell the user the command is disabled
-   
-        //defer the reply
-        await interaction.deferReply();
-
         //get the user input
         const question = interaction.options.getString('question');
         const answers = [];
 
-        for(var i = 1; interaction.options.getString('answer_' + i) !== null; i++){
+        for(let i = 1; interaction.options.getString('answer_' + i) !== null; i++){
            answers.push(interaction.options.getString('answer_' + i)); 
         }
         answers.push(null);
@@ -138,11 +133,11 @@ module.exports = {
 
         //get the embed description
         var embedDescription = `${emojis[0]} ${answers[0]}`;
-        for(var i = 1; answers[i] != null; i++){
+        for(let i = 1; answers[i] != null; i++){
             embedDescription += `\n\n${emojis[i]} ${answers[i]}`;
         }
 
-        var embed = new EmbedBuilder()
+        let embed = new EmbedBuilder()
             .setColor(pollEmbedColor)
             .setTitle(question)
             .setDescription(embedDescription);
@@ -152,7 +147,7 @@ module.exports = {
 
         //add reactions
         const message = await interaction.fetchReply();
-        for(var i = 0; answers[i] != null; i++){
+        for(let i = 0; answers[i] != null; i++){
             await message.react(emojis[i]);
         }
 

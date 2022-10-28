@@ -18,10 +18,11 @@ module.exports = {
 
             //run the commands code
 	        try {
+                await interaction.deferReply({ephemeral: true});
 		        await command.execute(interaction);
 	        } catch (error) {
 		        console.error(error);
-		        await interaction.reply({ content: 'There was an error while executing this command.', ephemeral: true });
+		        await interaction.editReply({ content: 'There was an error while executing this command.', ephemeral: true });
                 log.error(`${interaction.user.tag} experienced an error while running a command.`);
 	        }
 
@@ -43,10 +44,11 @@ module.exports = {
 
             //execute code depending on the button that was pressed
             try {
+                await interaction.deferReply({ephemeral: true});
                 await button.execute(interaction);
             } catch (error) {
                 console.error(error);
-                await interaction.reply({ content: 'There was an error while pressing this button.', ephemeral: true });
+                await interaction.editReply({ content: 'There was an error while pressing this button.', ephemeral: true });
                 log.error(`${interaction.user.tag} experienced an error while clicking a button.`);
             }
 

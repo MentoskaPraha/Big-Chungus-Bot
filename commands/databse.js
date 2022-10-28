@@ -21,9 +21,6 @@ module.exports = {
     //when command is called run the following
     async execute(interaction){
         if(interaction.options.getSubcommand() === 'create'){
-            //defer the response
-            await interaction.deferReply({ephemeral: true});
-
             //create the users database entry
 			const success = interaction.client.functions.get('userDB').create(interaction.user.id);
 
@@ -32,7 +29,6 @@ module.exports = {
                 await interaction.editReply({content: 'Your database profile already exists.', ephemeral: true});
             } else{
                 await interaction.editReply({content: 'Your database profile has been created.', ephemeral: true});
-
             }
 
 			//end command execution
@@ -40,9 +36,6 @@ module.exports = {
 		}
 
         if(interaction.options.getSubcommand() === 'delete'){
-			//defer the response
-            await interaction.deferReply({ephemeral: true});
-
             //create the users database entry
             const success = await interaction.client.functions.get('userDB').delete(interaction.user.id);
  

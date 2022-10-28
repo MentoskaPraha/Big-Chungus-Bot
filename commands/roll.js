@@ -49,10 +49,10 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor(diceRollerEmbedColor)
             .setTitle('Dice Roller Results')
-            .setDescription(resultsMessage)
+            .setDescription(resultsMessage);
         
         //respond to the user
-        await interaction.reply({embeds: [embed]});
+        await interaction.editReply({embeds: [embed]});
 
         //log it into the command line
         log.info(`${interaction.user.tag} has used the dice roller.`);

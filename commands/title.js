@@ -26,9 +26,6 @@ module.exports = {
 
     //when the command is called run the following
     async execute(interaction){
-        //defer the reply
-        await interaction.deferReply({ephemeral: true});
-
         //if the user requested to change their title run the following
         if(interaction.options.getSubcommand() === 'change'){
             //get the title

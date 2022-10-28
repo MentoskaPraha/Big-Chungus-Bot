@@ -4,9 +4,8 @@
   "description": "It's a Big Chungus themed Discord bot, what more do you want?",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js",
-    "prestart": "node deploy-cmds.js",
-    "start": "node index.js"
+    "test": "node -r dotenv/config index.js",
+    "start": "node -r dotenv/config index.js"
   },
   "keywords": [
     "discord",
