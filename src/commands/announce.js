@@ -21,6 +21,11 @@ module.exports = {
                 .setDescription('The announcement itself.')
                 .setRequired(true)
             )
+        .addBooleanOption(option =>
+            option.setName('crosspost')
+                .setDescription('Whether the announcement should be automatically published, if it\'s sent to a announcement channel.')
+                .setRequired(true)
+            )
         .addStringOption(option =>
             option.setName('title')
                 .setDescription('The title of the announcement.')
@@ -39,6 +44,7 @@ module.exports = {
             //get all of the options
             let title = interaction.options.getString('title');
             const announcement = interaction.options.getString('announcement');
+            const crosspost = interaction.options.getBoolean('crosspost');
             const ping = interaction.options.getMentionable('ping');
             const channel = interaction.options.getChannel('channel');
             
@@ -62,7 +68,7 @@ module.exports = {
 
             //send the message to the channel
             channel.send({content: message, embeds: [embed]}).then(sent => {
-                if(channel.type === ChannelType.GuildAnnouncement) sent.crosspost();
+                if(channel.type === ChannelType.GuildAnnouncement && crosspost) sent.crosspost();
             });
             
             //give confirmation to the user that the command was successful
