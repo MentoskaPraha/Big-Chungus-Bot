@@ -1,9 +1,8 @@
 //create needed variables
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types');
+const { REST, Routes } = require('discord.js');
 const { clientId } = require('../configuration/config.json');
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const log = require('../logger.js');
 
 module.exports = {
@@ -14,7 +13,7 @@ module.exports = {
 
 		//prep to get the commands
 		const commands = [];
-		const commandsPath = path.join(__dirname, 'commands');
+		const commandsPath = path.resolve(__dirname, '../commands');
 		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 		//tell the user the commands are being retrieved

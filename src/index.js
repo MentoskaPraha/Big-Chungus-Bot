@@ -76,7 +76,7 @@ client.functions.get('userDB').syncDB();
 //register the commands
 const registerCmds = client.functions.get('deploy-cmds');
 try {
-	await registerCmds.execute();
+	registerCmds.execute();
 } catch (error) {
 	console.error(error);
 }

@@ -70,7 +70,7 @@ module.exports = {
             log.info(`${interaction.user.tag} made an anouncement.`);
         } else{
             //give error if user does not have permissions
-            await interaction.reply({content: 'You do not have permissions to run this command.', ephemeral: true});
+            await interaction.editReply({content: 'You do not have permissions to run this command.', ephemeral: true});
             log.warn(`${interaction.user.tag} attempted to run "/announce".`);
             return;
         }

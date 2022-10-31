@@ -1,7 +1,7 @@
 //get libraries
 const pino = require('pino');
 const pretty = require('pino-pretty');
-const fs = require('fs');
+const fs = require('node:fs');
 
 //create folder
 const dir = __dirname + '/volume/logs';
