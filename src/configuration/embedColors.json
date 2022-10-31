@@ -1,0 +1,10 @@
+{
+    "announcementEmbedColor": "#FFA338",
+
+    "pollEmbedColor": "#E7B727",
+
+	"diceRollerEmbedColor": "#F11E32",
+
+    "userInfoEmbedColor": "#4BCDDD",
+	"serverInfoEmbedColor": "#B4AEAE"
+}
