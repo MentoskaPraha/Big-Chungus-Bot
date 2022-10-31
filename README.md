@@ -29,5 +29,10 @@ GNU General Public License V3. Deployement support will not be provided.
 ## Version
 Current Version: 1.3.4
 
+## Docker
+Please make sure you replace `[]` with the needed parameters.  
+Build command: `docker build -t mentoskapraha/big-chungus-bot:[version] --platform linux/amd64 .`  
+Run command: `docker run --name big-chungus --env DISCORD_BOT_TOKEN="[your bot token here]" --volume [your volume mount here]:/app/volume mentoskapraha/big-chungus-bot:[version]`  
+
 ## Credits
 MentoskaPraha
