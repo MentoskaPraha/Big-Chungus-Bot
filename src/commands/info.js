@@ -64,7 +64,7 @@ module.exports = {
 				.setThumbnail(interaction.guild.iconURL());
 
 			//send response
-			await interaction.reply({embeds: [embed]});
+			await interaction.editReply({embeds: [embed]});
 
 			//log that command was run
 			log.info(`${interaction.user.tag} requested information about ${interaction.guild.name}.`);
