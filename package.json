@@ -7,6 +7,10 @@
     "test": "node -r dotenv/config ./src/index.js",
     "start": "node index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MentoskaPraha/Big-Chungus-Bot.git"
+  },
   "keywords": [
     "discord",
     "bot",
@@ -14,6 +18,10 @@
   ],
   "author": "MentoskaPraha",
   "license": "GNU GPL v3",
+  "bugs": {
+    "url": "https://github.com/MentoskaPraha/Big-Chungus-Bot/issues"
+  },
+  "homepage": "https://github.com/MentoskaPraha/Big-Chungus-Bot#readme",
   "dependencies": {
     "discord-api-types": "0.37.12",
     "discord.js": "^14.6.0",
