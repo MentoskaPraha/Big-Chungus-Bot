@@ -1,20 +1,20 @@
 //create needed variables
-const { REST, Routes } = require('discord.js');
-const { clientId } = require('../configuration/config.json');
-const fs = require('node:fs');
-const path = require('node:path');
-const log = require('../logger.js');
+import { REST, Routes } from "discord.js";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import log from "../logger";
+const { clientId } = require("../configuration/config.json");
 
-module.exports = {
+export = {
 	name: 'deploy-cmds',
-	execute(){
+	async execute(){
 		//tell the user that the process has begun
 		log.info('Preparering to register commands...');
 
 		//prep to get the commands
 		const commands = [];
 		const commandsPath = path.resolve(__dirname, '../commands');
-		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts'));
 
 		//tell the user the commands are being retrieved
 		log.info('Retrieving application commands from commands folder...');
@@ -30,10 +30,10 @@ module.exports = {
 		log.info('Registering application commands...');
 
 		//publish the commands to Discord
-		const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
+		const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN!);
 
 		rest.put(Routes.applicationCommands(clientId), { body: commands })
 			.then(() => log.info('Successfully registered application commands!'))
-			.catch(console.error());
+			.catch(log.error);
 	}
 }

@@ -1,6 +1,6 @@
 //dependancies
-const { Sequelize, DataTypes} = require('sequelize');
-const log = require('../logger.js');
+import { Sequelize, DataTypes } from "sequelize";
+import log from "../logger";
 
 //database
 const sequelize = new Sequelize('userDB', 'admin', 'AeroMaster64Stinks', {
@@ -13,14 +13,14 @@ const sequelize = new Sequelize('userDB', 'admin', 'AeroMaster64Stinks', {
 //table
 const userDB = sequelize.define('users', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         unique: true,
         primaryKey: true,
         allowNull: false
     },
     title: {
         type: DataTypes.STRING,
-        defaultValue: null,
+        defaultValue: "Titleless",
         allowNull: true,
     },
     birthday: {
@@ -30,12 +30,12 @@ const userDB = sequelize.define('users', {
     },
     color: {
         type: DataTypes.STRING,
-        defaultValue: null,
+        defaultValue: "N/A",
         allowNull: true
     },
     colorRoleId: {
         type: DataTypes.STRING,
-        defaultValue: null,
+        defaultValue: "N/A",
         allowNull: true
     }
 });
@@ -48,7 +48,7 @@ module.exports = {
         await userDB.sync().then(() => log.info("User database(userDb) has been synced!"));
     },
 
-    async create(id){
+    async create(id: string){
         //check if the user exists
         const user = await userDB.findOne({where: {id: id}});
 
@@ -60,17 +60,13 @@ module.exports = {
         //create the new user
         await userDB.create({
             id: id,
-            title: null,
-            birthday: null,
-            color: null,
-            colorRoleId: null
         }).then(() => log.info(`User-${id} was added to userDb.`));
 
         //return
         return 0;
     },
 
-    async edit(id, newTitle, newBirthday, newColor, newColorRoleId){
+    async edit(id: string, newTitle: string, newBirthday: any, newColor: string, newColorRoleId: string){
         //find the user
         const user = await userDB.findOne({where: {id: id}});
 
@@ -108,7 +104,7 @@ module.exports = {
         return 0;
     },
 
-    async read(id){
+    async read(id: string){
         //find the user
         const user = await userDB.findOne({where: {id: id}});
 
@@ -123,7 +119,7 @@ module.exports = {
         return user;
     },
 
-    async delete(id){
+    async delete(id: string){
         //find the user
         const user = await userDB.findOne({where: {id: id}});
 
@@ -138,7 +134,7 @@ module.exports = {
         return 0;
     },
 
-    async getTitle(id){
+    async getTitle(id: string){
         //find the user
         const user = await userDB.findOne({where: {id: id}});
 
@@ -149,10 +145,7 @@ module.exports = {
         }
 
         //get their title
-        var title = user.title;
-
-        //if they don't have a title, get a placeholder title
-        if(title === null) title = "Titleless"
+        const title:string = user.toJSON().title;
 
         //return the title
         log.info(`The userDb entry on user-${id} has been accessed and the title element was read.`);

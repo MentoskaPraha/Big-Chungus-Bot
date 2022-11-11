@@ -25,13 +25,13 @@ module.exports = {
 		if(interaction.options.getSubcommand() === 'ping'){
 			//get latency
 			const apiLatency = Math.round(interaction.client.ws.ping);
-			const botLatency = Math.floor(Math.abs(Date.now() - interaction.createdAt));
+			const RHLatency = Math.floor(Math.abs(Date.now() - interaction.createdAt));
 
 			//respond to the user
-			await interaction.editReply(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nBot Latency is around ${botLatency}ms.`);
+			await interaction.editReply(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nRequest Handler Latency is around ${RHLatency}ms.`);
 
 			//log it to the command console
-			log.info(`API Latency is around ${apiLatency}ms. Bot Latency is around ${botLatency}ms.`);
+			log.info(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nRequest Handler Latency is around ${RHLatency}ms.`);
 
 			//end command execution
 			return;
