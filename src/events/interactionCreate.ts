@@ -4,7 +4,7 @@ import commands from "../commands/_commandList";
 import log from "../logger";
 
 export = {
-	name: 'interactionCreate',
+	name: "interactionCreate",
 	async execute(interaction:Interaction) {
 		//code to run when an interaction is recieved
         //if the interaction is a command run the following code and return

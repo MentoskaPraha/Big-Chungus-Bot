@@ -9,7 +9,7 @@ import functions from "./functions/_functionList";
 log.info("Preparing for bot activation...");
 
 // Create a new client instance
-log.info('Creating new client instance...');
+log.info("Creating new client instance...");
 const client = new Client({ 
 	intents: [
 		GatewayIntentBits.Guilds, 
@@ -19,9 +19,9 @@ const client = new Client({
 });
 
 //add events to the client event collections
-log.info('Adding events to the client event collection...');
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+log.info("Adding events to the client event collection...");
+const eventsPath = path.join(__dirname, "events");
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
@@ -34,14 +34,14 @@ for (const file of eventFiles) {
 }
 
 //let the user know that the bot is almost ready
-log.info('Preforming final preparations...');
+log.info("Preforming final preparations...");
 
 //sync the database
-const userDB:any = functions.get('userDB');
+const userDB:any = functions.get("userDB");
 userDB.syncDB();
 
 //register the commands
-const registerCmds:any = functions.get('deploy-cmds');
+const registerCmds:any = functions.get("deploy-cmds");
 try {
 	registerCmds.execute();
 } catch (error) {
@@ -49,11 +49,11 @@ try {
 }
 
 // Login to Discord with your client's token
-log.info('Logging in...');
+log.info("Logging in...");
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 // When the client is ready, run this code (only once)
-client.once('ready', () => {
-	client.user!.setPresence({ activities: [{ name: 'The Big Chungus Relegion', type: ActivityType.Watching}], status: 'online' });
-	log.info('The bot is ready!');
+client.once("ready", () => {
+	client.user!.setPresence({ activities: [{ name: "The Big Chungus Relegion", type: ActivityType.Watching}], status: "online" });
+	log.info("The bot is ready!");
 });

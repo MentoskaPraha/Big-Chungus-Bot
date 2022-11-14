@@ -3,15 +3,15 @@ import { Sequelize, DataTypes } from "sequelize";
 import log from "../logger";
 
 //database
-const sequelize = new Sequelize('userDB', 'admin', 'AeroMaster64Stinks', {
-    dialect: 'sqlite',
-    host: 'localhost',
-    storage: 'volume/database/userDb.sqlite',
+const sequelize = new Sequelize("userDB", "admin", "AeroMaster64Stinks", {
+    dialect: "sqlite",
+    host: "localhost",
+    storage: "volume/database/userDb.sqlite",
     logging: false
 });
 
 //table
-const userDB = sequelize.define('users', {
+const userDB = sequelize.define("users", {
     id: {
         type: DataTypes.STRING,
         unique: true,
@@ -42,7 +42,7 @@ const userDB = sequelize.define('users', {
 
 //functions to interact with database
 module.exports = {
-    name: 'userDB',
+    name: "userDB",
     async syncDB(){
         //synchronise the database
         await userDB.sync().then(() => log.info("User database(userDb) has been synced!"));
@@ -71,7 +71,7 @@ module.exports = {
         const user = await userDB.findOne({where: {id: id}});
 
         //if they don't exist end code
-        if(user === null){
+        if(user == null){
             log.warn(`The userDb entry on user-${id} has not been found for editing.`);
             return 1;
         }
@@ -109,14 +109,14 @@ module.exports = {
         const user = await userDB.findOne({where: {id: id}});
 
         //make sure they exist
-        if(user === null){
+        if(user == null){
             log.warn(`The userDb entry on user-${id} has not been found for accessing.`);
             return 1;
         }
 
         //return
         log.info(`The userDb entry on user-${id} has been accessed.`);
-        return user;
+        return user.toJSON;
     },
 
     async delete(id: string){
@@ -124,7 +124,7 @@ module.exports = {
         const user = await userDB.findOne({where: {id: id}});
 
         //make sure they exist
-        if(user === null){
+        if(user == null){
             log.warn(`The userDb entry on user-${id} has not been found for deletion.`);
             return 1;
         }

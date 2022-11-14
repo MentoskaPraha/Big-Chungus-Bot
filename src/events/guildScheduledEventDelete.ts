@@ -1,10 +1,10 @@
 //libraries
 import { GuildScheduledEvent, TextChannel } from "discord.js";
-const { eventAnnouncementChannelId } = require('../configuration/otherIDs.json');
+const { eventAnnouncementChannelId } = require("../configuration/otherIDs.json");
 import log from "../logger";
 
 export = {
-    name: 'guildScheduledEventDelete',
+    name: "guildScheduledEventDelete",
 
     //run the following code when a Guild Scheduled Event is edited
     async execute(event:GuildScheduledEvent){
