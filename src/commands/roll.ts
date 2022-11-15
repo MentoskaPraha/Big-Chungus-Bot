@@ -1,10 +1,10 @@
 //libraries
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+import { SlashCommandBuilder, EmbedBuilder, CommandInteraction } from "discord.js";
+import log from "../logger";
 const{ diceRollerEmbedColor } = require('../configuration/embedColors.json');
-const log = require('../logger.js');
 
 //command information
-module.exports = {
+export = {
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName('roll')
@@ -26,13 +26,16 @@ module.exports = {
             ),
 
     //on command run execute the following
-    async execute(interaction){
+    async execute(interaction:CommandInteraction){
+        //check if the command is a slash command
+		if(!interaction.isChatInputCommand()) return;
+
         //get values from options
-        const diceSize = interaction.options.getInteger('dice_size');
-        diceNumbers = interaction.options.getInteger('number_of_dice');
+        const diceSize = interaction.options.getInteger('dice_size') as number;
+        let diceNumbers = interaction.options.getInteger('number_of_dice');
 
         //make sure there is no null
-        if(diceNumbers === null){
+        if(diceNumbers == null){
             diceNumbers = 1;
         }
 

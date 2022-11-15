@@ -4,7 +4,7 @@ import functions from "../functions/_functionList";
 import log from "../logger";
 
 //command information
-module.exports = {
+export = {
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName("database")
