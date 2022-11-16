@@ -4,16 +4,16 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 //create variables
-let functions = new Collection;
+let items = new Collection;
 const itemPath = path.join(__dirname);
-const itemFiles = fs.readdirSync(itemPath).filter(file => file.endsWith(".ts") && !file.startsWith("_"));
+const itemFiles = fs.readdirSync(itemPath).filter(file => file.endsWith(".js") && !file.startsWith("_"));
 
-//get the commands
+//get the items
 for (const file of itemFiles) {
 	const filePath = path.join(itemPath, file);
-	const command = require(filePath);
-	functions.set(command.data.name, command);
+	const item = require(filePath);
+	items.set(item.name, item);
 }
 
-//export command list
-export = functions;
+//export item list
+export = items;

@@ -12,7 +12,7 @@ if (!fs.existsSync(dir)) {
 //get streams
 const createSonicBoom = (dest: string) => pino.destination({dest: dest, append: true, sync: true});
 const streams = [
-    {stream: createSonicBoom("./volume/logs/Session_" + Date.now() + ".log")},
+    {stream: createSonicBoom(dir + "/" + Date.now() + ".log")},
     {stream: pretty({colorize: true, sync: true})}
 ];
 

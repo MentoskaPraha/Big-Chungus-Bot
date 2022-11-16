@@ -5,6 +5,8 @@ import log from "../logger";
 
 //command information
 export = {
+    name: "color",
+
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName("color")

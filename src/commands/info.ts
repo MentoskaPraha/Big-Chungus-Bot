@@ -6,6 +6,8 @@ const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/e
 
 //command information
 export = {
+	name: "info",
+
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName("info")

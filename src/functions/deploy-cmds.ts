@@ -14,7 +14,7 @@ export = {
 		//prep to get the commands
 		const commands = [];
 		const commandsPath = path.resolve(__dirname, "../commands");
-		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".ts"));
+		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js") && !file.startsWith("_"));
 
 		//tell the user the commands are being retrieved
 		log.info("Retrieving application commands from commands folder...");

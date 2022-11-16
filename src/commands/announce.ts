@@ -7,6 +7,8 @@ const { announcementEmbedColor } = require("../configuration/embedColors.json");
 
 //command information
 export = {
+    name: "announce",
+
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName("announce")

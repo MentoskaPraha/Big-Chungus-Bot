@@ -1,13 +1,15 @@
 //libraries
-import { GuildScheduledEvent, GuildScheduledEventStatus, TextChannel } from "discord.js";
+import { GuildScheduledEvent, GuildScheduledEventStatus, TextChannel, Events } from "discord.js";
 import log from "../logger";
 const { eventAnnouncementChannelId } = require("../configuration/otherIDs.json");
 
 export = {
-    name: "guildScheduledEventUpdate",
+    name: Events.GuildScheduledEventUpdate,
+	once: false,
 
     //run the following code when a Guild Scheduled Event is edited
     async execute(oldEvent:GuildScheduledEvent, newEvent:GuildScheduledEvent){
+        
         //check if the event went from scheduled to active
         if(oldEvent.status == GuildScheduledEventStatus.Scheduled && newEvent.status === GuildScheduledEventStatus.Active){
             //create a message that will be sent

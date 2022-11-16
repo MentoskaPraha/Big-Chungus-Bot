@@ -6,6 +6,8 @@ const { pollEmbedColor } = require('../configuration/embedColors.json');
 
 //command information
 export = {
+    name: "poll",
+
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName("poll")

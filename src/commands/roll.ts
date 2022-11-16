@@ -5,6 +5,8 @@ const{ diceRollerEmbedColor } = require('../configuration/embedColors.json');
 
 //command information
 export = {
+    name: "roll",
+
 	//build the command
 	data: new SlashCommandBuilder()
 		.setName('roll')

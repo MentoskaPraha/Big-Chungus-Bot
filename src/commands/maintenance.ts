@@ -5,6 +5,8 @@ const { maintianerId } = require("../configuration/otherIDs.json");
 
 //command information
 export = {
+	name: "maintenance",
+
 	//build command
 	data: new SlashCommandBuilder()
 		.setName("maintenance")

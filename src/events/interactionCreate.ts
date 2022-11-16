@@ -1,12 +1,14 @@
 //libraries
-import { Interaction } from "discord.js";
+import { Interaction, Events } from "discord.js";
 import commands from "../commands/_commandList";
 import log from "../logger";
 
 export = {
-	name: "interactionCreate",
+	name: Events.InteractionCreate,
+	once: false,
+
+	//code to run when an interaction is recieved
 	async execute(interaction:Interaction) {
-		//code to run when an interaction is recieved
         //if the interaction is a command run the following code and return
 	    if (interaction.isCommand()){
 	        //get the command name
@@ -24,7 +26,6 @@ export = {
                 await interaction.deferReply();
 		        await command.execute(interaction);
 	        } catch (error) {
-		        console.error(error);
 		        await interaction.editReply("There was an error while executing this command.");
                 log.error(`${interaction.user.tag} experienced an error while running a command.`);
 	        }
