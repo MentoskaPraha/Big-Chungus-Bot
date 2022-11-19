@@ -2,6 +2,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { Client, GatewayIntentBits, ActivityType } from "discord.js";
+import { userDBFuncs } from "./types";
 import log from "./logger";
 import functions from "./functions/_functionList";
 

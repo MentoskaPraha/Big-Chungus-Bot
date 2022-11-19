@@ -1,5 +1,6 @@
 //libraries
 import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, User, Guild, ColorResolvable } from "discord.js";
+import { userDBEntry, userDBFuncs } from "../types";
 import functions from "../functions/_functionList";
 import log from "../logger";
 const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/embedColors.json');
@@ -7,6 +8,7 @@ const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/e
 //command information
 export = {
 	name: "info",
+	ephemeral: false,
 
 	//build the command
 	data: new SlashCommandBuilder()

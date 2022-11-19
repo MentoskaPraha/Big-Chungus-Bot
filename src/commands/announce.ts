@@ -1,5 +1,6 @@
 //libraries
 import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, Role, GuildMemberRoleManager, ChannelType, GuildTextBasedChannel } from "discord.js";
+import { userDBFuncs } from "../types";
 import log from "../logger";
 import functions from "../functions/_functionList";
 const { announcerRoleId } = require("../configuration/otherIDs.json");
@@ -8,6 +9,7 @@ const { announcementEmbedColor } = require("../configuration/embedColors.json");
 //command information
 export = {
     name: "announce",
+    ephemeral: true,
 
 	//build the command
 	data: new SlashCommandBuilder()

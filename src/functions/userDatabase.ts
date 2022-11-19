@@ -1,5 +1,6 @@
 //dependancies
 import { Sequelize, DataTypes } from "sequelize";
+import { userDBEntry } from "../types";
 import log from "../logger";
 
 //database

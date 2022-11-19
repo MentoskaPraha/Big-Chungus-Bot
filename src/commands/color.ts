@@ -1,11 +1,13 @@
 //libraries
-import { Collection, ColorResolvable, CommandInteraction, Role, SlashCommandBuilder } from "discord.js";
+import { Collection, ColorResolvable, CommandInteraction, PermissionResolvable, Role, SlashCommandBuilder } from "discord.js";
+import { userDBEntry, userDBFuncs } from "../types";
 import functions from "../functions/_functionList";
 import log from "../logger";
 
 //command information
 export = {
     name: "color",
+    ephemeral: true,
 
 	//build the command
 	data: new SlashCommandBuilder()
@@ -87,7 +89,8 @@ export = {
                 await interaction.guild?.roles.create({
                     name: `${interaction.user.username} : Color`,
                     color: color as ColorResolvable,
-                    position: rolePos
+                    position: rolePos,
+                    permissions: "0" as PermissionResolvable
                 }).then(async role => {
                     const user = await interaction.guild?.members.fetch(interaction.user.id);
                     await user?.roles.add(role);
@@ -126,7 +129,8 @@ export = {
                 await interaction.guild?.roles.create({
                     name: `${interaction.user.username} : Color`,
                     color: dbEntry.color as ColorResolvable,
-                    position: rolePos
+                    position: rolePos,
+                    permissions: "0" as PermissionResolvable
                 }).then(async role => {
                     const user = await interaction.guild?.members.fetch(interaction.user.id);
                     await user?.roles.add(role);

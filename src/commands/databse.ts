@@ -1,11 +1,13 @@
 //libraries
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { userDBEntry, userDBFuncs } from "../types";
 import functions from "../functions/_functionList";
 import log from "../logger";
 
 //command information
 export = {
     name: "database",
+    ephemeral: true,
 
 	//build the command
 	data: new SlashCommandBuilder()
@@ -31,13 +33,13 @@ export = {
 		if(!interaction.isChatInputCommand()) return;
 
         //get the database entry on the user
-        const userDB:any = functions.get("userDB");
-        const dbEntry = await userDB.read(interaction.user.id);
+        const userDB = functions.get("userDB") as userDBFuncs;
+        const potentialDBEntry = await userDB.read(interaction.user.id);
 
         switch(interaction.options.getSubcommand()){
             case "create":{
                 //create the users database entry
-			    const success = userDB.create(interaction.user.id);
+			    const success = await userDB.create(interaction.user.id);
 
                 //tell the user if the action was successful or not
                 if(success == 1){
@@ -47,11 +49,23 @@ export = {
                 }
 
 			    //end command execution
+                log.info(`${interaction.user.id} has created their database entry.`);
 			    break;
             }
 
             case "view":{
-                
+                //check if user has a DB entry
+                if(potentialDBEntry == 1){
+                    await interaction.editReply("You do not have a database entry!");
+                    log.warn(`${interaction.user.tag} tried to view his database entry, but he didn't have one.`);
+                    break
+                }
+                const dbEntry = potentialDBEntry as userDBEntry;
+
+                //give user his DB entry info
+                await interaction.editReply(`**Your Database Information**\nId: ${dbEntry.id}\nTitle: ${dbEntry.title}\nColor: ${dbEntry.color}\nColor Role Id: ${dbEntry.colorRoleId}`);
+                log.info(`${interaction.user.tag} viewed his database entry.`);
+                break;
             }
 
             case "delete":{
@@ -66,6 +80,7 @@ export = {
                 } 
 
 			    //end command execution
+                log.info(`${interaction.user.id} has deleted their database entry.`);
 			    break;
             }
         }

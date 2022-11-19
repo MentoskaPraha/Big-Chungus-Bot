@@ -2,10 +2,12 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import functions from "../functions/_functionList";
 import log from "../logger";
+import { userDBFuncs } from "../types";
 
 //command information
 export = {
     name: "title",
+    ephemeral: true,
 
     //build the command
     data: new SlashCommandBuilder()

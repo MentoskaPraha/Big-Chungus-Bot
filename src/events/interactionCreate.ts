@@ -1,5 +1,6 @@
 //libraries
 import { Interaction, Events } from "discord.js";
+import { commandObject } from "../types";
 import commands from "../commands/_commandList";
 import log from "../logger";
 
@@ -12,7 +13,7 @@ export = {
         //if the interaction is a command run the following code and return
 	    if (interaction.isCommand()){
 	        //get the command name
-	        const command:any = commands.get(interaction.commandName);
+	        const command = commands.get(interaction.commandName) as commandObject;
 
 	        //if the command does not exist return
 	        if (!command){
@@ -23,7 +24,7 @@ export = {
 
             //run the commands code
 	        try {
-                await interaction.deferReply();
+                await interaction.deferReply({ephemeral: command.ephemeral});
 		        await command.execute(interaction);
 	        } catch (error) {
 		        await interaction.editReply("There was an error while executing this command.");

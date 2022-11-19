@@ -6,6 +6,7 @@ const { maintianerId } = require("../configuration/config.json");
 //command information
 export = {
 	name: "maintenance",
+	ephemeral: false,
 
 	//build command
 	data: new SlashCommandBuilder()
