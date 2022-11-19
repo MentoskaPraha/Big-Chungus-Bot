@@ -1,5 +1,5 @@
 //libraries
-import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, User, Guild } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, User, Guild, ColorResolvable } from "discord.js";
 import functions from "../functions/_functionList";
 import log from "../logger";
 const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/embedColors.json');
@@ -39,19 +39,22 @@ export = {
 				const user = interaction.options.getUser("user") as User;
 
 				//userDB entry on user
-				const userDB:any = functions.get("userDB");
-				const userEntry = await userDB.read(user.id);
+				const userDB = functions.get("userDB") as userDBFuncs;
+				const potentialUserEntry = await userDB.read(user.id);
+				let userEntry = null;
+				if (potentialUserEntry != 1) userEntry = potentialUserEntry as userDBEntry;
 
 				//create information
-				const userInfo = `Username: ${user.username}\nTag: ${user.tag}\nUser ID: ${user.id}\nIs User a Bot: ${user.bot}\nUser joined Discord: <t:${Math.floor(user.createdTimestamp / 1000)}:D>\nTitle: ${userEntry.title}`;
+				const userInfo = `Username: ${user.username}\nTag: ${user.tag}\nUser ID: ${user.id}\nIs User a Bot: ${user.bot}\nUser joined Discord: <t:${Math.floor(user.createdTimestamp / 1000)}:D>\nTitle: ${await userDB.getTitle(user.id)}`;
 
 				//get a valid color
-				let color = userEntry.color;
+				let color:string = "N/A";
+				if(userEntry != null) color = userEntry.color;
 				if(color == "N/A") color = userInfoEmbedColor;
 				
 				//create response message
 				const embed = new EmbedBuilder()
-					.setColor(color)
+					.setColor(color as ColorResolvable)
 					.setDescription(userInfo)
 					.setTitle(`Information about ${user.username}`)
 					.setThumbnail(user.displayAvatarURL());

@@ -40,15 +40,16 @@ export = {
 		if(!interaction.isChatInputCommand()) return;
 
         //get the database entry on the user
-        const userDB:any = functions.get("userDB");
-        const dbEntry = await userDB.read(interaction.user.id);
+        const userDB = functions.get("userDB") as userDBFuncs;
+        const potentialDBEntry = await userDB.read(interaction.user.id);
 
         //if the user doesn't exist in the database end cmd execution
-        if(dbEntry == 1){
+        if(potentialDBEntry == 1){
             await interaction.editReply("Your database entry has not been found, please create one.");
             log.warn(`${interaction.user.tag} did not have a database entry and attempted to get a custom color.`);
             return;
         }
+        const dbEntry = potentialDBEntry as userDBEntry;
 
         //get the subcommand that was run
         switch(interaction.options.getSubcommand()){
@@ -80,7 +81,7 @@ export = {
                 }
 
                 //get the position of the role
-                const rolePos = roles.find(role => role.name == "Big Chungus")?.position as number - 1;
+                const rolePos = roles.find(role => role.name == interaction.client.user.username)?.position as number;
 
                 //create the role and assign it to the user
                 await interaction.guild?.roles.create({
@@ -92,7 +93,7 @@ export = {
                     await user?.roles.add(role);
 
                     //save the role id and color to the database
-                    await userDB.edit(interaction.user.id, null, null, color, role.id);
+                    await userDB.edit(interaction.user.id, null, color, role.id);
                 });
 
                 //tell the user the action was successful
@@ -105,12 +106,13 @@ export = {
 
             case "view":{
                 await interaction.editReply(`The HEX-CODE of your color is ${dbEntry.color}.`);
-                log.info(`${interaction.user.tag} `);
+                log.info(`${interaction.user.tag} has viewed their color.`);
+                break;
             }
 
             case "refresh":{
                 //check if the user does have a color
-                if(dbEntry.color === null){
+                if(dbEntry.color == "N/A"){
                     await interaction.editReply("You do not have a custom color on record. Use the color update command to make it.");
                     log.warn(`${interaction.user.tag} attempted to refresh their custom color, but they did not have one.`);
                     break;
@@ -118,23 +120,23 @@ export = {
 
                 //get the position of the role
                 const roles = await interaction.guild?.roles.fetch() as Collection<string, Role>;
-                const rolePos = roles.find(role => role.name == "Big Chungus")?.position as number - 1;
+                const rolePos = roles.find(role => role.name == interaction.client.user.username)?.position as number;
 
                 //re-create and re-assign the color role to the user
                 await interaction.guild?.roles.create({
                     name: `${interaction.user.username} : Color`,
-                    color: dbEntry.color,
+                    color: dbEntry.color as ColorResolvable,
                     position: rolePos
                 }).then(async role => {
                     const user = await interaction.guild?.members.fetch(interaction.user.id);
                     await user?.roles.add(role);
 
                     //save the role id and color to the database
-                    await userDB.edit(interaction.user.id, null, null, null, role.id);
+                    await userDB.edit(interaction.user.id, null, null, role.id);
                 });
 
                 //tell the user the action was successful
-                interaction.editReply("Your color was successfully refreshed!");
+                await interaction.editReply("Your color was successfully refreshed!");
                 log.info(`${interaction.user.tag} has successfully refreshed their color.`);
 
                 //end code
@@ -153,7 +155,7 @@ export = {
                 await interaction.guild?.roles.delete(dbEntry.colorRoleId);
 
                 //update the database
-                await userDB.edit(interaction.user.id, null, null, null, "N/A");
+                await userDB.edit(interaction.user.id, null, null, "N/A");
 
                 //tell the user the action was successful
                 await interaction.editReply("Your color was successfully deleted!");

@@ -1,5 +1,5 @@
 //libraries
-import { Events, GuildScheduledEvent, TextChannel } from "discord.js";
+import { ChannelType, Events, GuildScheduledEvent, GuildTextBasedChannel } from "discord.js";
 const { eventAnnouncementChannelId } = require("../configuration/otherIDs.json");
 import log from "../logger";
 
@@ -13,14 +13,12 @@ export = {
         const message = `**An Event has been canceled!**\nSorry for any inconveniences caused!\n${event.url}`;
 
         //get the channel the message will be sent into
-        const channel = event.guild?.channels.cache.find(channel => channel.id == eventAnnouncementChannelId) as TextChannel;
+        const channel = event.guild?.channels.cache.find(channel => channel.id == eventAnnouncementChannelId) as GuildTextBasedChannel;
 
         //send the message into that channel
-        channel.send({content: message}).then((sent:any) => {
-            try {
+        channel.send({content: message}).then(sent => {
+            if(channel.type == ChannelType.GuildAnnouncement){
                 sent.crosspost();
-            } catch (error) {
-                log.warn("Announcement was sent into non-announcement channel. Crosspost failed.")
             }
         });
 

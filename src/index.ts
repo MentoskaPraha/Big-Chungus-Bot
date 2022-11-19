@@ -37,7 +37,7 @@ for (const file of eventFiles) {
 log.info("Preforming final preparations...");
 
 //sync the database
-const userDB:any = functions.get("userDB");
+const userDB = functions.get("userDB") as userDBFuncs;
 userDB.syncDB();
 
 //register the commands

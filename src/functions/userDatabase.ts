@@ -23,11 +23,6 @@ const userDB = sequelize.define("users", {
         defaultValue: "Titleless",
         allowNull: true,
     },
-    birthday: {
-        type: DataTypes.DATEONLY,
-        defaultValue: null,
-        allowNull: true
-    },
     color: {
         type: DataTypes.STRING,
         defaultValue: "N/A",
@@ -41,7 +36,7 @@ const userDB = sequelize.define("users", {
 });
 
 //functions to interact with database
-module.exports = {
+export = {
     name: "userDB",
     async syncDB(){
         //synchronise the database
@@ -66,7 +61,7 @@ module.exports = {
         return 0;
     },
 
-    async edit(id: string, newTitle: string, newBirthday: any, newColor: string, newColorRoleId: string){
+    async edit(id: string, newTitle: string, newColor: string, newColorRoleId: string){
         //find the user
         const user = await userDB.findOne({where: {id: id}});
 
@@ -80,12 +75,6 @@ module.exports = {
         if(newTitle != null){
             await userDB.update({title: newTitle}, {where: {id: id}});
             log.info(`The title part of the userDb entry on user-${id} has been updated.`);
-        }
-
-        //update the birthday
-        if(newBirthday != null){
-            await userDB.update({birthday: newBirthday}, {where: {id: id}});
-            log.info(`The birthday part of the userDb entry on user-${id} has been updated.`);
         }
 
         //update the color
@@ -114,9 +103,17 @@ module.exports = {
             return 1;
         }
 
+        //conver to userDBEntry object
+        const userEntry:userDBEntry = {
+            id: user.dataValues.id,
+            title: user.dataValues.title,
+            color: user.dataValues.color,
+            colorRoleId: user.dataValues.colorRoleId
+        };
+
         //return
         log.info(`The userDb entry on user-${id} has been accessed.`);
-        return user.toJSON;
+        return userEntry;
     },
 
     async delete(id: string){
@@ -139,7 +136,7 @@ module.exports = {
         const user = await userDB.findOne({where: {id: id}});
 
         //make sure they exist, if not return a placeholder title
-        if(user === null){
+        if(user == null){
             log.warn(`The userDb entry on user-${id} has not been found for accessing.`);
             return "Titleless";
         }

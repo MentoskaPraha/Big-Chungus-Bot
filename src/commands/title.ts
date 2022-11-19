@@ -37,7 +37,7 @@ export = {
 		if(!interaction.isChatInputCommand()) return;
 
         //get userDb interface
-        const userDB:any = functions.get("userDB");
+        const userDB = functions.get("userDB") as userDBFuncs;
 
         switch(interaction.options.getSubcommand()){
             case "update": {
@@ -45,7 +45,7 @@ export = {
                 const newTitle = interaction.options.getString('new_title');
 
                 //update the title in the userDB
-                await userDB.edit(interaction.user.id, newTitle, null, null, null);
+                await userDB.edit(interaction.user.id, newTitle, null, null);
 
                 //respond to the user
                 await interaction.editReply('Your title was successfully changed!');
@@ -57,7 +57,7 @@ export = {
 
             case "view":{
                 //give user their title
-                await interaction.editReply(`Your title is: ${userDB.getTitle(interaction.user.id)}.`);
+                await interaction.editReply(`Your title is: ${await userDB.getTitle(interaction.user.id)}`);
                 log.info(`${interaction.user.tag} has requested their title.`);
 
                 //end code
@@ -66,7 +66,7 @@ export = {
 
             case "remove":{
                 //update the title in the userDB
-                await userDB.edit(interaction.user.id, "Titleless", null, null, null);
+                await userDB.edit(interaction.user.id, "Titleless", null, null);
 
                 //respond to the user
                 await interaction.editReply("Your title was successfully removed!");

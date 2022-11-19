@@ -1,7 +1,7 @@
 //libraries
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import log from "../logger";
-const { maintianerId } = require("../configuration/otherIDs.json");
+const { maintianerId } = require("../configuration/config.json");
 
 //command information
 export = {
@@ -38,7 +38,7 @@ export = {
 				await interaction.editReply(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nRequest Handler Latency is around ${RHLatency}ms.`);
 
 				//log it to the command console
-				log.info(`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nRequest Handler Latency is around ${RHLatency}ms.`);
+				log.info(`Current Latency: API Latency is around ${apiLatency}ms. Request Handler Latency is around ${RHLatency}ms.`);
 
 				break;
 			}

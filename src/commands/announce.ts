@@ -1,5 +1,5 @@
 //libraries
-import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, TextChannel, Role, GuildMemberRoleManager } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, Role, GuildMemberRoleManager, ChannelType, GuildTextBasedChannel } from "discord.js";
 import log from "../logger";
 import functions from "../functions/_functionList";
 const { announcerRoleId } = require("../configuration/otherIDs.json");
@@ -46,7 +46,7 @@ export = {
 		if(!interaction.isChatInputCommand()) return;
 
         //check if user has permissions to make the announcement
-        if ((interaction.member?.roles as GuildMemberRoleManager).cache.some((role:Role) => role.id === announcerRoleId)){
+        if ((interaction.member?.roles as GuildMemberRoleManager).cache.some((role:Role) => role.id == announcerRoleId)){
             //give error if user does not have permissions
             await interaction.editReply("You do not have permissions to run this command.");
             log.warn(`${interaction.user.tag} attempted to run "/announce".`);
@@ -58,11 +58,11 @@ export = {
         const announcement = interaction.options.getString("announcement");
         const crosspost = interaction.options.getBoolean("crosspost");
         const ping = interaction.options.getMentionable("ping");
-        const channel = interaction.options.getChannel("channel") as TextChannel;
+        const channel = interaction.options.getChannel("channel") as GuildTextBasedChannel;
             
         //make the announcement
         //if user didn't specify title set default title
-        if (title === null) title = "New Announcement!";
+        if (title == null) title = "New Announcement!";
 
         //create the embed
         const embed = new EmbedBuilder()
@@ -71,10 +71,10 @@ export = {
             .setDescription(announcement);
         
         //create the message depending on the ping state
-        const userTitle:any = functions.get("userDB");
+        const userTitle = functions.get("userDB") as userDBFuncs;
 
         let message = null;
-        if(ping !== null){
+        if(ping != null){
             message = `New Announcement by ${await userTitle.getTitle(interaction.user.id)} ${interaction.user.username}, ${ping}.`;
         } else{
             message = `New Announcement by ${await userTitle.getTitle(interaction.user.id)} ${interaction.user.username}.`;
@@ -82,12 +82,8 @@ export = {
 
         //send the message to the channel
         channel.send({content: message, embeds: [embed]}).then(sent => {
-            if(crosspost){
-                try {
-                    sent.crosspost();
-                } catch (error) {
-                    log.warn("Announcement was sent into non-announcement channel. Crosspost failed.")
-                }
+            if(channel.type == ChannelType.GuildAnnouncement && crosspost){
+                sent.crosspost();
             }
         });
             
