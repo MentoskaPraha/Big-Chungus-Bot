@@ -25,3 +25,9 @@ export interface commandObject{
     ephemeral:boolean
     execute(interaction:CommandInteraction):Promise<void>
 }
+
+//function list interfaces
+export interface funcObject{
+    name:string
+    execute():Promise<void>
+}

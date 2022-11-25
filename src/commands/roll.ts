@@ -1,7 +1,7 @@
 //libraries
 import { SlashCommandBuilder, EmbedBuilder, CommandInteraction } from "discord.js";
 import log from "../logger";
-const{ diceRollerEmbedColor } = require('../configuration/embedColors.json');
+const{ diceRollerEmbedColor } = require("../configuration/embedColors.json");
 
 //command information
 export = {
@@ -10,19 +10,19 @@ export = {
 
 	//build the command
 	data: new SlashCommandBuilder()
-		.setName('roll')
-		.setDescription('Rolls a dice of any size.')
+		.setName("roll")
+		.setDescription("Rolls a dice of any size.")
         .setDMPermission(true)
         .addIntegerOption(option =>
-            option.setName('dice_size')
-                .setDescription('The size of the dice. Can be between 2 and 100.')
+            option.setName("dice_size")
+                .setDescription("The size of the dice. Can be between 2 and 100.")
                 .setRequired(true)
                 .setMinValue(2)
                 .setMaxValue(100)
             )
         .addIntegerOption(option =>
-            option.setName('number_of_dice')
-                .setDescription('Change the number of dice you want to roll, 1 by default, with a miximum of 15.')
+            option.setName("number_of_dice")
+                .setDescription("Change the number of dice you want to roll, 1 by default, with a miximum of 15.")
                 .setRequired(false)
                 .setMinValue(1)
                 .setMaxValue(15)

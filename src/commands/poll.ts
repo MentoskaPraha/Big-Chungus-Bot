@@ -2,7 +2,7 @@
 import { SlashCommandBuilder, EmbedBuilder, CommandInteraction } from "discord.js";
 import functions from "../functions/_functionList";
 import log from "../logger";
-const { pollEmbedColor } = require('../configuration/embedColors.json');
+const { pollEmbedColor } = require("../configuration/embedColors.json");
 
 //command information
 export = {

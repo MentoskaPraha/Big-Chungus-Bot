@@ -3,7 +3,7 @@ import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, User, Guild, Col
 import { userDBEntry, userDBFuncs } from "../types";
 import functions from "../functions/_functionList";
 import log from "../logger";
-const { userInfoEmbedColor, serverInfoEmbedColor } = require('../configuration/embedColors.json');
+const { userInfoEmbedColor, serverInfoEmbedColor } = require("../configuration/embedColors.json");
 
 //command information
 export = {
