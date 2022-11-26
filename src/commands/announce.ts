@@ -48,7 +48,7 @@ export = {
 		if(!interaction.isChatInputCommand()) return;
 
         //check if user has permissions to make the announcement
-        if ((interaction.member?.roles as GuildMemberRoleManager).cache.some((role:Role) => role.id == announcerRoleId)){
+        if (!(interaction.member?.roles as GuildMemberRoleManager).cache.some((role:Role) => role.id == announcerRoleId)){
             //give error if user does not have permissions
             await interaction.editReply("You do not have permissions to run this command.");
             log.warn(`${interaction.user.tag} attempted to run "/announce".`);
