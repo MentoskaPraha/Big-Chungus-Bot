@@ -1,6 +1,6 @@
 {
   "name": "big-chungus-bot",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "It's a Big Chungus themed Discord bot, what more do you want?",
   "main": "./src/index.ts",
   "scripts": {
