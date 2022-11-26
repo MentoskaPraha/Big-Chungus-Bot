@@ -26,8 +26,15 @@ export interface commandObject{
     execute(interaction:CommandInteraction):Promise<void>
 }
 
-//function list interfaces
+//function interfaces
 export interface funcObject{
     name:string
-    execute():Promise<void>
+    execute(...args:any):Promise<void>
+}
+
+//event interfaces
+export interface eventObject{
+    name: string,
+    once: boolean,
+    execute(...args:any): Promise<void>
 }

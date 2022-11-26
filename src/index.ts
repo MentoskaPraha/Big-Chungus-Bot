@@ -2,7 +2,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { Client, GatewayIntentBits, ActivityType } from "discord.js";
-import { funcObject, userDBFuncs } from "./types";
+import { eventObject, funcObject, userDBFuncs } from "./types";
 import log from "./logger";
 import functions from "./functions/_functionList";
 
@@ -14,8 +14,7 @@ log.info("Creating new client instance...");
 const client = new Client({ 
 	intents: [
 		GatewayIntentBits.Guilds, 
-		GatewayIntentBits.GuildMessages, 
-		GatewayIntentBits.GuildScheduledEvents
+		GatewayIntentBits.GuildMessages
 	]
 });
 
@@ -26,7 +25,7 @@ const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
-	const event = require(filePath);
+	const event = require(filePath) as eventObject;
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
 	} else {
