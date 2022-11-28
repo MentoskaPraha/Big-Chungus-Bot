@@ -40,68 +40,62 @@ const userDB = sequelize.define("users", {
 export = {
     name: "userDB",
     async syncDB(){
-        //synchronise the database
-        await userDB.sync().then(() => log.info("User database(userDb) has been synced!"));
+        await userDB.sync().then(() => log.info("UserDB has been synced!"));
     },
 
     async create(id: string){
         //check if the user exists
         const user = await userDB.findOne({where: {id: id}});
-
         if(user != null){ 
-            log.warn(`User-${id} already exists in userDb.`);
-            return 1;
+            log.warn(`User-${id} already exists in userDB.`);
+            return false;
         }
 
         //create the new user
         await userDB.create({
             id: id,
-        }).then(() => log.info(`User-${id} was added to userDb.`));
+        }).then(() => log.info(`User-${id} was added to userDB.`));
 
-        //return
-        return 0;
+        return true;
     },
 
     async edit(id: string, newTitle: string, newColor: string, newColorRoleId: string){
-        //find the user
         const user = await userDB.findOne({where: {id: id}});
 
-        //if they don't exist end code
+        //check if the user exists
         if(user == null){
-            log.warn(`The userDb entry on user-${id} has not been found for editing.`);
-            return 1;
+            log.warn(`User-${id} does not exist in userDB (for editing).`);
+            return false;
         }
 
         //update the title
         if(newTitle != null){
             await userDB.update({title: newTitle}, {where: {id: id}});
-            log.info(`The title part of the userDb entry on user-${id} has been updated.`);
+            log.info(`Updated title for user-${id} in userDB.`);
         }
 
         //update the color
         if(newColor != null){
             await userDB.update({color: newColor}, {where: {id: id}});
-            log.info(`The color part of the userDb entry on user-${id} has been updated.`);
+            log.info(`Updated color for user-${id} in userDB.`);
         }
 
         //update the color role id
         if(newColorRoleId != null){
             await userDB.update({colorRoleId: newColorRoleId}, {where: {id: id}});
-            log.info(`The colorRoleId part of the userDb entry on user-${id} has been updated.`);
+            log.info(`Updated colorRoleId for user-${id} in userDB.`);
         }
 
-        //return success
-        return 0;
+        return true;
     },
 
     async read(id: string){
-        //find the user
         const user = await userDB.findOne({where: {id: id}});
 
-        //make sure they exist
+        //check if the user exists
         if(user == null){
-            log.warn(`The userDb entry on user-${id} has not been found for accessing.`);
-            return 1;
+            log.warn(`User-${id} does not exist in userDB (for reading).`);
+            return false;
         }
 
         //conver to userDBEntry object
@@ -112,40 +106,38 @@ export = {
             colorRoleId: user.dataValues.colorRoleId
         };
 
-        //return
-        log.info(`The userDb entry on user-${id} has been accessed.`);
+        log.info(`User-${id} in userDB was read.`);
+
         return userEntry;
     },
 
     async delete(id: string){
-        //find the user
         const user = await userDB.findOne({where: {id: id}});
 
-        //make sure they exist
+        //check if the user exists
         if(user == null){
-            log.warn(`The userDb entry on user-${id} has not been found for deletion.`);
-            return 1;
+            log.warn(`User-${id} does not exist in userDB (for deleting).`);
+            return false;
         }
 
-        //delete the user and return success
-        await userDB.destroy({where: {id: id}}).then(() => log.info(`User-${id} was deleted from the userDb.`));
-        return 0;
+        //delete the user
+        await userDB.destroy({where: {id: id}}).then(() => log.info(`User-${id} was deleted from userDB.`));
+
+        return true;
     },
 
     async getTitle(id: string){
-        //find the user
         const user = await userDB.findOne({where: {id: id}});
 
-        //make sure they exist, if not return a placeholder title
+        //check if the user exists
         if(user == null){
-            log.warn(`The userDb entry on user-${id} has not been found for accessing.`);
+            log.warn(`User-${id} does not exist in userDB (for reading title).`);
             return "Titleless";
         }
 
         //get their title
         const title:string = user.toJSON().title;
 
-        //return the title
         log.info(`The userDb entry on user-${id} has been accessed and the title element was read.`);
         return title;
     }

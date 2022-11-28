@@ -1,5 +1,5 @@
 //dependancies
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 
 //userDB interfaces
 export interface userDBEntry{
@@ -11,17 +11,17 @@ export interface userDBEntry{
 
 export interface userDBFuncs{
     syncDB():Promise<void>
-    create(id: string):Promise<number>
-    edit(id: string, newTitle: string | null, newColor: string | null, newColorRoleId: string | null):Promise<number>
-    read(id: string):Promise<userDBEntry | number>
-    delete(id: string):Promise<number>
+    create(id: string):Promise<boolean>
+    edit(id: string, newTitle: string | null, newColor: string | null, newColorRoleId: string | null):Promise<boolean>
+    read(id: string):Promise<userDBEntry | boolean>
+    delete(id: string):Promise<boolean>
     getTitle(id: string):Promise<string>
 }
 
 //command interfaces
 export interface commandObject{
     name:string
-    data:any
+    data:SlashCommandBuilder
     ephemeral:boolean
     execute(interaction:CommandInteraction):Promise<void>
 }
@@ -32,7 +32,7 @@ export interface funcObject{
     execute(...args:any):Promise<void>
 }
 
-//event interfaces
+//event handler interfaces
 export interface eventObject{
     name: string,
     once: boolean,

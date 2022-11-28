@@ -1,32 +1,20 @@
-//create needed variables
+//dependancies
 import { REST, Routes } from "discord.js";
-import * as fs from "node:fs";
-import * as path from "node:path";
+import commandFiles from "../commands/_commandList";
 import log from "../logger";
+import { commandObject } from "../types";
 const { clientId } = require("../configuration/config.json");
 
+//register commands
 export = {
 	name: "deploy-cmds",
 	async execute(){
-		//tell the user that the process has begun
-		log.info("Preparering to register commands...");
-
-		//prep to get the commands
 		const commands = [];
-		const commandsPath = path.resolve(__dirname, "../commands");
-		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js") && !file.startsWith("_"));
-
-		//tell the user the commands are being retrieved
-		log.info("Retrieving application commands from commands folder...");
-
-		//get the commands
 		for (const file of commandFiles) {
-			const filePath = path.join(commandsPath, file);
-			const command = require(filePath);
+			const command = file as unknown as commandObject
 			commands.push(command.data.toJSON());
 		}
 
-		//tell the user the commands are being registered
 		log.info("Registering application commands...");
 
 		//publish the commands to Discord

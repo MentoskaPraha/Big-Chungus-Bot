@@ -4,7 +4,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 //create variables
-let items = new Collection;
+let items = new Collection<string, any>;
 const itemPath = path.join(__dirname);
 const itemFiles = fs.readdirSync(itemPath).filter(file => file.endsWith(".js") && !file.startsWith("_"));
 

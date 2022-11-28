@@ -1,17 +1,16 @@
-//libraries
-import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, Role, GuildMemberRoleManager, ChannelType, GuildTextBasedChannel } from "discord.js";
+//dependacies
+import { SlashCommandBuilder, EmbedBuilder, CommandInteraction, Role, GuildMemberRoleManager, GuildTextBasedChannel } from "discord.js";
 import { userDBFuncs } from "../types";
 import log from "../logger";
 import functions from "../functions/_functionList";
-const { announcerRoleId } = require("../configuration/otherIDs.json");
-const { announcementEmbedColor } = require("../configuration/embedColors.json");
+const { announcementEmbedColor, announcerRoleId } = require("../config.json");
 
-//command information
+//command
 export = {
     name: "announce",
     ephemeral: true,
 
-	//build the command
+	//command information
 	data: new SlashCommandBuilder()
 		.setName("announce")
 		.setDescription("Creates an announcement.")
@@ -26,11 +25,6 @@ export = {
                 .setDescription("The announcement itself.")
                 .setRequired(true)
             )
-        .addBooleanOption(option =>
-            option.setName("crosspost")
-                .setDescription("Whether the announcement should be automatically published, if it\'s sent to a announcement channel.")
-                .setRequired(true)
-            )
         .addStringOption(option =>
             option.setName("title")
                 .setDescription("The title of the announcement.")
@@ -42,28 +36,25 @@ export = {
                 .setRequired(false)
             ),
         
-    //when command is called run the following
+    //command code
     async execute(interaction:CommandInteraction){
-        //check if the command is a slash command
 		if(!interaction.isChatInputCommand()) return;
 
         //check if user has permissions to make the announcement
         if (!(interaction.member?.roles as GuildMemberRoleManager).cache.some((role:Role) => role.id == announcerRoleId)){
-            //give error if user does not have permissions
             await interaction.editReply("You do not have permissions to run this command.");
-            log.warn(`${interaction.user.tag} attempted to run "/announce".`);
+            log.warn(`${interaction.user.tag} attempted to run the announce command.`);
             return;
         }
 
-        //get all of the options
+        //get command options
         let title = interaction.options.getString("title");
         const announcement = interaction.options.getString("announcement");
         const crosspost = interaction.options.getBoolean("crosspost");
         const ping = interaction.options.getMentionable("ping");
         const channel = interaction.options.getChannel("channel") as GuildTextBasedChannel;
             
-        //make the announcement
-        //if user didn't specify title set default title
+        //update the title
         if (title == null) title = "New Announcement!";
 
         //create the embed
@@ -72,7 +63,7 @@ export = {
             .setTitle(title)
             .setDescription(announcement);
         
-        //create the message depending on the ping state
+        //create the message
         const userTitle = functions.get("userDB") as userDBFuncs;
 
         let message = null;
@@ -83,14 +74,10 @@ export = {
         }
 
         //send the message to the channel
-        channel.send({content: message, embeds: [embed]}).then(sent => {
-            if(channel.type == ChannelType.GuildAnnouncement && crosspost){
-                sent.crosspost();
-            }
-        });
-            
+        channel.send({content: message, embeds: [embed]});
+        
         //give confirmation to the user that the command was successful
-        await interaction.editReply("Your announcement has been sent and published.");
+        await interaction.editReply("Your announcement has been sent.\nIf you wish to crosspost it you must do it manually!");
         log.info(`${interaction.user.tag} made an anouncement.`);
     }
 };

@@ -1,15 +1,15 @@
-//libraries
+//dependancies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { userDBEntry, userDBFuncs } from "../types";
 import functions from "../functions/_functionList";
 import log from "../logger";
 
-//command information
+//command
 export = {
     name: "database",
     ephemeral: true,
 
-	//build the command
+	//command information
 	data: new SlashCommandBuilder()
 		.setName("database")
 		.setDescription("Use this command to interface with the database.")
@@ -27,12 +27,11 @@ export = {
                 .setDescription("Deletes your profile from the database.")
             ),
         
-    //when command is called run the following
+    //command code
     async execute(interaction:CommandInteraction){
-        //check if the command is a slash command
 		if(!interaction.isChatInputCommand()) return;
 
-        //get the database entry on the user
+        //get userDB entry
         const userDB = functions.get("userDB") as userDBFuncs;
         const potentialDBEntry = await userDB.read(interaction.user.id);
 
@@ -42,46 +41,49 @@ export = {
 			    const success = await userDB.create(interaction.user.id);
 
                 //tell the user if the action was successful or not
-                if(success == 1){
+                if(success == false){
                     await interaction.editReply("Your database profile already exists.");
+                    log.info(`${interaction.user.id} has failed to create their database entry.`);
+			        break;
                 } else{
                     await interaction.editReply("Your database profile has been created.");
+                    log.info(`${interaction.user.id} has created their database entry.`);
+			        break;
                 }
-
-			    //end command execution
-                log.info(`${interaction.user.id} has created their database entry.`);
-			    break;
             }
 
             case "view":{
                 //check if user has a DB entry
-                if(potentialDBEntry == 1){
+                if(potentialDBEntry == false){
                     await interaction.editReply("You do not have a database entry!");
-                    log.warn(`${interaction.user.tag} tried to view his database entry, but he didn't have one.`);
-                    break
+                    log.warn(`${interaction.user.tag} failed to view their userDB entry.`);
+                    break;
                 }
+
+                //get the DB entry
                 const dbEntry = potentialDBEntry as userDBEntry;
 
                 //give user his DB entry info
                 await interaction.editReply(`**Your Database Information**\nId: ${dbEntry.id}\nTitle: ${dbEntry.title}\nColor: ${dbEntry.color}\nColor Role Id: ${dbEntry.colorRoleId}`);
-                log.info(`${interaction.user.tag} viewed his database entry.`);
+
+                log.info(`${interaction.user.tag} viewed their database entry.`);
                 break;
             }
 
             case "delete":{
-                //create the users database entry
+                //delete the users database entry
                 const success = await userDB.delete(interaction.user.id);
  
                 //tell the user if the action was successful or not
-                if(success == 1){
+                if(success == false){
                     await interaction.editReply("Your database profile does not exist.");
+                    log.info(`${interaction.user.id} has failed to delete their database entry.`);
+			        break;
                 } else{
                     await interaction.editReply("Your database profile has been deleted.");
-                } 
-
-			    //end command execution
-                log.info(`${interaction.user.id} has deleted their database entry.`);
-			    break;
+                    log.info(`${interaction.user.id} has deleted their database entry.`);
+			        break;
+                }
             }
         }
     }

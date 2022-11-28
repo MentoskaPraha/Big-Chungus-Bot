@@ -4,7 +4,7 @@
   "description": "It's a Big Chungus themed Discord bot, what more do you want?",
   "main": "./src/index.ts",
   "scripts": {
-    "build": "tsc && node -e 'require(\"shelljs\").cp(\"-R\", \"src/configuration\", \"prod/\");'",
+    "build": "tsc && node -e 'require(\"shelljs\").cp(\"-R\", \"src/config.json\", \"prod/\");'",
     "pretest": "npm run build",
     "test": "node -r dotenv/config ./prod/index.js",
     "start": "node index.js"

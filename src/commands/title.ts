@@ -1,15 +1,15 @@
-//libraries
+//dependancies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import functions from "../functions/_functionList";
 import log from "../logger";
 import { userDBFuncs } from "../types";
 
-//command information
+//command
 export = {
     name: "title",
     ephemeral: true,
 
-    //build the command
+    //command data
     data: new SlashCommandBuilder()
         .setName("title")
         .setDescription("Set your title that will be infront of your name when the bot references you.")
@@ -33,17 +33,16 @@ export = {
                 .setDescription("Removes your title.")
         ),
 
-    //when the command is called run the following
+    //command code
     async execute(interaction:CommandInteraction){
-        //check if the command is a slash command
 		if(!interaction.isChatInputCommand()) return;
 
-        //get userDb interface
+        //get userDB funcs
         const userDB = functions.get("userDB") as userDBFuncs;
 
         switch(interaction.options.getSubcommand()){
             case "update": {
-                //get the title
+                //get command options
                 const newTitle = interaction.options.getString('new_title');
 
                 //update the title in the userDB
@@ -53,16 +52,14 @@ export = {
                 await interaction.editReply('Your title was successfully changed!');
                 log.info(`${interaction.user.tag} has successfully changed their title.`);
 
-                //end code
                 break;
             }
 
             case "view":{
-                //give user their title
+                //respond with user's title
                 await interaction.editReply(`Your title is: ${await userDB.getTitle(interaction.user.id)}`);
                 log.info(`${interaction.user.tag} has requested their title.`);
 
-                //end code
                 break;
             }
 
@@ -74,7 +71,6 @@ export = {
                 await interaction.editReply("Your title was successfully removed!");
                 log.info(`${interaction.user.tag} has successfully removed their title.`);
 
-                //end code
                 break;
             }
         }

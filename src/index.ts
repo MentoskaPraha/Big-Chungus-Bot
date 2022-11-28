@@ -1,59 +1,55 @@
-//libraries
+//dependancies
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { Client, GatewayIntentBits, ActivityType } from "discord.js";
+import { Client, GatewayIntentBits, ActivityType, Events } from "discord.js";
 import { eventObject, funcObject, userDBFuncs } from "./types";
 import log from "./logger";
 import functions from "./functions/_functionList";
 
-//tell the user that the bot is preparing
-log.info("Preparing for bot activation...");
+//main function
+async () => {
+	log.info("Creating new client instance...");
 
-// Create a new client instance
-log.info("Creating new client instance...");
-const client = new Client({ 
-	intents: [
-		GatewayIntentBits.Guilds, 
-		GatewayIntentBits.GuildMessages
-	]
-});
+	//client
+	const client = new Client({ 
+		intents: [
+			GatewayIntentBits.Guilds, 
+			GatewayIntentBits.GuildMessages
+		]
+	});
 
-//add events to the client event collections
-log.info("Adding events to the client event collection...");
-const eventsPath = path.join(__dirname, "events");
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
+	log.info("Preparing Discord event handler...");
 
-for (const file of eventFiles) {
-	const filePath = path.join(eventsPath, file);
-	const event = require(filePath) as eventObject;
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
+	//set-up discord event handler
+	const eventsPath = path.join(__dirname, "events");
+	const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
+	for (const file of eventFiles) {
+		const filePath = path.join(eventsPath, file);
+		const event = require(filePath) as eventObject;
+		if (event.once) {
+			client.once(event.name, (...args) => event.execute(...args));
+		} else {
+			client.on(event.name, (...args) => event.execute(...args));
+		}
 	}
+
+	log.info("Preparing databases...");
+
+	//set-up databases
+	const userDB = functions.get("userDB") as userDBFuncs;
+	await userDB.syncDB();
+
+	//register the commands
+	const registerCmds = functions.get("deploy-cmds") as funcObject;
+	await registerCmds.execute();
+
+	//Login to Discord with your client's token
+	log.info("Logging in...");
+	client.login(process.env.DISCORD_BOT_TOKEN);
+
+	// When the client is ready, run this code (only once)
+	client.once(Events.ClientReady, () => {
+		client.user!.setPresence({ activities: [{ name: "The Big Chungus Relegion", type: ActivityType.Watching}], status: "online" });
+		log.info("The bot is ready!");
+	});
 }
-
-//let the user know that the bot is almost ready
-log.info("Preforming final preparations...");
-
-//sync the database
-const userDB = functions.get("userDB") as userDBFuncs;
-userDB.syncDB();
-
-//register the commands
-const registerCmds = functions.get("deploy-cmds") as funcObject;
-try {
-	registerCmds.execute();
-} catch (error) {
-	log.error(error);
-}
-
-// Login to Discord with your client's token
-log.info("Logging in...");
-client.login(process.env.DISCORD_BOT_TOKEN);
-
-// When the client is ready, run this code (only once)
-client.once("ready", () => {
-	client.user!.setPresence({ activities: [{ name: "The Big Chungus Relegion", type: ActivityType.Watching}], status: "online" });
-	log.info("The bot is ready!");
-});

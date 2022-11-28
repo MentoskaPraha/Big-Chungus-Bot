@@ -4,12 +4,12 @@ import { userDBEntry, userDBFuncs } from "../types";
 import functions from "../functions/_functionList";
 import log from "../logger";
 
-//command information
+//command
 export = {
     name: "color",
     ephemeral: true,
 
-	//build the command
+	//command information
 	data: new SlashCommandBuilder()
 		.setName("color")
 		.setDescription("Use this command to set your own custom color.")
@@ -19,7 +19,7 @@ export = {
                 .setDescription("Updates or creates your color.")
                 .addStringOption(option =>
                     option.setName("color")
-                        .setDescription("The color you wish to have. Must be a valid HEX-CODE with the starting '#'.")
+                        .setDescription("The color you wish to have. Must be a valid HEX-CODE with a leading `#`.")
                         .setRequired(true)
                     )
             )
@@ -36,49 +36,45 @@ export = {
                 .setDescription("Deletes your color from the Discord Server, it will remain in the database.")
             ),
     
-    //when command is called run the following
+    //command code
     async execute(interaction:CommandInteraction){
-        //check if the command is a slash command
 		if(!interaction.isChatInputCommand()) return;
 
-        //get the database entry on the user
+        //userDB entry on user
         const userDB = functions.get("userDB") as userDBFuncs;
         const potentialDBEntry = await userDB.read(interaction.user.id);
-
-        //if the user doesn't exist in the database end cmd execution
-        if(potentialDBEntry == 1){
-            await interaction.editReply("Your database entry has not been found, please create one.");
-            log.warn(`${interaction.user.tag} did not have a database entry and attempted to get a custom color.`);
+        if(potentialDBEntry == false){
+            await interaction.editReply("Your database entry has not been found, please create one using `/database create`.");
+            log.warn(`${interaction.user.tag} failed to update his color, due to not having a userDB entry.`);
             return;
         }
         const dbEntry = potentialDBEntry as userDBEntry;
 
-        //get the subcommand that was run
         switch(interaction.options.getSubcommand()){
             case "update":{
-                //get the color of the role
+                //get command options
                 const color = interaction.options.getString("color") as string;
 
-                //check if the color is valid
+                //validate HEX-Code input
                 if(!/^#[0-9A-F]{6}$/i.test(color)){
-                    await interaction.editReply("Invalid HEX-CODE. Please try again. Make sure the HEX-CODE starts with a '#'.");
-                    log.warn(`${interaction.user.tag} attempted to get a custom color, but they inputed an invalid HEX-CODE.`);
+                    await interaction.editReply("Invalid HEX-CODE. Please try again. Make sure the HEX-CODE has a leading `#`.");
+                    log.warn(`${interaction.user.tag} failed to update his color, due to inputting an invalid HEX-CODE.`);
                     break;
                 }
 
-                //get the roles
+                //get the color role
                 const roles = await interaction.guild?.roles.fetch() as Collection<string, Role>;
-                const role = roles.find(role => role.name == `${interaction.user.username} : Color`);
+                const role = roles.find(role => role.id == dbEntry.colorRoleId);
 
-                //if the user already has a color role then update that role
+                //if the user has a color role then update it
                 if(role){
-                    role.edit({color: color as ColorResolvable});
+                    await role.edit({color: color as ColorResolvable});
 
-                    //respond to user
-                    interaction.editReply("Your color was successfully updated.");
-                    log.info(`${interaction.user.tag} has successfully update their new color.`);
+                    await userDB.edit(interaction.user.id, null, color, null);
 
-                    //end code
+                    await interaction.editReply("Your color was successfully updated.");
+                    log.info(`${interaction.user.tag} has update their new color.`);
+
                     break;
                 }
 
@@ -101,9 +97,8 @@ export = {
 
                 //tell the user the action was successful
                 await interaction.editReply("Your color was successfully created!");
-                log.info(`${interaction.user.tag} has successfully created their new color.`);
+                log.info(`${interaction.user.tag} has created their new color.`);
 
-                //end code
                 break;
             }
 
@@ -116,13 +111,28 @@ export = {
             case "refresh":{
                 //check if the user does have a color
                 if(dbEntry.color == "N/A"){
-                    await interaction.editReply("You do not have a custom color on record. Use the color update command to make it.");
-                    log.warn(`${interaction.user.tag} attempted to refresh their custom color, but they did not have one.`);
+                    await interaction.editReply("You do not have a custom color on record. Use the `/color update` command to make it.");
+                    log.warn(`${interaction.user.tag} failed to refresh their color, du to not having one.`);
+                    break;
+                }
+
+                //check if the color role alread exists
+                const roles = await interaction.guild?.roles.fetch() as Collection<string, Role>;
+                const role = roles.find(role => role.id == dbEntry.colorRoleId);
+
+                if(role){
+                    //re-add the role
+                    const user = await interaction.guild?.members.fetch(interaction.user.id);
+                    await user?.roles.add(role);
+
+                    //tell the user the action was successful
+                    await interaction.editReply("Your color was successfully refreshed!");
+                    log.info(`${interaction.user.tag} has refreshed their color.`);
+
                     break;
                 }
 
                 //get the position of the role
-                const roles = await interaction.guild?.roles.fetch() as Collection<string, Role>;
                 const rolePos = roles.find(role => role.name == interaction.client.user.username)?.position as number;
 
                 //re-create and re-assign the color role to the user
@@ -141,9 +151,8 @@ export = {
 
                 //tell the user the action was successful
                 await interaction.editReply("Your color was successfully refreshed!");
-                log.info(`${interaction.user.tag} has successfully refreshed their color.`);
+                log.info(`${interaction.user.tag} has refreshed their color.`);
 
-                //end code
                 break;
             }
 
@@ -151,7 +160,7 @@ export = {
                 //check if the user does have a color
                 if(dbEntry.colorRoleId == "N/A"){
                     await interaction.editReply("You do not have a custom color on record. Use the color create command to make it.");
-                    log.warn(`${interaction.user.tag} attempted to delete their custom color, but they did not have one.`);
+                    log.warn(`${interaction.user.tag} failed to delete their color, due to not having one.`);
                     return;
                 }
 
@@ -163,9 +172,8 @@ export = {
 
                 //tell the user the action was successful
                 await interaction.editReply("Your color was successfully deleted!");
-                log.info(`${interaction.user.tag} has successfully deleted their color.`);
+                log.info(`${interaction.user.tag} has deleted their color.`);
 
-                //end code
                 break;
             }
         }
