@@ -3,7 +3,7 @@ import { REST, Routes } from "discord.js";
 import commandFiles from "../commands/_commandList";
 import log from "../logger";
 import { commandObject } from "../types";
-const { clientId } = require("../configuration/config.json");
+const { clientId } = require("../config.json");
 
 //register commands
 export = {
@@ -11,7 +11,7 @@ export = {
 	async execute(){
 		const commands = [];
 		for (const file of commandFiles) {
-			const command = file as unknown as commandObject
+			const command = file[1] as commandObject
 			commands.push(command.data.toJSON());
 		}
 

@@ -1,40 +1,9 @@
 //dependancies
-import { Sequelize, DataTypes } from "sequelize";
+
 import { userDBEntry } from "../types";
 import log from "../logger";
 
-//database
-const sequelize = new Sequelize("userDB", "admin", "AeroMaster64Stinks", {
-    dialect: "sqlite",
-    host: "localhost",
-    storage: "volume/database/userDb.sqlite",
-    logging: false
-});
 
-//table
-const userDB = sequelize.define("users", {
-    id: {
-        type: DataTypes.STRING,
-        unique: true,
-        primaryKey: true,
-        allowNull: false
-    },
-    title: {
-        type: DataTypes.STRING,
-        defaultValue: "Titleless",
-        allowNull: true,
-    },
-    color: {
-        type: DataTypes.STRING,
-        defaultValue: "N/A",
-        allowNull: true
-    },
-    colorRoleId: {
-        type: DataTypes.STRING,
-        defaultValue: "N/A",
-        allowNull: true
-    }
-});
 
 //functions to interact with database
 export = {

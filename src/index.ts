@@ -7,7 +7,7 @@ import log from "./logger";
 import functions from "./functions/_functionList";
 
 //main function
-async () => {
+(async () => {
 	log.info("Creating new client instance...");
 
 	//client
@@ -52,4 +52,4 @@ async () => {
 		client.user!.setPresence({ activities: [{ name: "The Big Chungus Relegion", type: ActivityType.Watching}], status: "online" });
 		log.info("The bot is ready!");
 	});
-}
+})();

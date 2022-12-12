@@ -1,3 +1,5 @@
+> :warning: **This project is no longer being worked on and is in a broken state!** Development may continue if a hosting solution is found.
+
 # Big Chungus Bot
 It's a Big Chungus themed Discord bot, what more do you want?
 
@@ -20,14 +22,14 @@ It's a Big Chungus themed Discord bot, what more do you want?
 - color
     - Get a custom color in any server.
 
-## Bot Functions
-- Automatic event announcements.
+## Database
+
 
 ## License
 GNU General Public License V3. Deployement support will not be provided.
 
 ## Version
-Current Version: 1.3.4
+Current Version: `1.4.1`
 
 ## Docker
 Link to the Docker Hub page: https://hub.docker.com/repository/docker/mentoskapraha/big-chungus-bot  
@@ -36,4 +38,4 @@ Build command: `docker build -t mentoskapraha/big-chungus-bot:[version] --platfo
 Run command: `docker run --name big-chungus --env DISCORD_BOT_TOKEN="[your bot token here]" --volume [your volume mount here]:/app/volume mentoskapraha/big-chungus-bot:[version]`  
 
 ## Credits
-MentoskaPraha
+- MentoskaPraha
