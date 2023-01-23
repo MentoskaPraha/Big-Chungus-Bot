@@ -3,10 +3,17 @@
 	"maintianerId": "726034169209290813",
 
 	"announcementEmbedColor": "#FFA338",
-    "pollEmbedColor": "#E7B727",
+	"pollEmbedColor": "#E7B727",
 	"diceRollerEmbedColor": "#F11E32",
-    "userInfoEmbedColor": "#4BCDDD",
+	"userInfoEmbedColor": "#4BCDDD",
 	"serverInfoEmbedColor": "#B4AEAE",
 
-	"announcerRoleId": "975740439812526160"
+	"announcerRoleId": "975740439812526160",
+
+	"userColors": [
+		{
+			"name": "None",
+			"code": "#B4AEAE"
+		}
+	]
 }

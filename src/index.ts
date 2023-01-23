@@ -1,31 +1,31 @@
 //dependancies
-import * as fs from "node:fs";
-import * as path from "node:path";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
 import { Client, GatewayIntentBits, ActivityType, Events } from "discord.js";
-import { eventObject, funcObject, userDBFuncs } from "./types";
+import { eventObject } from "./types";
+import registerCmd from "./functions/deploy-cmds";
+import { userDBConnect } from "./functions/userDatabase";
 import log from "./logger";
-import functions from "./functions/_functionList";
 
 //main function
 (async () => {
 	log.info("Creating new client instance...");
 
 	//client
-	const client = new Client({ 
-		intents: [
-			GatewayIntentBits.Guilds, 
-			GatewayIntentBits.GuildMessages
-		]
+	const client = new Client({
+		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 	});
 
 	log.info("Preparing Discord event handler...");
 
 	//set-up discord event handler
-	const eventsPath = path.join(__dirname, "events");
-	const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
+	const eventsPath = join(__dirname, "events");
+	const eventFiles = readdirSync(eventsPath).filter((file) =>
+		file.endsWith(".js")
+	);
 	for (const file of eventFiles) {
-		const filePath = path.join(eventsPath, file);
-		const event = require(filePath) as eventObject;
+		const filePath = join(eventsPath, file);
+		const event = import(filePath) as unknown as eventObject;
 		if (event.once) {
 			client.once(event.name, (...args) => event.execute(...args));
 		} else {
@@ -34,14 +34,10 @@ import functions from "./functions/_functionList";
 	}
 
 	log.info("Preparing databases...");
-
-	//set-up databases
-	const userDB = functions.get("userDB") as userDBFuncs;
-	await userDB.syncDB();
+	userDBConnect();
 
 	//register the commands
-	const registerCmds = functions.get("deploy-cmds") as funcObject;
-	await registerCmds.execute();
+	await registerCmd();
 
 	//Login to Discord with your client's token
 	log.info("Logging in...");
@@ -49,7 +45,15 @@ import functions from "./functions/_functionList";
 
 	// When the client is ready, run this code (only once)
 	client.once(Events.ClientReady, () => {
-		client.user!.setPresence({ activities: [{ name: "The Big Chungus Relegion", type: ActivityType.Watching}], status: "online" });
+		client.user?.setPresence({
+			activities: [
+				{
+					name: "The Big Chungus Relegion",
+					type: ActivityType.Watching,
+				},
+			],
+			status: "online",
+		});
 		log.info("The bot is ready!");
 	});
 })();

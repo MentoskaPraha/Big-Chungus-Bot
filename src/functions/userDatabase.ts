@@ -1,113 +1,168 @@
 //dependancies
-
+import { MongoClient } from "mongodb";
 import { userDBEntry } from "../types";
 import log from "../logger";
 
+const DBclient = new MongoClient(process.env.DB_URI as string);
+const DBname = process.env.DB_NAME as string;
+const CollectionName = "userDB";
 
+/**
+ * userDBConnect
+ * Connects the bot to the mongoDB database.
+ */
+export async function userDBConnect() {
+	await DBclient.connect();
+	log.info("Connected to userDB.");
+}
 
-//functions to interact with database
-export = {
-    name: "userDB",
-    async syncDB(){
-        await userDB.sync().then(() => log.info("UserDB has been synced!"));
-    },
+/**
+ * userDBDisconnect
+ * Disconnects the bot from the mongoDB database.
+ */
+export async function userDBDisconnect() {
+	await DBclient.close();
+	log.info("Disconnected from userDB.");
+}
 
-    async create(id: string){
-        //check if the user exists
-        const user = await userDB.findOne({where: {id: id}});
-        if(user != null){ 
-            log.warn(`User-${id} already exists in userDB.`);
-            return false;
-        }
+/**
+ * createUser
+ * Creates a new user entry in the userDB.
+ * @param id The Discord id of the user.
+ * @returns True or false depending on if the action was successful.
+ */
+export async function createUser(id: string) {
+	const user = {
+		id: id,
+		title: "Titleless",
+		color: 0,
+	};
 
-        //create the new user
-        await userDB.create({
-            id: id,
-        }).then(() => log.info(`User-${id} was added to userDB.`));
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		await collection.insertOne(user);
+		log.info(`Created entry userDB-${id}.`);
+		return true;
+	} catch (error) {
+		log.error(error);
+		return false;
+	}
+}
 
-        return true;
-    },
+/**
+ * getUser
+ * Gets a user entry from userDB.
+ * @param id The Discord id of the user that you wish to get.
+ * @returns The user object or null if the user doesn't exist.
+ */
+export async function getUser(id: string) {
+	let entry = null;
+	let user = null;
 
-    async edit(id: string, newTitle: string, newColor: string, newColorRoleId: string){
-        const user = await userDB.findOne({where: {id: id}});
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		entry = await collection.findOne({ id });
+		log.info(`Reading entry userDB-${id}.`);
+	} catch (error) {
+		log.error(error);
+	}
 
-        //check if the user exists
-        if(user == null){
-            log.warn(`User-${id} does not exist in userDB (for editing).`);
-            return false;
-        }
+	if (entry != null) {
+		user = {
+			id: entry.id,
+			title: entry.title,
+			color: entry.color,
+		} as userDBEntry;
+	}
 
-        //update the title
-        if(newTitle != null){
-            await userDB.update({title: newTitle}, {where: {id: id}});
-            log.info(`Updated title for user-${id} in userDB.`);
-        }
+	return user;
+}
 
-        //update the color
-        if(newColor != null){
-            await userDB.update({color: newColor}, {where: {id: id}});
-            log.info(`Updated color for user-${id} in userDB.`);
-        }
+/**
+ * deleteUser
+ * Deletes a user entry from userDB.
+ * @param id The Discord id of the user that you wish to delete.
+ * @returns True or false depending on if the action was successful.
+ */
+export async function deleteUser(id: string) {
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		await collection.deleteOne({ id });
+		log.info(`Deleted entry userDB-${id}`);
+		return true;
+	} catch (error) {
+		log.error(error);
+		return false;
+	}
+}
 
-        //update the color role id
-        if(newColorRoleId != null){
-            await userDB.update({colorRoleId: newColorRoleId}, {where: {id: id}});
-            log.info(`Updated colorRoleId for user-${id} in userDB.`);
-        }
+/**
+ * updateUserTitle
+ * Updates the users title.
+ * @param id The Discord id of the user that you wish to update the title of.
+ * @param newTitle The new title the user will have.
+ * @returns True or false depending on if the action was successful.
+ */
+export async function updateUserTitle(id: string, newTitle: string) {
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		await collection.updateOne({ id }, { $set: { title: newTitle } });
+		log.info(`Updated TITLE in entry userDB-${id}`);
+		return true;
+	} catch (error) {
+		log.error(error);
+		return false;
+	}
+}
 
-        return true;
-    },
+/**
+ * updateUserColor
+ * Updates the users color.
+ * @param id The Discord id of the user that you wish to update the color of.
+ * @param newColor The id of the color that the user will have.
+ * @returns True or false depending on if the action was successful.
+ */
+export async function updateUserColor(id: string, newColor: number) {
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		await collection.updateOne({ id }, { $set: { title: newColor } });
+		log.info(`Updated COLOR in entry userDB-${id}`);
+		return true;
+	} catch (error) {
+		log.error(error);
+		return false;
+	}
+}
 
-    async read(id: string){
-        const user = await userDB.findOne({where: {id: id}});
+/**
+ * getUserTitle
+ * Gets the users title.
+ * @param id The Discord id of the user that you wish to get the title of.
+ * @returns The title of the user.
+ */
+export async function getUserTitle(id: string) {
+	let entry = null;
+	let user = null;
 
-        //check if the user exists
-        if(user == null){
-            log.warn(`User-${id} does not exist in userDB (for reading).`);
-            return false;
-        }
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		entry = await collection.findOne({ id });
+		log.info(`Reading entry userDB-${id}.`);
+	} catch (error) {
+		log.error(error);
+	}
 
-        //conver to userDBEntry object
-        const userEntry:userDBEntry = {
-            id: user.dataValues.id,
-            title: user.dataValues.title,
-            color: user.dataValues.color,
-            colorRoleId: user.dataValues.colorRoleId
-        };
+	if (entry != null) {
+		user = {
+			id: entry.id,
+			title: entry.title,
+			color: entry.color,
+		} as userDBEntry;
+	}
 
-        log.info(`User-${id} in userDB was read.`);
-
-        return userEntry;
-    },
-
-    async delete(id: string){
-        const user = await userDB.findOne({where: {id: id}});
-
-        //check if the user exists
-        if(user == null){
-            log.warn(`User-${id} does not exist in userDB (for deleting).`);
-            return false;
-        }
-
-        //delete the user
-        await userDB.destroy({where: {id: id}}).then(() => log.info(`User-${id} was deleted from userDB.`));
-
-        return true;
-    },
-
-    async getTitle(id: string){
-        const user = await userDB.findOne({where: {id: id}});
-
-        //check if the user exists
-        if(user == null){
-            log.warn(`User-${id} does not exist in userDB (for reading title).`);
-            return "Titleless";
-        }
-
-        //get their title
-        const title:string = user.toJSON().title;
-
-        log.info(`The userDb entry on user-${id} has been accessed and the title element was read.`);
-        return title;
-    }
+	if (user == null) {
+		return "Titleless";
+	} else {
+		return user.title;
+	}
 }

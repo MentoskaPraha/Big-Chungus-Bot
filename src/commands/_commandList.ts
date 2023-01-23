@@ -1,17 +1,20 @@
-//import libraries
+//dependencies
 import { Collection } from "discord.js";
-import * as fs from "node:fs";
-import * as path from "node:path";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
+import { commandObject } from "../types";
 
 //create variables
-let items = new Collection<string, any>;
-const itemPath = path.join(__dirname);
-const itemFiles = fs.readdirSync(itemPath).filter(file => file.endsWith(".js") && !file.startsWith("_"));
+const items = new Collection<string, commandObject>();
+const itemPath = join(__dirname);
+const itemFiles = readdirSync(itemPath).filter(
+	(file) => file.endsWith(".js") && !file.startsWith("_")
+);
 
 //get the items
 for (const file of itemFiles) {
-	const filePath = path.join(itemPath, file);
-	const item = require(filePath);
+	const filePath = join(itemPath, file);
+	const item = import(filePath) as unknown as commandObject;
 	items.set(item.name, item);
 }
 

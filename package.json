@@ -1,40 +1,26 @@
 {
-  "name": "big-chungus-bot",
-  "version": "1.4.1",
-  "description": "It's a Big Chungus themed Discord bot, what more do you want?",
-  "main": "./src/index.ts",
-  "scripts": {
-    "build": "tsc && node -e 'require(\"shelljs\").cp(\"-R\", \"src/config.json\", \"prod/\");'",
-    "pretest": "npm run build",
-    "test": "node -r dotenv/config ./prod/index.js",
-    "start": "node index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MentoskaPraha/Big-Chungus-Bot.git"
-  },
-  "keywords": [
-    "discord",
-    "bot",
-    "big chungus"
-  ],
-  "author": "MentoskaPraha",
-  "license": "GNU GPL v3",
-  "bugs": {
-    "url": "https://github.com/MentoskaPraha/Big-Chungus-Bot/issues"
-  },
-  "homepage": "https://github.com/MentoskaPraha/Big-Chungus-Bot#readme",
-  "dependencies": {
-    "discord-api-types": "0.37.12",
-    "discord.js": "^14.6.0",
-    "mongodb": "^4.12.1",
-    "pino": "^8.6.1",
-    "pino-pretty": "^9.1.1"
-  },
-  "devDependencies": {
-    "@types/node": "^18.11.9",
-    "dotenv": "^16.0.1",
-    "shelljs": "^0.8.5",
-    "typescript": "^4.8.4"
-  }
+	"name": "big-chungus-bot",
+	"private": true,
+	"scripts": {
+		"build": "tsc && node -e 'require(\"shelljs\").cp(\"-R\", \"src/config.json\", \"build/\");'",
+		"test": "node -r dotenv/config ./build/db-test.js",
+		"lint": "prettier --write . && eslint . --ext .ts --ignore-path .gitignore",
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"discord.js": "^14.6.0",
+		"mongodb": "^4.12.1",
+		"pino": "^8.6.1",
+		"pino-pretty": "^9.1.1"
+	},
+	"devDependencies": {
+		"@types/node": "^18.11.9",
+		"@typescript-eslint/eslint-plugin": "^5.48.2",
+		"@typescript-eslint/parser": "^5.48.2",
+		"dotenv": "^16.0.1",
+		"eslint": "^8.32.0",
+		"prettier": "2.8.3",
+		"shelljs": "^0.8.5",
+		"typescript": "^4.8.4"
+	}
 }
