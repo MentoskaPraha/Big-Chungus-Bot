@@ -24,6 +24,7 @@ It's a Big Chungus themed Discord bot, what more do you want?
     -   > :warning: **This command is non-functional!** It will return in v1.5.0
 
 ## Database
+This bot uses MongoDB as its database.
 
 ## License
 
@@ -31,14 +32,14 @@ GNU General Public License V3. Deployement support will not be provided.
 
 ## Version
 
-Current Version: `1.4.1`
+Current Version: `1.4.2`
 
 ## Docker
 
 Link to the Docker Hub page: https://hub.docker.com/repository/docker/mentoskapraha/big-chungus-bot  
 Please make sure you replace `[]` with the needed parameters.  
-Build command: `docker build -t mentoskapraha/big-chungus-bot:[version] --platform linux/amd64 .`  
-Run command: `docker run --name big-chungus --env DISCORD_BOT_TOKEN="[your bot token here]" --volume [your volume mount here]:/app/volume mentoskapraha/big-chungus-bot:[version]`
+Build command: `docker build -t mentoskapraha/big-chungus-bot:[version] --platform linux/amd64 .`   
+To run it, please use the `docker-compose.yaml`.
 
 ## Credits
 
