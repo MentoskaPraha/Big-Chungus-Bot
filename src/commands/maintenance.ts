@@ -1,8 +1,14 @@
 //dependancies
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import {
+	CommandInteraction,
+	SlashCommandBuilder,
+	EmbedBuilder,
+	ColorResolvable,
+} from "discord.js";
 import { userDBDisconnect } from "../functions/userDatabase";
+import { guildDBDisconnect } from "../functions/guildDatabase";
 import log from "../logger";
-import { maintianerId } from "../config.json";
+import { maintianerId, botStatusEmbedColor } from "../config.json";
 
 //command
 export = {
@@ -16,8 +22,8 @@ export = {
 		.setDMPermission(true)
 		.addSubcommand((subcommand) =>
 			subcommand
-				.setName("ping")
-				.setDescription("Returns the latency of the bot.")
+				.setName("status")
+				.setDescription("Returns the status of the bot.")
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
@@ -30,20 +36,21 @@ export = {
 		if (!interaction.isChatInputCommand()) return;
 
 		switch (interaction.options.getSubcommand()) {
-			case "ping": {
-				//get latency
-				const apiLatency = Math.round(interaction.client.ws.ping);
-				const EHLatency = Math.floor(
-					Math.abs(Date.now() - +interaction.createdAt)
-				);
+			case "status": {
+				const status = `
+					WS Latency is around ${Math.round(interaction.client.ws.ping)}ms.\n
+					WS Status: ${interaction.client.ws.status}.\n`;
+
+				const embed = new EmbedBuilder()
+					.setTitle("Bot Status")
+					.setDescription(status)
+					.setColor(botStatusEmbedColor as ColorResolvable);
 
 				//respond to the user
-				await interaction.editReply(
-					`**Current Latency**\nAPI Latency is around ${apiLatency}ms.\nEvent Handler Latency is around ${EHLatency}ms.`
-				);
+				await interaction.editReply({ embeds: [embed] });
 
 				log.info(
-					`Current Latency: API Latency is around ${apiLatency}ms. Event Handler Latency is around ${EHLatency}ms.`
+					`${interaction.user.tag} has requested status information.`
 				);
 				break;
 			}
@@ -66,6 +73,7 @@ export = {
 				//log out of Discord and disconnect databases
 				interaction.client.destroy();
 				userDBDisconnect();
+				guildDBDisconnect();
 
 				log.info(`Bot is being terminated by ${interaction.user.tag}.`);
 

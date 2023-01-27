@@ -6,6 +6,7 @@ import { eventObject } from "./types";
 import registerCmd from "./functions/deploy-cmds";
 import { userDBConnect } from "./functions/userDatabase";
 import log from "./logger";
+import { guildDBConnect } from "./functions/guildDatabase";
 
 //main function
 (async () => {
@@ -35,6 +36,7 @@ import log from "./logger";
 
 	log.info("Preparing databases...");
 	userDBConnect();
+	guildDBConnect();
 
 	//register the commands
 	await registerCmd();
