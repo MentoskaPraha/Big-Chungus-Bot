@@ -5,7 +5,7 @@ import {
 	CommandInteraction,
 	User,
 	Guild,
-	ColorResolvable,
+	ColorResolvable
 } from "discord.js";
 import { userDBEntry } from "../types";
 import { getUser, getUserTitle } from "../functions/userDatabase";
@@ -13,7 +13,7 @@ import log from "../logger";
 import {
 	userInfoEmbedColor,
 	serverInfoEmbedColor,
-	userColors,
+	userColors
 } from "../config.json";
 
 //command
@@ -115,5 +115,5 @@ export = {
 				break;
 			}
 		}
-	},
+	}
 };

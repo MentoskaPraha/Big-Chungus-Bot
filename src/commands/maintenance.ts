@@ -3,7 +3,7 @@ import {
 	CommandInteraction,
 	SlashCommandBuilder,
 	EmbedBuilder,
-	ColorResolvable,
+	ColorResolvable
 } from "discord.js";
 import { userDBDisconnect } from "../functions/userDatabase";
 import { guildDBDisconnect } from "../functions/guildDatabase";
@@ -81,5 +81,5 @@ export = {
 				process.exit(0);
 			}
 		}
-	},
+	}
 };

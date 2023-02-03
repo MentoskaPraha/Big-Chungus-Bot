@@ -18,7 +18,7 @@ const createSonicBoom = (dest: string) =>
 	pino.destination({ dest: dest, append: true, sync: true });
 const streams = [
 	{ stream: createSonicBoom(dir + "/" + fileName + ".log") },
-	{ stream: pretty({ colorize: true, sync: true }) },
+	{ stream: pretty({ colorize: true, sync: true }) }
 ];
 
 //create logger

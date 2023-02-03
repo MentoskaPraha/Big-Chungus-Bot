@@ -3,9 +3,9 @@ import {
 	SlashCommandBuilder,
 	EmbedBuilder,
 	CommandInteraction,
-	ColorResolvable,
+	ColorResolvable
 } from "discord.js";
-import userDB from "../functions/userDatabase";
+import { getUserTitle } from "../functions/userDatabase";
 import log from "../logger";
 import { pollEmbedColor } from "../config.json";
 
@@ -185,7 +185,7 @@ export = {
 			"🇶",
 			"🇷",
 			"🇸",
-			"🇹",
+			"🇹"
 		];
 
 		//create the embed
@@ -201,10 +201,10 @@ export = {
 
 		//send poll
 		await interaction.editReply({
-			content: `Poll by ${await userDB.getTitle(interaction.user.id)} ${
+			content: `Poll by ${await getUserTitle(interaction.user.id)} ${
 				interaction.user.username
 			}.`,
-			embeds: [embed],
+			embeds: [embed]
 		});
 
 		//add reactions
@@ -214,5 +214,5 @@ export = {
 		}
 
 		log.info(`${interaction.user.tag} has created a new poll.`);
-	},
+	}
 };

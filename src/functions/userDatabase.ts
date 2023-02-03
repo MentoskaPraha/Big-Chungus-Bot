@@ -35,7 +35,7 @@ export async function createUser(id: string) {
 	const user = {
 		id: id,
 		title: "Titleless",
-		color: 0,
+		color: 0
 	};
 
 	try {
@@ -71,7 +71,7 @@ export async function getUser(id: string) {
 		user = {
 			id: entry.id,
 			title: entry.title,
-			color: entry.color,
+			color: entry.color
 		} as userDBEntry;
 	}
 
@@ -156,7 +156,7 @@ export async function getUserTitle(id: string) {
 		user = {
 			id: entry.id,
 			title: entry.title,
-			color: entry.color,
+			color: entry.color
 		} as userDBEntry;
 	}
 

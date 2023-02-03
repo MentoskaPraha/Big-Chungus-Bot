@@ -6,7 +6,7 @@ import {
 	EmbedBuilder,
 	GuildMemberRoleManager,
 	PermissionsBitField,
-	Role,
+	Role
 } from "discord.js";
 import {
 	createGuild,
@@ -17,7 +17,7 @@ import {
 	updateGuildColor,
 	updateGuildColorList,
 	updateGuildModeratorId,
-	updateGuildSettingsManagerId,
+	updateGuildSettingsManagerId
 } from "../functions/guildDatabase";
 import { serverInfoEmbedColor, userColors, clientId } from "../config.json";
 import log from "../logger";
@@ -170,7 +170,7 @@ export = {
 								hoist: false,
 								permissions: new PermissionsBitField(),
 								position: position,
-								mentionable: false,
+								mentionable: false
 							})
 							.then((role) => {
 								colorList.push(role.id);
@@ -321,5 +321,5 @@ export = {
 				break;
 			}
 		}
-	},
+	}
 };

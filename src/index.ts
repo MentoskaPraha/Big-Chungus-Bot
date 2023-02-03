@@ -14,7 +14,7 @@ import { guildDBConnect } from "./functions/guildDatabase";
 
 	//client
 	const client = new Client({
-		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 	});
 
 	log.info("Preparing Discord event handler...");
@@ -51,10 +51,10 @@ import { guildDBConnect } from "./functions/guildDatabase";
 			activities: [
 				{
 					name: "The Big Chungus Relegion",
-					type: ActivityType.Watching,
-				},
+					type: ActivityType.Watching
+				}
 			],
-			status: "online",
+			status: "online"
 		});
 		log.info("The bot is ready!");
 	});

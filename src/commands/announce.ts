@@ -6,7 +6,7 @@ import {
 	GuildMemberRoleManager,
 	GuildTextBasedChannel,
 	ColorResolvable,
-	ChannelType,
+	ChannelType
 } from "discord.js";
 import log from "../logger";
 import { getUserTitle } from "../functions/userDatabase";
@@ -133,5 +133,5 @@ export = {
 			await interaction.editReply("Your announcement has been sent.");
 		}
 		log.info(`${interaction.user.tag} made an anouncement.`);
-	},
+	}
 };

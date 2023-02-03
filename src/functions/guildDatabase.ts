@@ -38,7 +38,7 @@ export async function createGuild(id: string) {
 		colorRoleIds: ["N/A"],
 		settingsManagerRoleId: "N/A",
 		moderatorRoleId: "N/A",
-		announcementRoleId: "N/A",
+		announcementRoleId: "N/A"
 	};
 
 	try {
@@ -77,7 +77,7 @@ export async function getGuild(id: string) {
 			colorRoleIds: entry.colorRoleIds,
 			settingsManagerRoleId: entry.settingsManagerRoleId,
 			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId,
+			announcementRoleId: entry.announcementRoleId
 		} as guildDBEntry;
 	}
 
@@ -246,7 +246,7 @@ export async function getGuildColor(id: string) {
 			colorRoleIds: entry.colorRoleIds,
 			settingsManagerRoleId: entry.settingsManagerRoleId,
 			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId,
+			announcementRoleId: entry.announcementRoleId
 		} as guildDBEntry;
 	} else {
 		return null;
@@ -282,7 +282,7 @@ export async function getAnnouncerId(id: string) {
 			colorRoleIds: entry.colorRoleIds,
 			settingsManagerRoleId: entry.settingsManagerRoleId,
 			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId,
+			announcementRoleId: entry.announcementRoleId
 		} as guildDBEntry;
 	} else {
 		return null;
@@ -320,7 +320,7 @@ export async function getSettingsManagerId(id: string) {
 			colorRoleIds: entry.colorRoleIds,
 			settingsManagerRoleId: entry.settingsManagerRoleId,
 			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId,
+			announcementRoleId: entry.announcementRoleId
 		} as guildDBEntry;
 	} else {
 		return null;
@@ -358,7 +358,7 @@ export async function getModeratorId(id: string) {
 			colorRoleIds: entry.colorRoleIds,
 			settingsManagerRoleId: entry.settingsManagerRoleId,
 			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId,
+			announcementRoleId: entry.announcementRoleId
 		} as guildDBEntry;
 	} else {
 		return null;

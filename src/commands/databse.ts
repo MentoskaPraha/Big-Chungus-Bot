@@ -3,7 +3,7 @@ import {
 	CommandInteraction,
 	SlashCommandBuilder,
 	EmbedBuilder,
-	ColorResolvable,
+	ColorResolvable
 } from "discord.js";
 import { userDBEntry } from "../types";
 import { createUser, getUser, deleteUser } from "../functions/userDatabase";
@@ -128,5 +128,5 @@ export = {
 				}
 			}
 		}
-	},
+	}
 };
