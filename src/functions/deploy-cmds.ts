@@ -1,17 +1,19 @@
 //dependancies
-import { REST, Routes } from "discord.js";
+import {
+	REST,
+	RESTPostAPIChatInputApplicationCommandsJSONBody,
+	Routes
+} from "discord.js";
 import commandFiles from "../commands/_commandList";
 import log from "../logger";
-import { commandObject } from "../types";
 import { clientId } from "../config.json";
 
 //register commands function
 export default async function () {
-	const commands = [];
-	for (const file of commandFiles) {
-		const command = file[1] as commandObject;
-		commands.push(command.data.toJSON());
-	}
+	const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
+	commandFiles.forEach((file) => {
+		commands.push(file.data.toJSON());
+	});
 
 	log.info("Registering application commands...");
 

@@ -13,7 +13,7 @@ const CollectionName = "guildDB";
  */
 export async function guildDBConnect() {
 	await DBclient.connect();
-	log.info("Connected to userDB.");
+	log.info("Connected to guildDB.");
 }
 
 /**
@@ -38,7 +38,10 @@ export async function createGuild(id: string) {
 		colorRoleIds: ["N/A"],
 		settingsManagerRoleId: "N/A",
 		moderatorRoleId: "N/A",
-		announcementRoleId: "N/A"
+		announcementRoleId: "N/A",
+		announceEvents: false,
+		crosspostEventAnnounce: false,
+		eventAnnounceChannelId: "N/A"
 	};
 
 	try {
@@ -77,8 +80,13 @@ export async function getGuild(id: string) {
 			colorRoleIds: entry.colorRoleIds,
 			settingsManagerRoleId: entry.settingsManagerRoleId,
 			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId
+			announcementRoleId: entry.announcementRoleId,
+			announceEvents: entry.announceEvents,
+			crosspostEventAnnounce: entry.crosspostEventAnnounce,
+			eventAnnounceChannelId: entry.eventAnnounceChannelId
 		} as guildDBEntry;
+	} else {
+		return null;
 	}
 
 	return guild;
@@ -222,6 +230,81 @@ export async function updateGuildModeratorId(
 }
 
 /**
+ * updateGuildAnnounceEvents
+ * Updates the event announcement channel
+ * @param id The Discord id of the guild that you wish to update.
+ * @param newAnnounceEvents The new announce events settings the guild will have.
+ * @returns True or false depending on if the action was successful.
+ */
+export async function updateGuildAnnounceEvents(
+	id: string,
+	newAnnounceEvents: boolean
+) {
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		await collection.updateOne(
+			{ id },
+			{ $set: { announceEvents: newAnnounceEvents } }
+		);
+		log.info(`Updated ANNOUNCEEVENTS in entry guildDB-${id}`);
+		return true;
+	} catch (error) {
+		log.error(error);
+		return false;
+	}
+}
+
+/**
+ * updateGuildCrosspostEventsAnnounce
+ * Updates the event announcement channel
+ * @param id The Discord id of the guild that you wish to update.
+ * @param newCrosspostEventsAnnounce The new  crosspost events announce settings the guild will have.
+ * @returns True or false depending on if the action was successful.
+ */
+export async function updateGuildCrosspostEventsAnnounce(
+	id: string,
+	newCrosspostEventsAnnounce: boolean
+) {
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		await collection.updateOne(
+			{ id },
+			{ $set: { crosspostEventAnnounce: newCrosspostEventsAnnounce } }
+		);
+		log.info(`Updated CROSSPOSTEVENTANNOUNCE in entry guildDB-${id}`);
+		return true;
+	} catch (error) {
+		log.error(error);
+		return false;
+	}
+}
+
+/**
+ * updateGuildEventAnnounceChannelId
+ * Updates the event announcement channel
+ * @param id The Discord id of the guild that you wish to update.
+ * @param newEventChannelId The new event announcement channel id the guild will have.
+ * @returns True or false depending on if the action was successful.
+ */
+export async function updateGuildEventAnnounceChannelId(
+	id: string,
+	newEventChannelId: string
+) {
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		await collection.updateOne(
+			{ id },
+			{ $set: { eventAnnounceChannelId: newEventChannelId } }
+		);
+		log.info(`Updated EVENTANNOUNCECHANNELID in entry guildDB-${id}`);
+		return true;
+	} catch (error) {
+		log.error(error);
+		return false;
+	}
+}
+
+/**
  * getGuildColor
  * Gets a guild entry's color from guildDB.
  * @param id The Discord id of the guild that you wish to get.
@@ -243,10 +326,7 @@ export async function getGuildColor(id: string) {
 		guild = {
 			id: entry.id,
 			colors: entry.colors,
-			colorRoleIds: entry.colorRoleIds,
-			settingsManagerRoleId: entry.settingsManagerRoleId,
-			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId
+			colorRoleIds: entry.colorRoleIds
 		} as guildDBEntry;
 	} else {
 		return null;
@@ -258,12 +338,12 @@ export async function getGuildColor(id: string) {
 }
 
 /**
- * getAnnouncerId
+ * getGuildAnnouncerId
  * Gets a guild entry's announcement role id from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild announcement role id.
  */
-export async function getAnnouncerId(id: string) {
+export async function getGuildAnnouncerId(id: string) {
 	let entry = null;
 	let guild = null;
 
@@ -278,10 +358,6 @@ export async function getAnnouncerId(id: string) {
 	if (entry != null) {
 		guild = {
 			id: entry.id,
-			colors: entry.colors,
-			colorRoleIds: entry.colorRoleIds,
-			settingsManagerRoleId: entry.settingsManagerRoleId,
-			moderatorRoleId: entry.moderatorRoleId,
 			announcementRoleId: entry.announcementRoleId
 		} as guildDBEntry;
 	} else {
@@ -296,12 +372,12 @@ export async function getAnnouncerId(id: string) {
 }
 
 /**
- * getSettingsManagerId
+ * getGuildSettingsManagerId
  * Gets a guild entry's settings manager role id from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild settings manager role id.
  */
-export async function getSettingsManagerId(id: string) {
+export async function getGuildSettingsManagerId(id: string) {
 	let entry = null;
 	let guild = null;
 
@@ -316,11 +392,7 @@ export async function getSettingsManagerId(id: string) {
 	if (entry != null) {
 		guild = {
 			id: entry.id,
-			colors: entry.colors,
-			colorRoleIds: entry.colorRoleIds,
-			settingsManagerRoleId: entry.settingsManagerRoleId,
-			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId
+			settingsManagerRoleId: entry.settingsManagerRoleId
 		} as guildDBEntry;
 	} else {
 		return null;
@@ -334,12 +406,12 @@ export async function getSettingsManagerId(id: string) {
 }
 
 /**
- * getModeratorId
+ * getGuildModeratorId
  * Gets a guild entry's moderator role id from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild moderator role id.
  */
-export async function getModeratorId(id: string) {
+export async function getGuildModeratorId(id: string) {
 	let entry = null;
 	let guild = null;
 
@@ -354,11 +426,7 @@ export async function getModeratorId(id: string) {
 	if (entry != null) {
 		guild = {
 			id: entry.id,
-			colors: entry.colors,
-			colorRoleIds: entry.colorRoleIds,
-			settingsManagerRoleId: entry.settingsManagerRoleId,
-			moderatorRoleId: entry.moderatorRoleId,
-			announcementRoleId: entry.announcementRoleId
+			moderatorRoleId: entry.moderatorRoleId
 		} as guildDBEntry;
 	} else {
 		return null;
@@ -366,6 +434,65 @@ export async function getModeratorId(id: string) {
 
 	if (guild.moderatorRoleId != "N/A") {
 		return guild.moderatorRoleId;
+	} else {
+		return null;
+	}
+}
+
+/**
+ * getGuildCrosspostEventAnnounce
+ * Gets a guild entry's crosspost event announcement setting from guildDB.
+ * @param id The Discord id of the guild that you wish to get.
+ * @returns The guild crosspost event announcement setting.
+ */
+export async function getGuildCrosspostEventAnnounce(id: string) {
+	let entry = null;
+
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		entry = await collection.findOne({ id });
+		log.info(`Reading entry guildDB-${id}.`);
+	} catch (error) {
+		log.error(error);
+	}
+
+	if (entry != null) {
+		return entry.crosspostEventAnnounce;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * getGuildEventAnnounceChannel
+ * Gets a guild entry's event announcement channel id from guildDB.
+ * @param id The Discord id of the guild that you wish to get.
+ * @returns The guild event announcement channel id or null if the feature is disabled.
+ */
+export async function getGuildEventAnnounceChannel(id: string) {
+	let entry = null;
+	let guild = null;
+
+	try {
+		const collection = DBclient.db(DBname).collection(CollectionName);
+		entry = await collection.findOne({ id });
+		log.info(`Reading entry guildDB-${id}.`);
+	} catch (error) {
+		log.error(error);
+	}
+
+	if (entry != null) {
+		guild = {
+			id: entry.id,
+			announceEvents: entry.announceEvents,
+			eventAnnounceChannelId: entry.eventAnnounceChannelId
+		} as guildDBEntry;
+	} else {
+		return null;
+	}
+
+	if (guild.announceEvents) {
+		return guild.eventAnnounceChannelId;
 	} else {
 		return null;
 	}

@@ -6,16 +6,20 @@ import {
 	EmbedBuilder,
 	GuildMemberRoleManager,
 	PermissionsBitField,
-	Role
+	Role,
+	GuildTextBasedChannel
 } from "discord.js";
 import {
 	createGuild,
 	getGuild,
 	getGuildColor,
-	getSettingsManagerId,
+	getGuildSettingsManagerId,
+	updateGuildAnnounceEvents,
 	updateGuildAnnouncerId,
 	updateGuildColor,
 	updateGuildColorList,
+	updateGuildCrosspostEventsAnnounce,
+	updateGuildEventAnnounceChannelId,
 	updateGuildModeratorId,
 	updateGuildSettingsManagerId
 } from "../functions/guildDatabase";
@@ -83,6 +87,37 @@ export = {
 						.setDescription("The value of this option. No default.")
 						.setRequired(true)
 				)
+		)
+		.addSubcommand((subcommand) =>
+			subcommand
+				.setName("announce-events")
+				.setDescription(
+					"Whether or not the bot should announce events and where."
+				)
+				.addBooleanOption((option) =>
+					option
+						.setName("value")
+						.setDescription(
+							"The announce events toggle. Default is false."
+						)
+						.setRequired(true)
+				)
+				.addBooleanOption((option) =>
+					option
+						.setName("crosspost")
+						.setDescription(
+							"Whether or not to crosspost event announcements."
+						)
+						.setRequired(false)
+				)
+				.addChannelOption((option) =>
+					option
+						.setName("channel")
+						.setDescription(
+							"The location where these announcements will be posted."
+						)
+						.setRequired(true)
+				)
 		),
 
 	//command code
@@ -90,16 +125,16 @@ export = {
 		if (!interaction.isChatInputCommand()) return;
 
 		//get guildDB entry for current server
-		let potentialDBEntry = await getGuild(interaction.guild?.id as string);
+		let potentialDBEntry = await getGuild(interaction.guildId as string);
 		if (potentialDBEntry == null) {
-			await createGuild(interaction.guild?.id as string);
-			potentialDBEntry = await getGuild(interaction.guild?.id as string);
+			await createGuild(interaction.guildId as string);
+			potentialDBEntry = await getGuild(interaction.guildId as string);
 		}
 		const DBEntry = potentialDBEntry as guildDBEntry;
 
 		switch (interaction.options.getSubcommand()) {
 			case "view": {
-				const embedInfo = `**Colors:** ${DBEntry.colors}\n**Settings Manager Role ID:** ${DBEntry.settingsManagerRoleId}\n**Moderator Role ID:** ${DBEntry.moderatorRoleId}\n**Announcer Role ID:** ${DBEntry.announcementRoleId}`;
+				const embedInfo = `**Colors:** ${DBEntry.colors}\n**Settings Manager Role ID:** ${DBEntry.settingsManagerRoleId}\n**Moderator Role ID:** ${DBEntry.moderatorRoleId}\n**Announcer Role ID:** ${DBEntry.announcementRoleId}\n**Announce Events:** ${DBEntry.announceEvents}\n**Event Announcement Channel ID:** ${DBEntry.eventAnnounceChannelId}`;
 
 				const embed = new EmbedBuilder()
 					.setTitle(`${interaction.guild?.name} Settings`)
@@ -115,14 +150,14 @@ export = {
 
 			case "colors": {
 				//check if user has permissions to change settings
-				const announcerRoleId = await getSettingsManagerId(
-					interaction.guild?.id as string
+				const settingsManagerRoleId = await getGuildSettingsManagerId(
+					interaction.guildId as string
 				);
 				if (
 					!(
 						interaction.member?.roles as GuildMemberRoleManager
-					).cache.some((role) => role.id == announcerRoleId) ||
-					interaction.user.id == interaction.guild?.ownerId
+					).cache.some((role) => role.id == settingsManagerRoleId) ||
+					interaction.user.id != interaction.guild?.ownerId
 				) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
@@ -139,10 +174,7 @@ export = {
 				) as boolean;
 
 				//update the DB
-				await updateGuildColor(
-					interaction.guild?.id as string,
-					newValue
-				);
+				await updateGuildColor(interaction.guildId as string, newValue);
 
 				//tell the user success
 				await interaction.editReply(
@@ -178,12 +210,12 @@ export = {
 					}
 
 					await updateGuildColorList(
-						interaction.guild?.id as string,
+						interaction.guildId as string,
 						colorList
 					);
 				} else {
 					let colorList = (await getGuildColor(
-						interaction.guild?.id as string
+						interaction.guildId as string
 					)) as Array<string>;
 
 					for (let i = 1; i < colorList.length; i++) {
@@ -193,7 +225,7 @@ export = {
 					colorList = ["N/A"];
 
 					await updateGuildColorList(
-						interaction.guild?.id as string,
+						interaction.guildId as string,
 						colorList
 					);
 				}
@@ -209,15 +241,7 @@ export = {
 
 			case "settings-permissions": {
 				//check if user has permissions to change settings
-				const announcerRoleId = await getSettingsManagerId(
-					interaction.guild?.id as string
-				);
-				if (
-					!(
-						interaction.member?.roles as GuildMemberRoleManager
-					).cache.some((role) => role.id == announcerRoleId) ||
-					interaction.user.id == interaction.guild?.ownerId
-				) {
+				if (interaction.user.id != interaction.guild?.ownerId) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -232,7 +256,7 @@ export = {
 
 				//update DB
 				await updateGuildSettingsManagerId(
-					interaction.guild?.id as string,
+					interaction.guildId as string,
 					newValue.id
 				);
 
@@ -247,14 +271,14 @@ export = {
 
 			case "moderator-permissions": {
 				//check if user has permissions to change settings
-				const announcerRoleId = await getSettingsManagerId(
-					interaction.guild?.id as string
+				const settingsManagerRoleId = await getGuildSettingsManagerId(
+					interaction.guildId as string
 				);
 				if (
 					!(
 						interaction.member?.roles as GuildMemberRoleManager
-					).cache.some((role) => role.id == announcerRoleId) ||
-					interaction.user.id == interaction.guild?.ownerId
+					).cache.some((role) => role.id == settingsManagerRoleId) ||
+					interaction.user.id != interaction.guild?.ownerId
 				) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
@@ -270,7 +294,7 @@ export = {
 
 				//update DB
 				await updateGuildModeratorId(
-					interaction.guild?.id as string,
+					interaction.guildId as string,
 					newValue.id
 				);
 
@@ -285,14 +309,14 @@ export = {
 
 			case "announcement-permissions": {
 				//check if user has permissions to change settings
-				const announcerRoleId = await getSettingsManagerId(
-					interaction.guild?.id as string
+				const settingsManagerRoleId = await getGuildSettingsManagerId(
+					interaction.guildId as string
 				);
 				if (
 					!(
 						interaction.member?.roles as GuildMemberRoleManager
-					).cache.some((role) => role.id == announcerRoleId) ||
-					interaction.user.id == interaction.guild?.ownerId
+					).cache.some((role) => role.id == settingsManagerRoleId) ||
+					interaction.user.id != interaction.guild?.ownerId
 				) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
@@ -308,7 +332,7 @@ export = {
 
 				//update DB
 				await updateGuildAnnouncerId(
-					interaction.guild?.id as string,
+					interaction.guildId as string,
 					newValue.id
 				);
 
@@ -317,6 +341,96 @@ export = {
 				);
 				log.info(
 					`${interaction.user.tag} updated Announcement Role in ${interaction.guild?.name}.`
+				);
+				break;
+			}
+
+			case "announce-events": {
+				//check if user has permissions to change settings
+				const settingsManagerRoleId = await getGuildSettingsManagerId(
+					interaction.guildId as string
+				);
+				if (
+					!(
+						interaction.member?.roles as GuildMemberRoleManager
+					).cache.some((role) => role.id == settingsManagerRoleId) ||
+					interaction.user.id != interaction.guild?.ownerId
+				) {
+					await interaction.editReply(
+						"You do not have permissions to run this command."
+					);
+					log.warn(
+						`${interaction.user.tag} attempted to change guild settings without permission.`
+					);
+					return;
+				}
+
+				//get new values
+				const newSetting = interaction.options.getBoolean(
+					"value"
+				) as boolean;
+				const newCrosspost = interaction.options.getBoolean(
+					"crosspost"
+				) as boolean;
+				const newChannel = interaction.options.getChannel(
+					"channel"
+				) as GuildTextBasedChannel;
+
+				//get output and update settings
+				let output = "**Update Announce Events Settings!**";
+				if (newSetting) {
+					//test values
+					let crosspost,
+						send = true;
+					try {
+						await newChannel
+							.send(
+								"**Big Chungus Test Message**\nThis message is of no importance. Feel free to ignore/delete it."
+							)
+							.then(async (message) => {
+								if (newCrosspost) {
+									try {
+										await message.crosspost();
+									} catch (error) {
+										crosspost = false;
+									}
+								}
+
+								await message.delete();
+							});
+					} catch (error) {
+						send = false;
+					}
+
+					//save values and prepare output
+					if (send) {
+						updateGuildAnnounceEvents(interaction.guild.id, true);
+						updateGuildEventAnnounceChannelId(
+							interaction.guild.id,
+							newChannel.id
+						);
+						output += "\nEnabled Event Announcements.";
+					} else {
+						output +=
+							"\nCouldn't enable Event Announcements, invalid channel.";
+					}
+
+					if (newCrosspost && crosspost) {
+						updateGuildCrosspostEventsAnnounce(
+							interaction.guild.id,
+							true
+						);
+						output += "\nEnabled Event Announcements crossposting.";
+					} else {
+						output +=
+							"\nCouldn't enable Event Announcements crossposting, channel is not a Announcement Channel.";
+					}
+				}
+
+				//tell the user success
+				await interaction.editReply(output);
+				log.info(
+					`${interaction.user.tag} updated announce event settings in ${interaction.guild?.name}.`
 				);
 				break;
 			}

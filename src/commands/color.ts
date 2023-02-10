@@ -69,7 +69,7 @@ export = {
 
 		//get server colors
 		const colors = (await getGuildColor(
-			interaction.guild?.id as string
+			interaction.guildId as string
 		)) as Array<string>;
 		if (colors == null) {
 			await interaction.editReply(

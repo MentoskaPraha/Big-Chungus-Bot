@@ -16,6 +16,9 @@ export interface guildDBEntry {
 	settingsManagerRoleId: string;
 	moderatorRoleId: string;
 	announcementRoleId: string;
+	announceEvents: boolean;
+	crosspostEventAnnounce: boolean;
+	eventAnnounceChannelId: string;
 }
 
 //command interfaces

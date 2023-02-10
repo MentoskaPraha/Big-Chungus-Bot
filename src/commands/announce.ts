@@ -10,7 +10,7 @@ import {
 } from "discord.js";
 import log from "../logger";
 import { getUserTitle } from "../functions/userDatabase";
-import { getAnnouncerId } from "../functions/guildDatabase";
+import { getGuildAnnouncerId } from "../functions/guildDatabase";
 import { announcementEmbedColor } from "../config.json";
 
 //command
@@ -63,14 +63,14 @@ export = {
 		if (!interaction.isChatInputCommand()) return;
 
 		//check if user has permissions to make the announcement
-		const announcerRoleId = await getAnnouncerId(
-			interaction.guild?.id as string
+		const announcerRoleId = await getGuildAnnouncerId(
+			interaction.guildId as string
 		);
 		if (
 			!(interaction.member?.roles as GuildMemberRoleManager).cache.some(
 				(role) => role.id == announcerRoleId
 			) ||
-			interaction.user.id == interaction.guild?.ownerId
+			interaction.user.id != interaction.guild?.ownerId
 		) {
 			await interaction.editReply(
 				"You do not have permissions to run this command."

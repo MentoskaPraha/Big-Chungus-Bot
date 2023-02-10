@@ -3,7 +3,7 @@
 	"private": true,
 	"scripts": {
 		"build": "tsc && node -e 'require(\"shelljs\").cp(\"-R\", \"src/config.json\", \"build/\");'",
-		"test": "node -r dotenv/config ./build/db-test.js",
+		"test": "node -r dotenv/config ./build/index.js",
 		"lint": "prettier --write . && eslint . --ext .ts --ignore-path .gitignore",
 		"start": "node index.js"
 	},

@@ -28,7 +28,7 @@ This bot uses MongoDB as its database.
 
 ## License
 
-GNU General Public License V3. Deployement support will not be provided.
+GNU General Public License V3. Deployment support will not be provided.
 
 ## Version
 
