@@ -12,11 +12,12 @@ const itemFiles = readdirSync(itemPath).filter(
 );
 
 //get the items
-for (const file of itemFiles) {
+itemFiles.forEach(async (file) => {
 	const filePath = join(itemPath, file);
-	const item = import(filePath) as unknown as commandObject;
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const item = require(filePath) as commandObject;
 	items.set(item.name, item);
-}
+});
 
 //export item list
-export = items;
+export default items;
