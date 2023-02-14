@@ -91,16 +91,18 @@ export = {
 				//update user color
 				await updateUserColor(interaction.user.id, newColor);
 
-				//get color role
-				const role = interaction.guild?.roles.cache.find(
-					(role) => role.id == colors[newColor]
-				) as Role;
-
-				//give the user the color
+				//get the user
 				const member = interaction.guild?.members.cache.find(
 					(member) => member.id == interaction.user.id
 				);
-				member?.roles.add(role);
+
+				//get color role and give it to the user
+				if (newColor != 0) {
+					const role = interaction.guild?.roles.cache.find(
+						(role) => role.id == colors[newColor]
+					) as Role;
+					member?.roles.add(role);
+				}
 
 				//remove old color roles
 				if (

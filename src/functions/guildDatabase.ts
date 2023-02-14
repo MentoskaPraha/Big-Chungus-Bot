@@ -120,7 +120,7 @@ export async function deleteGuild(id: string) {
 export async function updateGuildColor(id: string, newColor: boolean) {
 	try {
 		const collection = DBclient.db(DBname).collection(CollectionName);
-		await collection.updateOne({ id }, { $set: { color: newColor } });
+		await collection.updateOne({ id }, { $set: { colors: newColor } });
 		log.info(`Updated COLOR in entry guildDB-${id}`);
 		return true;
 	} catch (error) {

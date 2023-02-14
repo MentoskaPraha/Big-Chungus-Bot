@@ -42,6 +42,7 @@ export = {
 				.setDescription(
 					"Whether to publish the message if it was sent into an announcement channel."
 				)
+				.setRequired(false)
 		)
 		.addStringOption((option) =>
 			option

@@ -102,14 +102,6 @@ export = {
 						)
 						.setRequired(true)
 				)
-				.addBooleanOption((option) =>
-					option
-						.setName("crosspost")
-						.setDescription(
-							"Whether or not to crosspost event announcements."
-						)
-						.setRequired(false)
-				)
 				.addChannelOption((option) =>
 					option
 						.setName("channel")
@@ -117,6 +109,14 @@ export = {
 							"The location where these announcements will be posted."
 						)
 						.setRequired(true)
+				)
+				.addBooleanOption((option) =>
+					option
+						.setName("crosspost")
+						.setDescription(
+							"Whether or not to crosspost event announcements."
+						)
+						.setRequired(false)
 				)
 		),
 
@@ -173,9 +173,6 @@ export = {
 					"value"
 				) as boolean;
 
-				//update the DB
-				await updateGuildColor(interaction.guildId as string, newValue);
-
 				//tell the user success
 				await interaction.editReply(
 					"**Successfully updated setting!**\nNow updating roles, this may take a moment..."
@@ -189,10 +186,10 @@ export = {
 					const position =
 						(interaction.guild?.roles.cache.find(
 							(role) =>
-								role.name == "Big Chungus" &&
+								role.name == interaction.client.user.username &&
 								role.members.find((user) => user.id == clientId)
 									?.id == clientId
-						)?.position as number) - 1;
+						)?.position as number);
 					const colorList = ["N/A"];
 					for (let i = 1; i < userColors.length; i++) {
 						await interaction.guild?.roles
@@ -230,9 +227,13 @@ export = {
 					);
 				}
 
-				interaction.followUp(
-					"**All roles have been updated successfully!**"
-				);
+				//update the DB
+				await updateGuildColor(interaction.guildId as string, newValue);
+
+				interaction.followUp({
+					content: "**All roles have been updated successfully!**",
+					ephemeral: true
+				});
 				log.info(
 					`${interaction.user.tag} updated color roles in ${interaction.guild?.name}`
 				);
