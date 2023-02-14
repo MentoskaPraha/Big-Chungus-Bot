@@ -1,0 +1,37 @@
+version: '3.3'
+services:
+  discord-bot:
+    image: mentoskapraha/big-chungus-bot:v150-pre
+    volumes:
+      - ./logs:/big-chungus/logs
+    environment:
+      - DISCORD_BOT_TOKEN=[YOUR_TOKEN_HERE]
+      - DB_URI=mongodb://root:AeroStinks@mongo:27017
+      - DB_NAME=prod
+    deploy:
+        resources:
+            limits:
+              cpus: '1'
+              memory: 1G
+            reservations:
+              cpus: '0.5'
+              memory: 512M
+
+  database:
+    image: mongo:6.0.4
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongoDB:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: AeroStinks
+    deploy:
+        resources:
+            limits:
+              cpus: '1'
+              memory: 1G
+            reservations:
+              cpus: '0.5'
+              memory: 512M
