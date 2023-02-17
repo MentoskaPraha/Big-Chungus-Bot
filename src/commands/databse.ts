@@ -1,4 +1,4 @@
-//dependancies
+//dependencies
 import {
 	CommandInteraction,
 	SlashCommandBuilder,
@@ -45,10 +45,10 @@ export = {
 
 		switch (interaction.options.getSubcommand()) {
 			case "create": {
-				//create the users database entry
+				//create user's database entry
 				const success = await createUser(interaction.user.id);
 
-				//tell the user if the action was successful or not
+				//tell user whether the action was successful or not
 				if (success == false) {
 					await interaction.editReply(
 						"Your database profile already exists."
@@ -80,7 +80,7 @@ export = {
 					break;
 				}
 
-				//get the DB entry
+				//get DB entry
 				const dbEntry = potentialDBEntry as userDBEntry;
 
 				//build embed
@@ -95,7 +95,7 @@ export = {
 						userColors[dbEntry.color].code as ColorResolvable
 					);
 
-				//give user his DB entry info
+				//give user their DB entry info
 				await interaction.editReply({ embeds: [embed] });
 
 				log.info(
@@ -105,10 +105,10 @@ export = {
 			}
 
 			case "delete": {
-				//delete the users database entry
+				//delete user's database entry
 				const success = await deleteUser(interaction.user.id);
 
-				//tell the user if the action was successful or not
+				//tell user whether action was successful or not
 				if (success == false) {
 					await interaction.editReply(
 						"Your database profile does not exist."

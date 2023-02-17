@@ -1,4 +1,4 @@
-//dependancies
+//dependencies
 import {
 	CommandInteraction,
 	SlashCommandBuilder,
@@ -149,7 +149,7 @@ export = {
 			}
 
 			case "colors": {
-				//check if user has permissions to change settings
+				//check if user has permission to change settings
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
@@ -173,7 +173,7 @@ export = {
 					"value"
 				) as boolean;
 
-				//tell the user success
+				//tell user it was successful
 				await interaction.editReply(
 					"**Successfully updated setting!**\nNow updating roles, this may take a moment..."
 				);
@@ -228,7 +228,7 @@ export = {
 					);
 				}
 
-				//update the DB
+				//update DB
 				await updateGuildColor(interaction.guildId as string, newValue);
 
 				interaction.followUp({
@@ -242,7 +242,7 @@ export = {
 			}
 
 			case "settings-permissions": {
-				//check if user has permissions to change settings
+				//check if user has permission to change settings
 				if (interaction.user.id != interaction.guild?.ownerId) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
@@ -272,7 +272,7 @@ export = {
 			}
 
 			case "moderator-permissions": {
-				//check if user has permissions to change settings
+				//check if user has permission to change settings
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
@@ -310,7 +310,7 @@ export = {
 			}
 
 			case "announcement-permissions": {
-				//check if user has permissions to change settings
+				//check if user has permission to change settings
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
@@ -348,7 +348,7 @@ export = {
 			}
 
 			case "announce-events": {
-				//check if user has permissions to change settings
+				//check if user has permission to change settings
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
@@ -367,7 +367,7 @@ export = {
 					return;
 				}
 
-				//get new values
+				//get the new values
 				const newSetting = interaction.options.getBoolean(
 					"value"
 				) as boolean;
@@ -429,7 +429,7 @@ export = {
 					}
 				}
 
-				//tell the user success
+				//tell user it was successful
 				await interaction.editReply(output);
 				log.info(
 					`${interaction.user.tag} updated announce event settings in ${interaction.guild?.name}.`

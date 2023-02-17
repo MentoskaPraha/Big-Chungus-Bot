@@ -1,4 +1,4 @@
-//dependancies
+//dependencies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { updateUserTitle, getUser } from "../functions/userDatabase";
 import log from "../logger";
@@ -56,10 +56,10 @@ export = {
 				//get command options
 				const newTitle = interaction.options.getString("new_title");
 
-				//update the title in the userDB
+				//update the title in userDB
 				await updateUserTitle(interaction.user.id, newTitle as string);
 
-				//respond to the user
+				//respond to user
 				await interaction.editReply(
 					"Your title was successfully changed!"
 				);
@@ -79,13 +79,13 @@ export = {
 			}
 
 			case "remove": {
-				//update the title in the userDB
+				//update the title in userDB
 				await updateUserTitle(
 					interaction.user.id,
 					"Titleless" as string
 				);
 
-				//respond to the user
+				//respond to user
 				await interaction.editReply(
 					"Your title was successfully removed!"
 				);

@@ -1,4 +1,4 @@
-//dependancies
+//dependencies
 import {
 	SlashCommandBuilder,
 	EmbedBuilder,
@@ -234,7 +234,7 @@ export = {
 					"🇹"
 				];
 
-				//create the embed
+				//create embed
 				let embedDescription = `${emojis[0]} ${answers[0]}`;
 				for (let i = 1; answers[i] != null; i++) {
 					embedDescription += `\n\n${emojis[i]} ${answers[i]}`;
