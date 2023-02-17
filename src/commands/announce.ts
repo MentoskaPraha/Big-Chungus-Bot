@@ -3,14 +3,15 @@ import {
 	SlashCommandBuilder,
 	EmbedBuilder,
 	CommandInteraction,
-	Role,
 	GuildMemberRoleManager,
 	GuildTextBasedChannel,
 	ColorResolvable,
+	ChannelType
 } from "discord.js";
 import log from "../logger";
 import { getUserTitle } from "../functions/userDatabase";
-import { announcementEmbedColor, announcerRoleId } from "../config.json";
+import { getGuildAnnouncerId } from "../functions/guildDatabase";
+import { announcementEmbedColor } from "../config.json";
 
 //command
 export = {
@@ -27,12 +28,21 @@ export = {
 				.setName("channel")
 				.setDescription("The channel the announcement will be sent to.")
 				.setRequired(true)
+				.addChannelTypes(ChannelType.GuildText)
 		)
 		.addStringOption((option) =>
 			option
 				.setName("announcement")
 				.setDescription("The announcement itself.")
 				.setRequired(true)
+		)
+		.addBooleanOption((option) =>
+			option
+				.setName("crosspost")
+				.setDescription(
+					"Whether to publish the message if it was sent into an announcement channel."
+				)
+				.setRequired(false)
 		)
 		.addStringOption((option) =>
 			option
@@ -54,10 +64,14 @@ export = {
 		if (!interaction.isChatInputCommand()) return;
 
 		//check if user has permissions to make the announcement
+		const announcerRoleId = await getGuildAnnouncerId(
+			interaction.guildId as string
+		);
 		if (
 			!(interaction.member?.roles as GuildMemberRoleManager).cache.some(
-				(role: Role) => role.id == announcerRoleId
-			)
+				(role) => role.id == announcerRoleId
+			) ||
+			interaction.user.id != interaction.guild?.ownerId
 		) {
 			await interaction.editReply(
 				"You do not have permissions to run this command."
@@ -72,6 +86,7 @@ export = {
 		let title = interaction.options.getString("title");
 		const announcement = interaction.options.getString("announcement");
 		const ping = interaction.options.getMentionable("ping");
+		const crosspost = interaction.options.getBoolean("crosspost");
 		const channel = interaction.options.getChannel(
 			"channel"
 		) as GuildTextBasedChannel;
@@ -98,12 +113,28 @@ export = {
 		}
 
 		//send the message to the channel
-		channel.send({ content: message, embeds: [embed] });
+		let success = true;
+		channel
+			.send({ content: message, embeds: [embed] })
+			.then(async (message) => {
+				if (crosspost) {
+					try {
+						await message.crosspost();
+					} catch (error) {
+						log.error(`Failed to crosspost. ${error}`);
+						success = false;
+					}
+				}
+			});
 
 		//give confirmation to the user that the command was successful
-		await interaction.editReply(
-			"Your announcement has been sent.\nIf you wish to crosspost it you must do it manually!"
-		);
+		if (!success) {
+			await interaction.editReply(
+				"Your announcement has been sent and failed to crosspost."
+			);
+		} else {
+			await interaction.editReply("Your announcement has been sent.");
+		}
 		log.info(`${interaction.user.tag} made an anouncement.`);
-	},
+	}
 };

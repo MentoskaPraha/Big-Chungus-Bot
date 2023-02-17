@@ -1,19 +1,43 @@
 {
-	"clientId": "982171760990507070",
-	"maintianerId": "726034169209290813",
-
 	"announcementEmbedColor": "#FFA338",
 	"pollEmbedColor": "#E7B727",
 	"diceRollerEmbedColor": "#F11E32",
 	"userInfoEmbedColor": "#4BCDDD",
 	"serverInfoEmbedColor": "#B4AEAE",
-
-	"announcerRoleId": "975740439812526160",
+	"botStatusEmbedColor": "#B4AEAE",
 
 	"userColors": [
 		{
 			"name": "None",
 			"code": "#B4AEAE"
+		},
+		{
+			"name": "MP Blue",
+			"code": "#3063dd"
+		},
+		{
+			"name": "Marki Pink",
+			"code": "#f885b8"
+		},
+		{
+			"name": "Gljue Puple",
+			"code": "#b677ff"
+		},
+		{
+			"name": "Potato Green",
+			"code": "#1aef1f"
+		},
+		{
+			"name": "Cloud Blue",
+			"code": "#8d93ea"
+		},
+		{
+			"name": "Rikaphu Red",
+			"code": "#ff2a77"
+		},
+		{
+			"name": "Ylliada Green",
+			"code": "#86D36F"
 		}
 	]
 }

@@ -18,11 +18,11 @@ const createSonicBoom = (dest: string) =>
 	pino.destination({ dest: dest, append: true, sync: true });
 const streams = [
 	{ stream: createSonicBoom(dir + "/" + fileName + ".log") },
-	{ stream: pretty({ colorize: true, sync: true }) },
+	{ stream: pretty({ colorize: true, sync: true }) }
 ];
 
 //create logger
 const logger = pino({ level: "info" }, pino.multistream(streams));
 
 //export logger
-export = logger;
+export default logger;

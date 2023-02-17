@@ -20,7 +20,7 @@ export = {
 				await interaction.reply({
 					content:
 						"Could not find command, please contact MentoskaPraha immediately!",
-					ephemeral: true,
+					ephemeral: true
 				});
 				log.error(
 					`${interaction.user.tag} has run an unknown command!`
@@ -50,5 +50,5 @@ export = {
 
 			return;
 		}
-	},
+	}
 };

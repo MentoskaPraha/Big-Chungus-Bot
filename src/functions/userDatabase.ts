@@ -3,8 +3,8 @@ import { MongoClient } from "mongodb";
 import { userDBEntry } from "../types";
 import log from "../logger";
 
-const DBclient = new MongoClient(process.env.DB_URI as string);
-const DBname = process.env.DB_NAME as string;
+const DBclient = new MongoClient(process.env.DISCORD_BOT_DB_URI as string);
+const DBname = process.env.DISCORD_BOT_DB_NAME as string;
 const CollectionName = "userDB";
 
 /**
@@ -35,7 +35,7 @@ export async function createUser(id: string) {
 	const user = {
 		id: id,
 		title: "Titleless",
-		color: 0,
+		color: 0
 	};
 
 	try {
@@ -71,7 +71,7 @@ export async function getUser(id: string) {
 		user = {
 			id: entry.id,
 			title: entry.title,
-			color: entry.color,
+			color: entry.color
 		} as userDBEntry;
 	}
 
@@ -99,7 +99,7 @@ export async function deleteUser(id: string) {
 /**
  * updateUserTitle
  * Updates the users title.
- * @param id The Discord id of the user that you wish to update the title of.
+ * @param id The Discord id of the user that you wish to update.
  * @param newTitle The new title the user will have.
  * @returns True or false depending on if the action was successful.
  */
@@ -118,14 +118,14 @@ export async function updateUserTitle(id: string, newTitle: string) {
 /**
  * updateUserColor
  * Updates the users color.
- * @param id The Discord id of the user that you wish to update the color of.
+ * @param id The Discord id of the user that you wish to update.
  * @param newColor The id of the color that the user will have.
  * @returns True or false depending on if the action was successful.
  */
 export async function updateUserColor(id: string, newColor: number) {
 	try {
 		const collection = DBclient.db(DBname).collection(CollectionName);
-		await collection.updateOne({ id }, { $set: { title: newColor } });
+		await collection.updateOne({ id }, { $set: { color: newColor } });
 		log.info(`Updated COLOR in entry userDB-${id}`);
 		return true;
 	} catch (error) {
@@ -156,7 +156,7 @@ export async function getUserTitle(id: string) {
 		user = {
 			id: entry.id,
 			title: entry.title,
-			color: entry.color,
+			color: entry.color
 		} as userDBEntry;
 	}
 

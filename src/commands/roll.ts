@@ -3,7 +3,7 @@ import {
 	SlashCommandBuilder,
 	EmbedBuilder,
 	CommandInteraction,
-	ColorResolvable,
+	ColorResolvable
 } from "discord.js";
 import log from "../logger";
 import { diceRollerEmbedColor } from "../config.json";
@@ -66,5 +66,5 @@ export = {
 		await interaction.editReply({ embeds: [embed] });
 
 		log.info(`${interaction.user.tag} has used the dice roller.`);
-	},
+	}
 };

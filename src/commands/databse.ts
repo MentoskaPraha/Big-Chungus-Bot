@@ -3,7 +3,7 @@ import {
 	CommandInteraction,
 	SlashCommandBuilder,
 	EmbedBuilder,
-	ColorResolvable,
+	ColorResolvable
 } from "discord.js";
 import { userDBEntry } from "../types";
 import { createUser, getUser, deleteUser } from "../functions/userDatabase";
@@ -54,7 +54,7 @@ export = {
 						"Your database profile already exists."
 					);
 					log.info(
-						`${interaction.user.id} has failed to create their database entry.`
+						`${interaction.user.tag} has failed to create their database entry.`
 					);
 					break;
 				} else {
@@ -62,7 +62,7 @@ export = {
 						"Your database profile has been created."
 					);
 					log.info(
-						`${interaction.user.id} has created their database entry.`
+						`${interaction.user.tag} has created their database entry.`
 					);
 					break;
 				}
@@ -114,7 +114,7 @@ export = {
 						"Your database profile does not exist."
 					);
 					log.info(
-						`${interaction.user.id} has failed to delete their database entry.`
+						`${interaction.user.tag} has failed to delete their database entry.`
 					);
 					break;
 				} else {
@@ -122,11 +122,11 @@ export = {
 						"Your database profile has been deleted."
 					);
 					log.info(
-						`${interaction.user.id} has deleted their database entry.`
+						`${interaction.user.tag} has deleted their database entry.`
 					);
 					break;
 				}
 			}
 		}
-	},
+	}
 };

@@ -5,7 +5,7 @@ import {
 	CommandInteraction,
 	User,
 	Guild,
-	ColorResolvable,
+	ColorResolvable
 } from "discord.js";
 import { userDBEntry } from "../types";
 import { getUser, getUserTitle } from "../functions/userDatabase";
@@ -13,7 +13,7 @@ import log from "../logger";
 import {
 	userInfoEmbedColor,
 	serverInfoEmbedColor,
-	userColors,
+	userColors
 } from "../config.json";
 
 //command
@@ -70,7 +70,8 @@ export = {
 				//get a valid color
 				let color = "N/A";
 				if (userEntry != null) color = userColors[userEntry.color].code;
-				if (color == "N/A") color = userInfoEmbedColor;
+				if (color == "N/A" || color == userColors[0].code)
+					color = userInfoEmbedColor;
 
 				//create embed
 				const embed = new EmbedBuilder()
@@ -115,5 +116,5 @@ export = {
 				break;
 			}
 		}
-	},
+	}
 };

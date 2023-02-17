@@ -8,6 +8,19 @@ export interface userDBEntry {
 	color: number;
 }
 
+//guildDB interfaces
+export interface guildDBEntry {
+	id: string;
+	colors: boolean;
+	colorRoleIds: Array<string>;
+	settingsManagerRoleId: string;
+	moderatorRoleId: string;
+	announcementRoleId: string;
+	announceEvents: boolean;
+	crosspostEventAnnounce: boolean;
+	eventAnnounceChannelId: string;
+}
+
 //command interfaces
 export interface commandObject {
 	name: string;

@@ -2,10 +2,10 @@
 import { Collection } from "discord.js";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { commandObject } from "../types";
+import { eventObject } from "../types";
 
 //create variables
-const items = new Collection<string, commandObject>();
+const items = new Collection<string, eventObject>();
 const itemPath = join(__dirname);
 const itemFiles = readdirSync(itemPath).filter(
 	(file) => file.endsWith(".js") && !file.startsWith("_")
@@ -15,7 +15,7 @@ const itemFiles = readdirSync(itemPath).filter(
 itemFiles.forEach(async (file) => {
 	const filePath = join(itemPath, file);
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const item = require(filePath) as commandObject;
+	const item = require(filePath) as eventObject;
 	items.set(item.name, item);
 });
 
