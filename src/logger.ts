@@ -25,4 +25,4 @@ const streams = [
 const logger = pino({ level: "info" }, pino.multistream(streams));
 
 //export logger
-export = logger;
+export default logger;

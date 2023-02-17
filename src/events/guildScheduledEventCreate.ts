@@ -24,13 +24,18 @@ export = {
 
 		const embed = new EmbedBuilder()
 			.setTitle(event.name)
-			.setDescription(event.description)
+			.setDescription(
+				event.description != ""
+					? event.description
+					: "This event has no description!"
+			)
 			.addFields(
 				{
 					name: "Start Time",
-					value: `<t:${event.scheduledStartTimestamp}:F>`
+					value: `<t:${Math.floor(
+						(event.scheduledStartTimestamp as number) / 1000
+					)}:F>`
 				},
-				{ name: "Author", value: `${event.creator?.username}` },
 				{ name: "Channel", value: `${event.channel?.name}` }
 			);
 

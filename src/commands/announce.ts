@@ -114,16 +114,18 @@ export = {
 
 		//send the message to the channel
 		let success = true;
-		channel.send({ content: message, embeds: [embed] }).then((message) => {
-			if (crosspost) {
-				try {
-					message.crosspost();
-				} catch (error) {
-					log.error(`Failed to crosspost. ${error}`);
-					success = false;
+		channel
+			.send({ content: message, embeds: [embed] })
+			.then(async (message) => {
+				if (crosspost) {
+					try {
+						await message.crosspost();
+					} catch (error) {
+						log.error(`Failed to crosspost. ${error}`);
+						success = false;
+					}
 				}
-			}
-		});
+			});
 
 		//give confirmation to the user that the command was successful
 		if (!success) {

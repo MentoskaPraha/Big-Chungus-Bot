@@ -3,8 +3,8 @@ import { MongoClient } from "mongodb";
 import { userDBEntry } from "../types";
 import log from "../logger";
 
-const DBclient = new MongoClient(process.env.DB_URI as string);
-const DBname = process.env.DB_NAME as string;
+const DBclient = new MongoClient(process.env.DISCORD_BOT_DB_URI as string);
+const DBname = process.env.DISCORD_BOT_DB_NAME as string;
 const CollectionName = "userDB";
 
 /**

@@ -20,23 +20,22 @@ export = {
 		const channelId = await getGuildEventAnnounceChannel(event.guildId);
 		if (channelId == null) return;
 
-		let message: string;
-
-		if (event.isCompleted()) {
-			message = `**An Event has Finished!**\n${event.url}`;
-		} else {
-			message = `**An Event was Cancelled!**\n${event.url}`;
-		}
+		const message = `**An Event was Cancelled!**\n${event.url}`;
 
 		const embed = new EmbedBuilder()
 			.setTitle(event.name)
-			.setDescription(event.description)
+			.setDescription(
+				event.description != ""
+					? event.description
+					: "This event has no description!"
+			)
 			.addFields(
 				{
 					name: "Start Time",
-					value: `<t:${event.scheduledStartTimestamp}:F>`
+					value: `<t:${Math.floor(
+						(event.scheduledStartTimestamp as number) / 1000
+					)}:F>`
 				},
-				{ name: "Author", value: `${event.creator?.username}` },
 				{ name: "Channel", value: `${event.channel?.name}` }
 			);
 
@@ -60,7 +59,7 @@ export = {
 			});
 
 		log.info(
-			`Announced cancellation/completion a Guild Scheduled Event in ${event.guild?.name}`
+			`Announced cancellation/completion of a Guild Scheduled Event in ${event.guild?.name}`
 		);
 	}
 };

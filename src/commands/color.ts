@@ -67,6 +67,17 @@ export = {
 		}
 		const dbEntry = potentialDBEntry as userDBEntry;
 
+		//let the user view their color, even if /color is disabled
+		if(interaction.options.getSubcommand() == "view") {
+			await interaction.editReply(
+				`Your color is ${
+					userColors[dbEntry.color].name
+				} and the HEX-CODE is ${userColors[dbEntry.color].code}.`
+			);
+			log.info(`${interaction.user.tag} has viewed their color.`);
+			return;
+		}
+
 		//get server colors
 		const colors = (await getGuildColor(
 			interaction.guildId as string
@@ -124,16 +135,6 @@ export = {
 					`${interaction.user.tag} has updated their new color.`
 				);
 
-				break;
-			}
-
-			case "view": {
-				await interaction.editReply(
-					`Your color is ${
-						userColors[dbEntry.color].name
-					} and the HEX-CODE is ${userColors[dbEntry.color].code}.`
-				);
-				log.info(`${interaction.user.tag} has viewed their color.`);
 				break;
 			}
 

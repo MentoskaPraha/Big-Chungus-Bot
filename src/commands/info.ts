@@ -70,7 +70,8 @@ export = {
 				//get a valid color
 				let color = "N/A";
 				if (userEntry != null) color = userColors[userEntry.color].code;
-				if (color == "N/A") color = userInfoEmbedColor;
+				if (color == "N/A" || color == userColors[0].code)
+					color = userInfoEmbedColor;
 
 				//create embed
 				const embed = new EmbedBuilder()

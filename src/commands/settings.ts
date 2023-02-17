@@ -23,7 +23,7 @@ import {
 	updateGuildModeratorId,
 	updateGuildSettingsManagerId
 } from "../functions/guildDatabase";
-import { serverInfoEmbedColor, userColors, clientId } from "../config.json";
+import { serverInfoEmbedColor, userColors } from "../config.json";
 import log from "../logger";
 import { guildDBEntry } from "../types";
 
@@ -183,13 +183,14 @@ export = {
 
 				//update color roles
 				if (newValue) {
-					const position =
-						(interaction.guild?.roles.cache.find(
-							(role) =>
-								role.name == interaction.client.user.username &&
-								role.members.find((user) => user.id == clientId)
-									?.id == clientId
-						)?.position as number);
+					const position = interaction.guild?.roles.cache.find(
+						(role) =>
+							role.name == interaction.client.user.username &&
+							role.members.some(
+								(user) =>
+									user.id == process.env.DISCORD_BOT_CLIENT_ID
+							)
+					)?.position as number;
 					const colorList = ["N/A"];
 					for (let i = 1; i < userColors.length; i++) {
 						await interaction.guild?.roles
@@ -424,7 +425,7 @@ export = {
 						output += "\nEnabled Event Announcements crossposting.";
 					} else {
 						output +=
-							"\nCouldn't enable Event Announcements crossposting, channel is not a Announcement Channel.";
+							"\nCouldn't enable Event Announcements crossposting, channel is not an Announcement Channel.";
 					}
 				}
 

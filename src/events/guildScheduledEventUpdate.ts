@@ -28,18 +28,27 @@ export = {
 		if (oldEvent.isScheduled() && newEvent.isActive()) {
 			message = `**An Event has Begun!**\n${newEvent.url}`;
 		} else {
-			message = `**An Event has been Changed!**\n${newEvent.url}`;
+			if(oldEvent.isActive() && newEvent.isCompleted()){
+				message = `**An Event has Ended!**\n${newEvent.url}`;
+			} else{
+				message = `**An Event has been Updated!**\n${newEvent.url}`;
+			}
 		}
 
 		const embed = new EmbedBuilder()
 			.setTitle(newEvent.name)
-			.setDescription(newEvent.description)
+			.setDescription(
+				newEvent.description != ""
+					? newEvent.description
+					: "This event has no description!"
+			)
 			.addFields(
 				{
 					name: "Start Time",
-					value: `<t:${newEvent.scheduledStartTimestamp}:F>`
+					value: `<t:${Math.floor(
+						(newEvent.scheduledStartTimestamp as number) / 1000
+					)}:F>`
 				},
-				{ name: "Author", value: `${newEvent.creator?.username}` },
 				{ name: "Channel", value: `${newEvent.channel?.name}` }
 			);
 
@@ -63,7 +72,7 @@ export = {
 			});
 
 		log.info(
-			`Announced cancellation/completion a Guild Scheduled Event in ${newEvent.guild?.name}`
+			`Announced update/start of a Guild Scheduled Event in ${newEvent.guild?.name}`
 		);
 	}
 };
