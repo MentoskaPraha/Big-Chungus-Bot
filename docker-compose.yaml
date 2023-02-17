@@ -1,50 +1,50 @@
 version: "3.3"
 services:
-    discord-bot:
-        image: mentoskapraha/big-chungus-bot:v150-pre
-        depends_on:
-            - database
-        volumes:
-            - ./logs:/big-chungus/logs
-        environment:
-            - DISCORD_BOT_TOKEN: YOUR_DICORD_BOT_TOKEN_HERE
-            - DISCORD_BOT_CLIENT_ID: YOUR_DISCORD_BOT_CLIENT_ID_HERE
-            - DISCORD_BOT_OWNER_ID: YOUR_DISCORD_ID
-            - DISCORD_BOT_DB_URI: mongodb://root:AeroStinks@database:27017
-            - DISCORD_BOT_DB_NAME: prod
-        deploy:
-            restart_policy:
-                condition: on-failure
-                delay: 5s
-                max_attempts: 10
-                window: 60s
-            resources:
-                limits:
-                    cpus: "1"
-                    memory: 512M
-                reservations:
-                    cpus: "0.5"
-                    memory: 128M
+  discord-bot:
+    image: mentoskapraha/big-chungus-bot:v150
+    depends_on:
+      - database
+    volumes:
+      - ./logs:/big-chungus/logs
+    environment:
+      DISCORD_BOT_TOKEN: YOUR_DICORD_BOT_TOKEN_HERE
+      DISCORD_BOT_CLIENT_ID: YOUR_DISCORD_BOT_CLIENT_ID_HERE
+      DISCORD_BOT_OWNER_ID: YOUR_DISCORD_ID
+      DISCORD_BOT_DB_URI: mongodb://root:AeroStinks@database:27017
+      DISCORD_BOT_DB_NAME: prod
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 60s
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
 
-    database:
-        image: mongo:6.0.4
-        ports:
-            - 27017:27017
-        volumes:
-            - ./mongoDB:/data/db
-        environment:
-            - MONGO_INITDB_ROOT_USERNAME: root
-            - MONGO_INITDB_ROOT_PASSWORD: AeroStinks
-        deploy:
-            restart_policy:
-                condition: on-failure
-                delay: 5s
-                max_attempts: 10
-                window: 120s
-            resources:
-                limits:
-                    cpus: "0.5"
-                    memory: 512M
-                reservations:
-                    cpus: "0.25"
-                    memory: 128M
+  database:
+    image: mongo:6.0.4
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongoDB:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: AeroStinks
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
