@@ -68,7 +68,7 @@ export = {
 		const dbEntry = potentialDBEntry as userDBEntry;
 
 		//let the user view their color, even if /color is disabled
-		if(interaction.options.getSubcommand() == "view") {
+		if (interaction.options.getSubcommand() == "view") {
 			await interaction.editReply(
 				`Your color is ${
 					userColors[dbEntry.color].name

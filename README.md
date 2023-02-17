@@ -6,7 +6,7 @@ It's a Big Chungus themed Discord bot, what more do you want?
 
 -   maintenance
     -   Preform maintenance tasks on the bot.
-- status
+-   status
     -   Get the bot's status.
 -   announce
     -   Make an announcements.
@@ -23,7 +23,7 @@ It's a Big Chungus themed Discord bot, what more do you want?
     -   Give yourself a title that the bot uses to reference you.
 -   color
     -   Get a custom color in any server from a premade list.
-- settings
+-   settings
     -   Change the bot settings for that specific guild.
 
 ## Database

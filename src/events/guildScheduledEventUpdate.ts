@@ -28,9 +28,9 @@ export = {
 		if (oldEvent.isScheduled() && newEvent.isActive()) {
 			message = `**An Event has Begun!**\n${newEvent.url}`;
 		} else {
-			if(oldEvent.isActive() && newEvent.isCompleted()){
+			if (oldEvent.isActive() && newEvent.isCompleted()) {
 				message = `**An Event has Ended!**\n${newEvent.url}`;
-			} else{
+			} else {
 				message = `**An Event has been Updated!**\n${newEvent.url}`;
 			}
 		}

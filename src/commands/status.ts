@@ -26,10 +26,13 @@ export = {
 		const embed = new EmbedBuilder()
 			.setTitle("Bot Status")
 			.setDescription("Here is the bot's current status information.")
-            .addFields(
-                {name: "WS Latency", value: `${Math.round(interaction.client.ws.ping)}ms`},
-                {name: "WS Status", value: `${interaction.client.ws.status}`}
-            )
+			.addFields(
+				{
+					name: "WS Latency",
+					value: `${Math.round(interaction.client.ws.ping)}ms`
+				},
+				{ name: "WS Status", value: `${interaction.client.ws.status}` }
+			)
 			.setColor(botStatusEmbedColor as ColorResolvable);
 
 		//respond to the user
