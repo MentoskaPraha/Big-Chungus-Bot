@@ -9,22 +9,22 @@ It's a Big Chungus themed Discord bot, what more do you want?
 -   status
     -   Get the bot's status.
 -   announce
-    -   Make an announcements.
+    -   Make announcements.
 -   info
     -   Get information about the server or a user.
 -   poll
     -   Create a poll with up to 20 answers.
 -   roll
-    -   Roll, up to 15, dice of any size between 2 and 100.
+    -   Roll up to 15 dice of any size between 2 and 100.
 -   database
     -   Allows you to create and delete your personal database entry.
     -   This is for privacy reasons.
 -   title
-    -   Give yourself a title that the bot uses to reference you.
+    -   Give yourself a title that the bot uses to refer to you.
 -   color
-    -   Get a custom color in any server from a premade list.
+    -   Get a custom color in any server from a list of colors.
 -   settings
-    -   Change the bot settings for that specific guild.
+    -   Change the bot's settings for that specific guild.
 
 ## Database
 

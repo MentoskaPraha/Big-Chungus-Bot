@@ -29,7 +29,7 @@ export async function guildDBDisconnect() {
  * createGuild
  * Creates a new guild entry in the guildDB.
  * @param id The Discord id of the guild.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function createGuild(id: string) {
 	const guild = {
@@ -96,7 +96,7 @@ export async function getGuild(id: string) {
  * deleteGuild
  * Deletes a guild entry from guildDB.
  * @param id The Discord id of the guild that you wish to delete.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function deleteGuild(id: string) {
 	try {
@@ -115,7 +115,7 @@ export async function deleteGuild(id: string) {
  * Updates the guild color settings.
  * @param id The Discord id of the guild that you wish to update.
  * @param newColor The new color settings the guild will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whther the action was successful.
  */
 export async function updateGuildColor(id: string, newColor: boolean) {
 	try {
@@ -134,7 +134,7 @@ export async function updateGuildColor(id: string, newColor: boolean) {
  * Updates the guild color role id list.
  * @param id The Discord id of the guild that you wish to update.
  * @param newColorList The new color role id list the guild will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateGuildColorList(
 	id: string,
@@ -159,7 +159,7 @@ export async function updateGuildColorList(
  * Updates the guild announcement role id.
  * @param id The Discord id of the guild that you wish to update.
  * @param newAnnouncerId The new announce role id the guild will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateGuildAnnouncerId(
 	id: string,
@@ -184,7 +184,7 @@ export async function updateGuildAnnouncerId(
  * Updates the guild settings manager role id.
  * @param id The Discord id of the guild that you wish to update.
  * @param newSettingsManagerId The new settings manager role id the guild will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateGuildSettingsManagerId(
 	id: string,
@@ -209,7 +209,7 @@ export async function updateGuildSettingsManagerId(
  * Updates the guild moderator role id.
  * @param id The Discord id of the guild that you wish to update.
  * @param newModeratorId The new moderator role id the guild will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateGuildModeratorId(
 	id: string,
@@ -234,7 +234,7 @@ export async function updateGuildModeratorId(
  * Updates the event announcement channel
  * @param id The Discord id of the guild that you wish to update.
  * @param newAnnounceEvents The new announce events settings the guild will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateGuildAnnounceEvents(
 	id: string,
@@ -259,7 +259,7 @@ export async function updateGuildAnnounceEvents(
  * Updates the event announcement channel
  * @param id The Discord id of the guild that you wish to update.
  * @param newCrosspostEventsAnnounce The new  crosspost events announce settings the guild will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateGuildCrosspostEventsAnnounce(
 	id: string,
@@ -284,7 +284,7 @@ export async function updateGuildCrosspostEventsAnnounce(
  * Updates the event announcement channel
  * @param id The Discord id of the guild that you wish to update.
  * @param newEventChannelId The new event announcement channel id the guild will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateGuildEventAnnounceChannelId(
 	id: string,

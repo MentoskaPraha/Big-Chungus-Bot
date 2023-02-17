@@ -1,4 +1,4 @@
-//dependancies
+//dependencies
 import {
 	SlashCommandBuilder,
 	EmbedBuilder,

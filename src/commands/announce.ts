@@ -1,4 +1,4 @@
-//dependacies
+//dependencies
 import {
 	SlashCommandBuilder,
 	EmbedBuilder,
@@ -63,7 +63,7 @@ export = {
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
 
-		//check if user has permissions to make the announcement
+		//check if user has permission to make an announcement
 		const announcerRoleId = await getGuildAnnouncerId(
 			interaction.guildId as string
 		);
@@ -91,16 +91,16 @@ export = {
 			"channel"
 		) as GuildTextBasedChannel;
 
-		//update the title
+		//update title
 		if (title == null) title = "New Announcement!";
 
-		//create the embed
+		//create embed
 		const embed = new EmbedBuilder()
 			.setColor(announcementEmbedColor as ColorResolvable)
 			.setTitle(title)
 			.setDescription(announcement);
 
-		//create the message
+		//create message
 		let message = null;
 		if (ping != null) {
 			message = `New Announcement by ${await getUserTitle(
@@ -112,7 +112,7 @@ export = {
 			)} ${interaction.user.username}.`;
 		}
 
-		//send the message to the channel
+		//send message to channel
 		let success = true;
 		channel
 			.send({ content: message, embeds: [embed] })
@@ -127,7 +127,7 @@ export = {
 				}
 			});
 
-		//give confirmation to the user that the command was successful
+		//give confirmation to user that the command was successful
 		if (!success) {
 			await interaction.editReply(
 				"Your announcement has been sent and failed to crosspost."

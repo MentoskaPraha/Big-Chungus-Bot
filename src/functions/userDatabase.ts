@@ -29,7 +29,7 @@ export async function userDBDisconnect() {
  * createUser
  * Creates a new user entry in the userDB.
  * @param id The Discord id of the user.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function createUser(id: string) {
 	const user = {
@@ -82,7 +82,7 @@ export async function getUser(id: string) {
  * deleteUser
  * Deletes a user entry from userDB.
  * @param id The Discord id of the user that you wish to delete.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function deleteUser(id: string) {
 	try {
@@ -101,7 +101,7 @@ export async function deleteUser(id: string) {
  * Updates the users title.
  * @param id The Discord id of the user that you wish to update.
  * @param newTitle The new title the user will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateUserTitle(id: string, newTitle: string) {
 	try {
@@ -120,7 +120,7 @@ export async function updateUserTitle(id: string, newTitle: string) {
  * Updates the users color.
  * @param id The Discord id of the user that you wish to update.
  * @param newColor The id of the color that the user will have.
- * @returns True or false depending on if the action was successful.
+ * @returns True or false depending on whether the action was successful.
  */
 export async function updateUserColor(id: string, newColor: number) {
 	try {

@@ -1,4 +1,4 @@
-//dependancies
+//dependencies
 import {
 	SlashCommandBuilder,
 	EmbedBuilder,
@@ -62,7 +62,7 @@ export = {
 			.setTitle("Dice Roller Results")
 			.setDescription(resultsMessage);
 
-		//respond to the user
+		//respond to user
 		await interaction.editReply({ embeds: [embed] });
 
 		log.info(`${interaction.user.tag} has used the dice roller.`);

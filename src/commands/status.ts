@@ -1,4 +1,4 @@
-//dependancies
+//dependencies
 import {
 	CommandInteraction,
 	SlashCommandBuilder,
@@ -35,7 +35,7 @@ export = {
 			)
 			.setColor(botStatusEmbedColor as ColorResolvable);
 
-		//respond to the user
+		//respond to user
 		await interaction.editReply({ embeds: [embed] });
 
 		log.info(`${interaction.user.tag} has requested status information.`);

@@ -1,4 +1,4 @@
-//dependancies
+//dependencies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { userDBDisconnect } from "../functions/userDatabase";
 import { guildDBDisconnect } from "../functions/guildDatabase";

@@ -67,7 +67,7 @@ export = {
 		}
 		const dbEntry = potentialDBEntry as userDBEntry;
 
-		//let the user view their color, even if /color is disabled
+		//let user view their color, even if /color is disabled
 		if (interaction.options.getSubcommand() == "view") {
 			await interaction.editReply(
 				`Your color is ${
@@ -107,7 +107,7 @@ export = {
 					(member) => member.id == interaction.user.id
 				);
 
-				//get color role and give it to the user
+				//get color role and give it to user
 				if (newColor != 0) {
 					const role = interaction.guild?.roles.cache.find(
 						(role) => role.id == colors[newColor]
@@ -127,7 +127,7 @@ export = {
 					member.roles.remove(oldRole);
 				}
 
-				//tell the user the action was successful
+				//tell user the action was successful
 				await interaction.editReply(
 					"Your color was successfully updated!"
 				);
@@ -162,7 +162,7 @@ export = {
 					member.roles.remove(oldRole);
 				}
 
-				//tell the user the action was successful
+				//tell user the action was successful
 				await interaction.editReply(
 					"Your color was successfully refreshed!"
 				);
