@@ -8,7 +8,6 @@ const DBname = process.env.DISCORD_BOT_DB_NAME as string;
 const CollectionName = "guildDB";
 
 /**
- * guildDBConnect
  * Connects the bot to the mongoDB database.
  */
 export async function guildDBConnect() {
@@ -17,7 +16,6 @@ export async function guildDBConnect() {
 }
 
 /**
- * guildDBDisconnect
  * Disconnects the bot from the mongoDB database.
  */
 export async function guildDBDisconnect() {
@@ -26,7 +24,6 @@ export async function guildDBDisconnect() {
 }
 
 /**
- * createGuild
  * Creates a new guild entry in the guildDB.
  * @param id The Discord id of the guild.
  * @returns True or false depending on whether the action was successful.
@@ -56,7 +53,6 @@ export async function createGuild(id: string) {
 }
 
 /**
- * getGuild
  * Gets a guild entry from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild object or null if the guild doesn't exist.
@@ -93,7 +89,6 @@ export async function getGuild(id: string) {
 }
 
 /**
- * deleteGuild
  * Deletes a guild entry from guildDB.
  * @param id The Discord id of the guild that you wish to delete.
  * @returns True or false depending on whether the action was successful.
@@ -111,7 +106,6 @@ export async function deleteGuild(id: string) {
 }
 
 /**
- * updateGuildColor
  * Updates the guild color settings.
  * @param id The Discord id of the guild that you wish to update.
  * @param newColor The new color settings the guild will have.
@@ -130,7 +124,6 @@ export async function updateGuildColor(id: string, newColor: boolean) {
 }
 
 /**
- * updateGuildColorList
  * Updates the guild color role id list.
  * @param id The Discord id of the guild that you wish to update.
  * @param newColorList The new color role id list the guild will have.
@@ -155,7 +148,6 @@ export async function updateGuildColorList(
 }
 
 /**
- * updateGuildAnnouncerId
  * Updates the guild announcement role id.
  * @param id The Discord id of the guild that you wish to update.
  * @param newAnnouncerId The new announce role id the guild will have.
@@ -205,7 +197,6 @@ export async function updateGuildSettingsManagerId(
 }
 
 /**
- * updateGuildModeratorId
  * Updates the guild moderator role id.
  * @param id The Discord id of the guild that you wish to update.
  * @param newModeratorId The new moderator role id the guild will have.
@@ -230,7 +221,6 @@ export async function updateGuildModeratorId(
 }
 
 /**
- * updateGuildAnnounceEvents
  * Updates the event announcement channel
  * @param id The Discord id of the guild that you wish to update.
  * @param newAnnounceEvents The new announce events settings the guild will have.
@@ -280,7 +270,6 @@ export async function updateGuildCrosspostEventsAnnounce(
 }
 
 /**
- * updateGuildEventAnnounceChannelId
  * Updates the event announcement channel
  * @param id The Discord id of the guild that you wish to update.
  * @param newEventChannelId The new event announcement channel id the guild will have.
@@ -305,7 +294,6 @@ export async function updateGuildEventAnnounceChannelId(
 }
 
 /**
- * getGuildColor
  * Gets a guild entry's color from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild color array or null if the guild doesn't have colors enabled.
@@ -338,7 +326,6 @@ export async function getGuildColor(id: string) {
 }
 
 /**
- * getGuildAnnouncerId
  * Gets a guild entry's announcement role id from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild announcement role id.
@@ -372,7 +359,6 @@ export async function getGuildAnnouncerId(id: string) {
 }
 
 /**
- * getGuildSettingsManagerId
  * Gets a guild entry's settings manager role id from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild settings manager role id.
@@ -406,7 +392,6 @@ export async function getGuildSettingsManagerId(id: string) {
 }
 
 /**
- * getGuildModeratorId
  * Gets a guild entry's moderator role id from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild moderator role id.
@@ -440,7 +425,6 @@ export async function getGuildModeratorId(id: string) {
 }
 
 /**
- * getGuildCrosspostEventAnnounce
  * Gets a guild entry's crosspost event announcement setting from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild crosspost event announcement setting.
@@ -464,7 +448,6 @@ export async function getGuildCrosspostEventAnnounce(id: string) {
 }
 
 /**
- * getGuildEventAnnounceChannel
  * Gets a guild entry's event announcement channel id from guildDB.
  * @param id The Discord id of the guild that you wish to get.
  * @returns The guild event announcement channel id or null if the feature is disabled.

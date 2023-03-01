@@ -8,7 +8,6 @@ const DBname = process.env.DISCORD_BOT_DB_NAME as string;
 const CollectionName = "userDB";
 
 /**
- * userDBConnect
  * Connects the bot to the mongoDB database.
  */
 export async function userDBConnect() {
@@ -17,7 +16,6 @@ export async function userDBConnect() {
 }
 
 /**
- * userDBDisconnect
  * Disconnects the bot from the mongoDB database.
  */
 export async function userDBDisconnect() {
@@ -26,7 +24,6 @@ export async function userDBDisconnect() {
 }
 
 /**
- * createUser
  * Creates a new user entry in the userDB.
  * @param id The Discord id of the user.
  * @returns True or false depending on whether the action was successful.
@@ -50,7 +47,6 @@ export async function createUser(id: string) {
 }
 
 /**
- * getUser
  * Gets a user entry from userDB.
  * @param id The Discord id of the user that you wish to get.
  * @returns The user object or null if the user doesn't exist.
@@ -79,7 +75,6 @@ export async function getUser(id: string) {
 }
 
 /**
- * deleteUser
  * Deletes a user entry from userDB.
  * @param id The Discord id of the user that you wish to delete.
  * @returns True or false depending on whether the action was successful.
@@ -97,7 +92,6 @@ export async function deleteUser(id: string) {
 }
 
 /**
- * updateUserTitle
  * Updates the users title.
  * @param id The Discord id of the user that you wish to update.
  * @param newTitle The new title the user will have.
@@ -116,7 +110,6 @@ export async function updateUserTitle(id: string, newTitle: string) {
 }
 
 /**
- * updateUserColor
  * Updates the users color.
  * @param id The Discord id of the user that you wish to update.
  * @param newColor The id of the color that the user will have.
@@ -135,7 +128,6 @@ export async function updateUserColor(id: string, newColor: number) {
 }
 
 /**
- * getUserTitle
  * Gets the users title.
  * @param id The Discord id of the user that you wish to get the title of.
  * @returns The title of the user.
