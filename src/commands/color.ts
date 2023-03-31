@@ -6,7 +6,7 @@ import { getGuildColor } from "../functions/guildDatabase";
 import { userColors } from "../config.json";
 import log from "../logger";
 
-//command
+//export command
 export = {
 	name: "color",
 	ephemeral: true,
