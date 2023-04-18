@@ -3,7 +3,6 @@ import {
 	SlashCommandBuilder,
 	EmbedBuilder,
 	CommandInteraction,
-	GuildMemberRoleManager,
 	GuildTextBasedChannel,
 	ColorResolvable,
 	ChannelType
@@ -12,6 +11,7 @@ import log from "../logger";
 import { getUserTitle } from "../functions/userDatabase";
 import { getGuildAnnouncerId } from "../functions/guildDatabase";
 import { announcementEmbedColor } from "../config.json";
+import { checkUserPerms } from "../functions/utilities";
 
 //command
 export = {
@@ -67,12 +67,7 @@ export = {
 		const announcerRoleId = await getGuildAnnouncerId(
 			interaction.guildId as string
 		);
-		if (
-			!(interaction.member?.roles as GuildMemberRoleManager).cache.some(
-				(role) => role.id == announcerRoleId
-			) ||
-			interaction.user.id != interaction.guild?.ownerId
-		) {
+		if (checkUserPerms(interaction, announcerRoleId)) {
 			await interaction.editReply(
 				"You do not have permissions to run this command."
 			);

@@ -5,7 +5,8 @@
 		"build": "tsc && node -e 'require(\"shelljs\").cp(\"-R\", \"src/config.json\", \"build/\");'",
 		"test": "node -r dotenv/config ./build/index.js",
 		"pretest": "yarn run build",
-		"lint": "prettier --write . && eslint . --ext .ts --ignore-path .gitignore",
+		"lint": "prettier --check . && eslint . --ext .ts --ignore-path .gitignore",
+		"format": "prettier --write .",
 		"start": "node index.js"
 	},
 	"dependencies": {

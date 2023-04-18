@@ -1,10 +1,10 @@
 //libraries
 import { CommandInteraction, Role, SlashCommandBuilder } from "discord.js";
-import { userDBEntry } from "../types";
-import { getUser, updateUserColor } from "../functions/userDatabase";
+import { updateUserColor } from "../functions/userDatabase";
 import { getGuildColor } from "../functions/guildDatabase";
 import { userColors } from "../config.json";
 import log from "../logger";
+import { getUserDBEntry } from "../functions/utilities";
 
 //export command
 export = {
@@ -55,17 +55,7 @@ export = {
 		if (!interaction.isChatInputCommand()) return;
 
 		//userDB entry on user
-		const potentialDBEntry = await getUser(interaction.user.id);
-		if (potentialDBEntry == null) {
-			await interaction.editReply(
-				"Your database entry has not been found, please create one using `/database create`."
-			);
-			log.warn(
-				`${interaction.user.tag} failed to update his color, due to not having a userDB entry.`
-			);
-			return;
-		}
-		const dbEntry = potentialDBEntry as userDBEntry;
+		const dbEntry = await getUserDBEntry(interaction.user.id);
 
 		//let user view their color, even if /color is disabled
 		if (interaction.options.getSubcommand() == "view") {
