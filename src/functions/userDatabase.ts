@@ -2,6 +2,7 @@
 import { MongoClient } from "mongodb";
 import { userDBEntry } from "../types";
 import log from "../logger";
+import { logError } from "../logger";
 
 const DBclient = new MongoClient(process.env.DISCORD_BOT_DB_URI as string);
 const DBname = process.env.DISCORD_BOT_DB_NAME as string;
@@ -41,7 +42,8 @@ export async function createUser(id: string) {
 		log.info(`Created entry userDB-${id}.`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("UserDB creation error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -60,7 +62,8 @@ export async function getUser(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry userDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("UserDB get error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {
@@ -86,7 +89,8 @@ export async function deleteUser(id: string) {
 		log.info(`Deleted entry userDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("UserDB delete error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -104,7 +108,8 @@ export async function updateUserTitle(id: string, newTitle: string) {
 		log.info(`Updated TITLE in entry userDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("UserDB title update error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -122,7 +127,8 @@ export async function updateUserColor(id: string, newColor: number) {
 		log.info(`Updated COLOR in entry userDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("UserDB update color error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -141,7 +147,8 @@ export async function getUserTitle(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry userDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("UserDB get title error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {

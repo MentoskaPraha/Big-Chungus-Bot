@@ -32,7 +32,17 @@ export = {
 							{ name: "Potato Green", value: 4 },
 							{ name: "Cloud Blue", value: 5 },
 							{ name: "Rikaphu Red", value: 6 },
-							{ name: "Ylliada Green", value: 7 }
+							{ name: "Ylliada Green", value: 7 },
+							{ name: "Passionate Red", value: 8 },
+							{ name: "Oránž", value: 9 },
+							{ name: "Crystal Blue", value: 10 },
+							{ name: "Grass Green", value: 11 },
+							{ name: "Navy Blue", value: 12 },
+							{ name: "Foggy Cyan", value: 13 },
+							{ name: "Dandelion Yellow", value: 14 },
+							{ name: "Ghostly White", value: 15 },
+							{ name: "Bullet Silver", value: 16 },
+							{ name: "Wine Maroon", value: 17 }
 						)
 				)
 		)
@@ -52,7 +62,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
-		await interaction.deferReply({ephemeral: true});
+		await interaction.deferReply({ ephemeral: true });
 
 		//userDB entry on user
 		const dbEntry = await getUserDBEntry(interaction.user.id);
@@ -60,9 +70,9 @@ export = {
 		//let user view their color, even if /color is disabled
 		if (interaction.options.getSubcommand() == "view") {
 			await interaction.editReply(
-				`Your color is ${
+				`Your color is **${
 					userColors[dbEntry.color].name
-				} and the HEX-CODE is ${userColors[dbEntry.color].code}.`
+				}** and the HEX-CODE is \`${userColors[dbEntry.color].code}\`.`
 			);
 			log.info(`${interaction.user.tag} has viewed their color.`);
 			return;

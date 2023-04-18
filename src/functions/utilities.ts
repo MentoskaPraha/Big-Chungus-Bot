@@ -33,7 +33,7 @@ export function checkUserPerms(
  * @param guildId the id of the guild
  * @returns guildDBEntry object containing the guild's DB entry
  */
-export async function getGuildDBEntry(guildId:string){
+export async function getGuildDBEntry(guildId: string) {
 	let potentialDBEntry = await getGuild(guildId);
 	if (potentialDBEntry == null) {
 		await createGuild(guildId);
@@ -47,7 +47,7 @@ export async function getGuildDBEntry(guildId:string){
  * @param userId the id of the user
  * @returns userDBEntry object containing the user's DB entry
  */
-export async function getUserDBEntry(userId:string){
+export async function getUserDBEntry(userId: string) {
 	let potentialDBEntry = await getUser(userId);
 	if (potentialDBEntry == null) {
 		await createUser(userId);

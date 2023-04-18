@@ -8,7 +8,8 @@ import { eventObject } from "../types";
 const items = new Collection<string, eventObject>();
 const itemPath = join(__dirname);
 const itemFiles = readdirSync(itemPath).filter(
-	(file) => file.endsWith(".js") && !file.startsWith("_")
+	(file) =>
+		file.endsWith(".js") || (file.endsWith(".ts") && !file.startsWith("_"))
 );
 
 //get the items

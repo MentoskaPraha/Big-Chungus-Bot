@@ -2,6 +2,7 @@
 import { MongoClient } from "mongodb";
 import { guildDBEntry } from "../types";
 import log from "../logger";
+import { logError } from "../logger";
 
 const DBclient = new MongoClient(process.env.DISCORD_BOT_DB_URI as string);
 const DBname = process.env.DISCORD_BOT_DB_NAME as string;
@@ -47,7 +48,8 @@ export async function createGuild(id: string) {
 		log.info(`Created entry guildDB-${id}.`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB creation error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -66,7 +68,8 @@ export async function getGuild(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry guildDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB get error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {
@@ -100,7 +103,8 @@ export async function deleteGuild(id: string) {
 		log.info(`Deleted entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB deletion error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -118,7 +122,8 @@ export async function updateGuildColor(id: string, newColor: boolean) {
 		log.info(`Updated COLOR in entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB update color error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -142,7 +147,8 @@ export async function updateGuildColorList(
 		log.info(`Updated COLORROLEIDS in entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB update color list error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -166,7 +172,8 @@ export async function updateGuildAnnouncerId(
 		log.info(`Updated ANNOUNCEMENTROLEID in entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB update announce role id error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -191,7 +198,8 @@ export async function updateGuildSettingsManagerId(
 		log.info(`Updated SETTINGSMANAGERROLEID in entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB update guild settings manager id error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -215,7 +223,8 @@ export async function updateGuildModeratorId(
 		log.info(`Updated MODERATORROLEID in entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB moderator role id error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -239,7 +248,8 @@ export async function updateGuildAnnounceEvents(
 		log.info(`Updated ANNOUNCEEVENTS in entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB update guild announce error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -264,7 +274,8 @@ export async function updateGuildCrosspostEventsAnnounce(
 		log.info(`Updated CROSSPOSTEVENTANNOUNCE in entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB crosspost event announce error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -288,7 +299,8 @@ export async function updateGuildEventAnnounceChannelId(
 		log.info(`Updated EVENTANNOUNCECHANNELID in entry guildDB-${id}`);
 		return true;
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB update event announce channel id error.");
+		logError(error as string);
 		return false;
 	}
 }
@@ -307,7 +319,8 @@ export async function getGuildColor(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry guildDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB get color error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {
@@ -339,7 +352,8 @@ export async function getGuildAnnouncerId(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry guildDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB announcer id error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {
@@ -372,7 +386,8 @@ export async function getGuildSettingsManagerId(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry guildDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB get settings manager id error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {
@@ -405,7 +420,8 @@ export async function getGuildModeratorId(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry guildDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB get moderator id error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {
@@ -437,7 +453,8 @@ export async function getGuildCrosspostEventAnnounce(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry guildDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB get crosspost event announce error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {
@@ -461,7 +478,8 @@ export async function getGuildEventAnnounceChannel(id: string) {
 		entry = await collection.findOne({ id });
 		log.info(`Reading entry guildDB-${id}.`);
 	} catch (error) {
-		log.error(error);
+		log.error("GuildDB get guild announce channel id error.");
+		logError(error as string);
 	}
 
 	if (entry != null) {

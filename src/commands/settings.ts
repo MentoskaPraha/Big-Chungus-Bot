@@ -119,7 +119,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
-		await interaction.deferReply({ephemeral: true});
+		await interaction.deferReply({ ephemeral: true });
 
 		//get guildDB entry for current server
 		const DBEntry = await getGuildDBEntry(interaction.guildId as string);
@@ -145,9 +145,7 @@ export = {
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
-				if (
-					checkUserPerms(interaction, settingsManagerRoleId)
-				) {
+				if (checkUserPerms(interaction, settingsManagerRoleId)) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -265,9 +263,7 @@ export = {
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
-				if (
-					checkUserPerms(interaction, settingsManagerRoleId)
-				) {
+				if (checkUserPerms(interaction, settingsManagerRoleId)) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -300,9 +296,7 @@ export = {
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
-				if (
-					checkUserPerms(interaction, settingsManagerRoleId)
-				) {
+				if (checkUserPerms(interaction, settingsManagerRoleId)) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -335,9 +329,7 @@ export = {
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
-				if (
-					checkUserPerms(interaction, settingsManagerRoleId)
-				) {
+				if (checkUserPerms(interaction, settingsManagerRoleId)) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -386,7 +378,10 @@ export = {
 
 					//save values and prepare output
 					if (send) {
-						updateGuildAnnounceEvents(interaction.guildId as string, true);
+						updateGuildAnnounceEvents(
+							interaction.guildId as string,
+							true
+						);
 						updateGuildEventAnnounceChannelId(
 							interaction.guildId as string,
 							newChannel.id

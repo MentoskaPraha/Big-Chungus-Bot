@@ -25,9 +25,10 @@ export = {
 
 		//check if the user can run the command
 		if (interaction.user.id != process.env.DISCORD_BOT_OWNER_ID) {
-			await interaction.reply(
-				{ content: "You do not have permissions to run this command.", ephemeral: true}
-			);
+			await interaction.reply({
+				content: "You do not have permissions to run this command.",
+				ephemeral: true
+			});
 			log.warn(
 				`${interaction.user.tag} attempted to access terminate command.`
 			);
@@ -37,7 +38,10 @@ export = {
 
 		switch (interaction.options.getSubcommand()) {
 			case "terminate": {
-				await interaction.reply({content: "Terminating...", ephemeral: true});
+				await interaction.reply({
+					content: "Terminating...",
+					ephemeral: true
+				});
 
 				//log out of Discord and disconnect databases
 				interaction.client.destroy();

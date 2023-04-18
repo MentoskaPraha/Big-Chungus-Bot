@@ -38,6 +38,46 @@
 		{
 			"name": "Ylliada Green",
 			"code": "#86D36F"
+		},
+		{
+			"name": "Passionate Red",
+			"code": "#DF2220"
+		},
+		{
+			"name": "Oránž",
+			"code": "#F36E12"
+		},
+		{
+			"name": "Crystal Blue",
+			"code": "#48BAE5"
+		},
+		{
+			"name": "Grass Green",
+			"code": "#539A47"
+		},
+		{
+			"name": "Navy Blue",
+			"code": "#1F3A8E"
+		},
+		{
+			"name": "Foggy Cyan",
+			"code": "#32879F"
+		},
+		{
+			"name": "Dandelion Yellow",
+			"code": "#f1D328"
+		},
+		{
+			"name": "Ghostly White",
+			"code": "#FFFFFF"
+		},
+		{
+			"name": "Bullet Silver",
+			"code": "#C4C4C4"
+		},
+		{
+			"name": "Wine Maroon",
+			"code": "#A72712"
 		}
 	]
 }

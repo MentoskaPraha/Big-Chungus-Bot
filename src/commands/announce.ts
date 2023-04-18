@@ -8,6 +8,7 @@ import {
 	ChannelType
 } from "discord.js";
 import log from "../logger";
+import { logError } from "../logger";
 import { getUserTitle } from "../functions/userDatabase";
 import { getGuildAnnouncerId } from "../functions/guildDatabase";
 import { announcementEmbedColor } from "../config.json";
@@ -61,7 +62,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
-		await interaction.deferReply({ephemeral: true});
+		await interaction.deferReply({ ephemeral: true });
 
 		//check if user has permission to make an announcement
 		const announcerRoleId = await getGuildAnnouncerId(
@@ -116,7 +117,8 @@ export = {
 					try {
 						await message.crosspost();
 					} catch (error) {
-						log.error(`Failed to crosspost. ${error}`);
+						log.error("Failed to crosspost.");
+						logError(error as string);
 						success = false;
 					}
 				}
