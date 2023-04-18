@@ -25,7 +25,6 @@ export interface guildDBEntry {
 export interface commandObject {
 	name: string;
 	data: SlashCommandBuilder;
-	ephemeral: boolean;
 	execute(interaction: CommandInteraction): Promise<void>;
 }
 

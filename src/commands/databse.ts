@@ -13,7 +13,6 @@ import { getUserDBEntry } from "../functions/utilities";
 //command
 export = {
 	name: "database",
-	ephemeral: true,
 
 	//command information
 	data: new SlashCommandBuilder()
@@ -34,6 +33,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
+		await interaction.deferReply({ephemeral: true});
 
 		switch (interaction.options.getSubcommand()) {
 			case "view": {

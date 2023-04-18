@@ -30,7 +30,6 @@ export = {
 
 			//run the command
 			try {
-				await interaction.deferReply({ ephemeral: command.ephemeral });
 				command.execute(interaction).catch(async (error) => {
 					log.error(
 						`${interaction.user.tag} experienced an error while running a command. Error: ${error}`

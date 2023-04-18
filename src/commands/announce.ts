@@ -16,7 +16,6 @@ import { checkUserPerms } from "../functions/utilities";
 //command
 export = {
 	name: "announce",
-	ephemeral: true,
 
 	//command information
 	data: new SlashCommandBuilder()
@@ -62,6 +61,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
+		await interaction.deferReply({ephemeral: true});
 
 		//check if user has permission to make an announcement
 		const announcerRoleId = await getGuildAnnouncerId(

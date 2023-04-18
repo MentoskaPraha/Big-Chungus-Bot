@@ -27,7 +27,6 @@ import { checkUserPerms, getGuildDBEntry } from "../functions/utilities";
 //command
 export = {
 	name: "settings",
-	ephemeral: true,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -120,6 +119,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
+		await interaction.deferReply({ephemeral: true});
 
 		//get guildDB entry for current server
 		const DBEntry = await getGuildDBEntry(interaction.guildId as string);

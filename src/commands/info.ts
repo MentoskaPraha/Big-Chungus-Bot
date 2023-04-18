@@ -19,7 +19,6 @@ import {
 //command
 export = {
 	name: "info",
-	ephemeral: false,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -46,6 +45,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
+		await interaction.deferReply();
 
 		switch (interaction.options.getSubcommand()) {
 			case "user": {

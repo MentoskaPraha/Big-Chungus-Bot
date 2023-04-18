@@ -7,7 +7,6 @@ import { getUserDBEntry } from "../functions/utilities";
 //command
 export = {
 	name: "title",
-	ephemeral: true,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -38,6 +37,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
+		await interaction.deferReply({ephemeral: true});
 
 		const dbEntry = await getUserDBEntry(interaction.user.id);
 

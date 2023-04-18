@@ -11,7 +11,6 @@ import { botStatusEmbedColor } from "../config.json";
 //command
 export = {
 	name: "status",
-	ephemeral: false,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -36,7 +35,7 @@ export = {
 			.setColor(botStatusEmbedColor as ColorResolvable);
 
 		//respond to user
-		await interaction.editReply({ embeds: [embed] });
+		await interaction.reply({ embeds: [embed] });
 
 		log.info(`${interaction.user.tag} has requested status information.`);
 	}
