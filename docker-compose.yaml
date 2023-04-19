@@ -9,7 +9,7 @@ services:
         environment:
             DISCORD_BOT_TOKEN: YOUR_DICORD_BOT_TOKEN_HERE
             DISCORD_BOT_CLIENT_ID: YOUR_DISCORD_BOT_CLIENT_ID_HERE
-            DISCORD_BOT_OWNER_ID: YOUR_DISCORD_ID
+            DISCORD_BOT_OWNER_ID: YOUR_DISCORD_ID_HERE
             DISCORD_BOT_DB_URI: mongodb://root:AeroStinks@database:27017
             DISCORD_BOT_DB_NAME: prod
         deploy:

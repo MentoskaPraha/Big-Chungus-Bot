@@ -139,6 +139,8 @@ export async function updateUserColor(id: string, newColor: number) {
  * @returns The title of the user.
  */
 export async function getUserTitle(id: string) {
+	if(id == process.env.DISCORD_BOT_CLIENT_ID) return "Highest God";
+
 	let entry = null;
 	let user = null;
 

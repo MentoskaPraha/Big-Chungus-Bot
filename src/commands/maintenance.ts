@@ -48,7 +48,7 @@ export = {
 				userDBDisconnect();
 				guildDBDisconnect();
 
-				log.info(`Bot is was terminated by ${interaction.user.tag}.`);
+				log.info(`Bot is terminated by ${interaction.user.tag}.`);
 
 				//exit program
 				process.exit(0);

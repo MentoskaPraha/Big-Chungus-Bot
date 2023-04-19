@@ -1,7 +1,9 @@
-import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
+import { Collection, CommandInteraction, GuildMemberRoleManager } from "discord.js";
 import { createGuild, getGuild } from "./guildDatabase";
 import { guildDBEntry, userDBEntry } from "../types";
 import { createUser, getUser } from "./userDatabase";
+import { join } from "node:path";
+import { readdirSync } from "node:fs";
 
 /**
  * Checks whether the user has a certain role or is the server owner.
@@ -54,4 +56,25 @@ export async function getUserDBEntry(userId: string) {
 		potentialDBEntry = await getUser(userId);
 	}
 	return potentialDBEntry as userDBEntry;
+}
+
+export function readFiles(path: string) {
+	//create variables
+	const items = new Collection<string, unknown>();
+	const itemPath = join(path);
+	const itemFiles = readdirSync(itemPath).filter(
+		(file) =>
+			file.endsWith(".js") ||
+			(file.endsWith(".ts") && !file.startsWith("_"))
+	);
+
+	//get the items
+	itemFiles.forEach(async (file) => {
+		const filePath = join(itemPath, file);
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		const item = require(filePath);
+		items.set(item.name, item);
+	});
+
+	return items;
 }
