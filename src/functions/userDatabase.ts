@@ -1,8 +1,7 @@
 //dependancies
 import { MongoClient } from "mongodb";
 import { userDBEntry } from "../types";
-import log from "../logger";
-import { logError } from "../logger";
+import log, { logError } from "../logger";
 
 const DBclient = new MongoClient(process.env.DISCORD_BOT_DB_URI as string);
 const DBname = process.env.DISCORD_BOT_DB_NAME as string;
@@ -139,7 +138,7 @@ export async function updateUserColor(id: string, newColor: number) {
  * @returns The title of the user.
  */
 export async function getUserTitle(id: string) {
-	if(id == process.env.DISCORD_BOT_CLIENT_ID) return "Highest God";
+	if (id == process.env.DISCORD_BOT_CLIENT_ID) return "Highest God";
 
 	let entry = null;
 	let user = null;

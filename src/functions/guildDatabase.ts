@@ -1,8 +1,7 @@
 //dependancies
 import { MongoClient } from "mongodb";
 import { guildDBEntry } from "../types";
-import log from "../logger";
-import { logError } from "../logger";
+import log, { logError } from "../logger";
 
 const DBclient = new MongoClient(process.env.DISCORD_BOT_DB_URI as string);
 const DBname = process.env.DISCORD_BOT_DB_NAME as string;

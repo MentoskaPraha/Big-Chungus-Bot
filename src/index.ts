@@ -5,6 +5,7 @@ import registerCmd from "./functions/deploy-cmds";
 import { userDBConnect } from "./functions/userDatabase";
 import { guildDBConnect } from "./functions/guildDatabase";
 import log from "./logger";
+import { shutdown } from "./functions/shutdown";
 
 //main function
 (async () => {
@@ -40,4 +41,14 @@ import log from "./logger";
 	//Login to Discord with your client's token
 	log.info("Logging in...");
 	client.login(process.env.DISCORD_BOT_TOKEN);
+
+	//handle shutdown signals
+	process.on("SIGINT", async () => {
+		log.info("Recieved SIGINT signal from OS.");
+		await shutdown(client);
+	});
+	process.on("SIGTERM", async () => {
+		log.info("Recieved SIGTERM signal from OS.");
+		await shutdown(client);
+	});
 })();

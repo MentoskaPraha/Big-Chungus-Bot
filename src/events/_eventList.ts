@@ -4,7 +4,7 @@ import { eventObject } from "../types";
 import { readFiles } from "../functions/utilities";
 
 //create variables
-let events = readFiles(__dirname) as Collection<string, eventObject>;
+const events = readFiles(__dirname) as Collection<string, eventObject>;
 
 //export event list
 export default events;

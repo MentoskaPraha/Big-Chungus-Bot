@@ -12,9 +12,11 @@
 		"discord.js": "^14.9.0",
 		"mongodb": "^5.3.0",
 		"pino": "^8.11.0",
-		"pino-pretty": "^10.0.0"
+		"pino-pretty": "^10.0.0",
+		"ps-node": "^0.1.6"
 	},
 	"devDependencies": {
+		"@types/ps-node": "^0.1.1",
 		"@types/node": "^18.15.11",
 		"@typescript-eslint/eslint-plugin": "^5.59.0",
 		"@typescript-eslint/parser": "^5.59.0",

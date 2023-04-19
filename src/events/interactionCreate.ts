@@ -2,8 +2,7 @@
 import { Interaction, Events } from "discord.js";
 import { commandObject } from "../types";
 import commands from "../commands/_commandList";
-import log from "../logger";
-import { logError } from "../logger";
+import log, { logError } from "../logger";
 
 export = {
 	name: Events.InteractionCreate,

@@ -72,7 +72,8 @@ export = {
 				if (userEntry != null) color = userColors[userEntry.color].code;
 				if (color == "N/A" || color == userColors[0].code)
 					color = userInfoEmbedColor;
-				if(user.id == process.env.DISCORD_BOT_CLIENT_ID) color = "#B4AEAE";
+				if (user.id == process.env.DISCORD_BOT_CLIENT_ID)
+					color = "#B4AEAE";
 
 				//create embed
 				const embed = new EmbedBuilder()

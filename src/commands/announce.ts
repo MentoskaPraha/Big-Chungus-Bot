@@ -7,8 +7,7 @@ import {
 	ColorResolvable,
 	ChannelType
 } from "discord.js";
-import log from "../logger";
-import { logError } from "../logger";
+import log, { logError } from "../logger";
 import { getUserTitle } from "../functions/userDatabase";
 import { getGuildAnnouncerId } from "../functions/guildDatabase";
 import { announcementEmbedColor } from "../config.json";

@@ -1,8 +1,7 @@
 //dependencies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { userDBDisconnect } from "../functions/userDatabase";
-import { guildDBDisconnect } from "../functions/guildDatabase";
 import log from "../logger";
+import { shutdown } from "../functions/shutdown";
 
 //command
 export = {
@@ -43,15 +42,9 @@ export = {
 					ephemeral: true
 				});
 
-				//log out of Discord and disconnect databases
-				interaction.client.destroy();
-				userDBDisconnect();
-				guildDBDisconnect();
-
 				log.info(`Bot is terminated by ${interaction.user.tag}.`);
 
-				//exit program
-				process.exit(0);
+				await shutdown(interaction.client);
 			}
 		}
 	}

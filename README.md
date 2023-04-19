@@ -6,7 +6,9 @@ This bot uses MongoDB as its database. It stores information such as the user's 
 Please note that the bot will create a new role for each color it has, these are automatically deleted when colors are disable(so make sure to do that before kicking the bot).
 
 ## Developement
+
 If you wish to aid in the bot's developement you may do so. Simple clone this repository to your computer and install the dependancies. You will need to create a `.env` file at the root of the project and customize it to your needs. Here is what that should look like:
+
 ```.env
 DISCORD_BOT_TOKEN="YOUR_DICORD_BOT_TOKEN_HERE"
 DISCORD_BOT_CLIENT_ID="YOUR_DISCORD_BOT_CLIENT_ID_HERE"

@@ -1,4 +1,8 @@
-import { Collection, CommandInteraction, GuildMemberRoleManager } from "discord.js";
+import {
+	Collection,
+	CommandInteraction,
+	GuildMemberRoleManager
+} from "discord.js";
 import { createGuild, getGuild } from "./guildDatabase";
 import { guildDBEntry, userDBEntry } from "../types";
 import { createUser, getUser } from "./userDatabase";
