@@ -68,8 +68,8 @@ export function readFiles(path: string) {
 	const itemPath = join(path);
 	const itemFiles = readdirSync(itemPath).filter(
 		(file) =>
-			file.endsWith(".js") ||
-			(file.endsWith(".ts") && !file.startsWith("_"))
+			(file.endsWith(".js") || file.endsWith(".ts")) &&
+			!file.startsWith("_")
 	);
 
 	//get the items
@@ -81,4 +81,12 @@ export function readFiles(path: string) {
 	});
 
 	return items;
+}
+
+/**
+ * Waits a number of milliseconds.
+ * @param time the number of milliseconds to wait.
+ */
+export function delay(time: number) {
+	return new Promise((resolve) => setTimeout(resolve, time));
 }

@@ -5,10 +5,7 @@ import events from "../events/_eventList";
 import { eventObject } from "../types";
 import { userDBDisconnect } from "./userDatabase";
 import { guildDBDisconnect } from "./guildDatabase";
-
-function delay(time: number) {
-	return new Promise(resolve => setTimeout(resolve, time));
-}
+import { delay } from "./utilities";
 
 export async function shutdown(client: Client) {
 	log.warn("Started shutdown sequence...");
@@ -38,6 +35,8 @@ export async function shutdown(client: Client) {
 	log.info("Awaiting all processes to be terminated...");
 	let done = false;
 	while (!done) {
+		await delay(500);
+
 		ps.lookup(
 			{
 				command: "node",
@@ -53,8 +52,6 @@ export async function shutdown(client: Client) {
 				if (resultList.length <= 3) done = true;
 			}
 		);
-		
-		await delay(1000);
 	}
 
 	//close database connections
