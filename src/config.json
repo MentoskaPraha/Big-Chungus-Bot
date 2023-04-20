@@ -13,31 +13,71 @@
 		},
 		{
 			"name": "MP Blue",
-			"code": "#3063dd"
+			"code": "#3063DD"
 		},
 		{
 			"name": "Marki Pink",
-			"code": "#f885b8"
+			"code": "#F885B8"
 		},
 		{
 			"name": "Gljue Puple",
-			"code": "#b677ff"
+			"code": "#B677FF"
 		},
 		{
 			"name": "Potato Green",
-			"code": "#1aef1f"
+			"code": "#1AEF1F"
 		},
 		{
 			"name": "Cloud Blue",
-			"code": "#8d93ea"
+			"code": "#8D93EA"
 		},
 		{
 			"name": "Rikaphu Red",
-			"code": "#ff2a77"
+			"code": "#FF2A77"
 		},
 		{
 			"name": "Ylliada Green",
 			"code": "#86D36F"
+		},
+		{
+			"name": "Passionate Red",
+			"code": "#DF2220"
+		},
+		{
+			"name": "Oránž",
+			"code": "#F36E12"
+		},
+		{
+			"name": "Crystal Blue",
+			"code": "#48BAE5"
+		},
+		{
+			"name": "Grass Green",
+			"code": "#539A47"
+		},
+		{
+			"name": "Navy Blue",
+			"code": "#1F3A8E"
+		},
+		{
+			"name": "Foggy Cyan",
+			"code": "#32879F"
+		},
+		{
+			"name": "Dandelion Yellow",
+			"code": "#f1D328"
+		},
+		{
+			"name": "Ghostly White",
+			"code": "#FFFFFF"
+		},
+		{
+			"name": "Bullet Silver",
+			"code": "#C4C4C4"
+		},
+		{
+			"name": "Wine Maroon",
+			"code": "#A72712"
 		}
 	]
 }

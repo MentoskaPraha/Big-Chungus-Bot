@@ -19,7 +19,6 @@ import {
 //command
 export = {
 	name: "info",
-	ephemeral: false,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -46,6 +45,7 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
+		await interaction.deferReply();
 
 		switch (interaction.options.getSubcommand()) {
 			case "user": {
@@ -72,6 +72,8 @@ export = {
 				if (userEntry != null) color = userColors[userEntry.color].code;
 				if (color == "N/A" || color == userColors[0].code)
 					color = userInfoEmbedColor;
+				if (user.id == process.env.DISCORD_BOT_CLIENT_ID)
+					color = "#B4AEAE";
 
 				//create embed
 				const embed = new EmbedBuilder()

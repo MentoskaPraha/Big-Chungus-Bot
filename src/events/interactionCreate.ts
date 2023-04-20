@@ -2,7 +2,7 @@
 import { Interaction, Events } from "discord.js";
 import { commandObject } from "../types";
 import commands from "../commands/_commandList";
-import log from "../logger";
+import log, { logError } from "../logger";
 
 export = {
 	name: Events.InteractionCreate,
@@ -29,24 +29,25 @@ export = {
 			}
 
 			//run the command
-			try {
-				await interaction.deferReply({ ephemeral: command.ephemeral });
-				command.execute(interaction).catch(async (error) => {
-					log.error(
-						`${interaction.user.tag} experienced an error while running a command. Error: ${error}`
-					);
+			command.execute(interaction).catch(async (error) => {
+				if (
+					interaction.deferred.valueOf() ||
+					interaction.replied.valueOf()
+				) {
 					await interaction.editReply(
 						"There was an error while executing this command."
 					);
-				});
-			} catch (error) {
-				await interaction.editReply(
-					"There was an error while executing this command."
-				);
+				} else {
+					await interaction.reply(
+						"There was an error while executing this command."
+					);
+				}
+
 				log.error(
-					`${interaction.user.tag} experienced an error while running a command. Error: ${error}`
+					`${interaction.user.tag} experienced an error while running a command.`
 				);
-			}
+				logError(error as string);
+			});
 
 			return;
 		}

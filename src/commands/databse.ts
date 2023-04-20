@@ -5,26 +5,20 @@ import {
 	EmbedBuilder,
 	ColorResolvable
 } from "discord.js";
-import { userDBEntry } from "../types";
-import { createUser, getUser, deleteUser } from "../functions/userDatabase";
+import { deleteUser } from "../functions/userDatabase";
 import { userColors } from "../config.json";
 import log from "../logger";
+import { getUserDBEntry } from "../functions/utilities";
 
 //command
 export = {
 	name: "database",
-	ephemeral: true,
 
 	//command information
 	data: new SlashCommandBuilder()
 		.setName("database")
 		.setDescription("Use this command to interface with the database.")
 		.setDMPermission(true)
-		.addSubcommand((subcommand) =>
-			subcommand
-				.setName("create")
-				.setDescription("Registers your profile in the database.")
-		)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("view")
@@ -39,49 +33,12 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
-
-		//get userDB entry
-		const potentialDBEntry = await getUser(interaction.user.id);
+		await interaction.deferReply({ ephemeral: true });
 
 		switch (interaction.options.getSubcommand()) {
-			case "create": {
-				//create user's database entry
-				const success = await createUser(interaction.user.id);
-
-				//tell user whether the action was successful or not
-				if (success == false) {
-					await interaction.editReply(
-						"Your database profile already exists."
-					);
-					log.info(
-						`${interaction.user.tag} has failed to create their database entry.`
-					);
-					break;
-				} else {
-					await interaction.editReply(
-						"Your database profile has been created."
-					);
-					log.info(
-						`${interaction.user.tag} has created their database entry.`
-					);
-					break;
-				}
-			}
-
 			case "view": {
-				//check if user has a DB entry
-				if (potentialDBEntry == null) {
-					await interaction.editReply(
-						"You do not have a database entry!"
-					);
-					log.warn(
-						`${interaction.user.tag} failed to view their userDB entry.`
-					);
-					break;
-				}
-
-				//get DB entry
-				const dbEntry = potentialDBEntry as userDBEntry;
+				//get userDB entry
+				const dbEntry = await getUserDBEntry(interaction.user.id);
 
 				//build embed
 				const embed = new EmbedBuilder()

@@ -4,14 +4,11 @@ import {
 	SlashCommandBuilder,
 	ColorResolvable,
 	EmbedBuilder,
-	GuildMemberRoleManager,
 	PermissionsBitField,
 	Role,
 	GuildTextBasedChannel
 } from "discord.js";
 import {
-	createGuild,
-	getGuild,
 	getGuildColor,
 	getGuildSettingsManagerId,
 	updateGuildAnnounceEvents,
@@ -25,12 +22,11 @@ import {
 } from "../functions/guildDatabase";
 import { serverInfoEmbedColor, userColors } from "../config.json";
 import log from "../logger";
-import { guildDBEntry } from "../types";
+import { checkUserPerms, getGuildDBEntry } from "../functions/utilities";
 
 //command
 export = {
 	name: "settings",
-	ephemeral: true,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -123,14 +119,10 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
+		await interaction.deferReply({ ephemeral: true });
 
 		//get guildDB entry for current server
-		let potentialDBEntry = await getGuild(interaction.guildId as string);
-		if (potentialDBEntry == null) {
-			await createGuild(interaction.guildId as string);
-			potentialDBEntry = await getGuild(interaction.guildId as string);
-		}
-		const DBEntry = potentialDBEntry as guildDBEntry;
+		const DBEntry = await getGuildDBEntry(interaction.guildId as string);
 
 		switch (interaction.options.getSubcommand()) {
 			case "view": {
@@ -153,12 +145,7 @@ export = {
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
-				if (
-					!(
-						interaction.member?.roles as GuildMemberRoleManager
-					).cache.some((role) => role.id == settingsManagerRoleId) ||
-					interaction.user.id != interaction.guild?.ownerId
-				) {
+				if (checkUserPerms(interaction, settingsManagerRoleId)) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -276,12 +263,7 @@ export = {
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
-				if (
-					!(
-						interaction.member?.roles as GuildMemberRoleManager
-					).cache.some((role) => role.id == settingsManagerRoleId) ||
-					interaction.user.id != interaction.guild?.ownerId
-				) {
+				if (checkUserPerms(interaction, settingsManagerRoleId)) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -314,12 +296,7 @@ export = {
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
-				if (
-					!(
-						interaction.member?.roles as GuildMemberRoleManager
-					).cache.some((role) => role.id == settingsManagerRoleId) ||
-					interaction.user.id != interaction.guild?.ownerId
-				) {
+				if (checkUserPerms(interaction, settingsManagerRoleId)) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -352,12 +329,7 @@ export = {
 				const settingsManagerRoleId = await getGuildSettingsManagerId(
 					interaction.guildId as string
 				);
-				if (
-					!(
-						interaction.member?.roles as GuildMemberRoleManager
-					).cache.some((role) => role.id == settingsManagerRoleId) ||
-					interaction.user.id != interaction.guild?.ownerId
-				) {
+				if (checkUserPerms(interaction, settingsManagerRoleId)) {
 					await interaction.editReply(
 						"You do not have permissions to run this command."
 					);
@@ -406,9 +378,12 @@ export = {
 
 					//save values and prepare output
 					if (send) {
-						updateGuildAnnounceEvents(interaction.guild.id, true);
+						updateGuildAnnounceEvents(
+							interaction.guildId as string,
+							true
+						);
 						updateGuildEventAnnounceChannelId(
-							interaction.guild.id,
+							interaction.guildId as string,
 							newChannel.id
 						);
 						output += "\nEnabled Event Announcements.";
@@ -419,7 +394,7 @@ export = {
 
 					if (newCrosspost && crosspost) {
 						updateGuildCrosspostEventsAnnounce(
-							interaction.guild.id,
+							interaction.guildId as string,
 							true
 						);
 						output += "\nEnabled Event Announcements crossposting.";

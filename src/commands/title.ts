@@ -1,13 +1,12 @@
 //dependencies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { updateUserTitle, getUser } from "../functions/userDatabase";
+import { updateUserTitle } from "../functions/userDatabase";
 import log from "../logger";
-import { userDBEntry } from "../types";
+import { getUserDBEntry } from "../functions/utilities";
 
 //command
 export = {
 	name: "title",
-	ephemeral: true,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -38,18 +37,9 @@ export = {
 	//command code
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;
+		await interaction.deferReply({ ephemeral: true });
 
-		const potentialDBEntry = await getUser(interaction.user.id);
-		if (potentialDBEntry == null) {
-			await interaction.editReply(
-				"Your database entry has not been found, please create one using `/database create`."
-			);
-			log.warn(
-				`${interaction.user.tag} failed to update his color, due to not having a userDB entry.`
-			);
-			return;
-		}
-		const dbEntry = potentialDBEntry as userDBEntry;
+		const dbEntry = await getUserDBEntry(interaction.user.id);
 
 		switch (interaction.options.getSubcommand()) {
 			case "update": {

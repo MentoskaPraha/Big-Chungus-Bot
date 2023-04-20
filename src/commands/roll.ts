@@ -11,7 +11,6 @@ import { diceRollerEmbedColor } from "../config.json";
 //command
 export = {
 	name: "roll",
-	ephemeral: false,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -63,7 +62,7 @@ export = {
 			.setDescription(resultsMessage);
 
 		//respond to user
-		await interaction.editReply({ embeds: [embed] });
+		await interaction.reply({ embeds: [embed] });
 
 		log.info(`${interaction.user.tag} has used the dice roller.`);
 	}

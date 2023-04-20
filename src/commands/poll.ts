@@ -12,7 +12,6 @@ import { pollEmbedColor } from "../config.json";
 //command
 export = {
 	name: "poll",
-	ephemeral: false,
 
 	//command data
 	data: new SlashCommandBuilder()
@@ -181,7 +180,7 @@ export = {
 					.setDescription(`${emojis[0]} Yes\n\n${emojis[1]} No`);
 
 				//send poll
-				await interaction.editReply({
+				await interaction.reply({
 					content: `Poll by ${await getUserTitle(
 						interaction.user.id
 					)} ${interaction.user.username}.`,
@@ -246,7 +245,7 @@ export = {
 					.setDescription(embedDescription);
 
 				//send poll
-				await interaction.editReply({
+				await interaction.reply({
 					content: `Poll by ${await getUserTitle(
 						interaction.user.id
 					)} ${interaction.user.username}.`,
