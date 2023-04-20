@@ -43,7 +43,7 @@ DISCORD_BOT_DB_NAME="dev"
 
 ## Version
 
-Current Version: `1.5.0`
+Current Version: `1.5.1`
 
 ## Docker
 
