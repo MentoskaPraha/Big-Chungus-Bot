@@ -62,6 +62,12 @@ export async function getUserDBEntry(userId: string) {
 	return potentialDBEntry as userDBEntry;
 }
 
+/**
+ * Reads exported objects from a directory. The exported objects must have a name property.
+ * Files starting with `_` will not be read and the files must be TS or JS files.
+ * @param path the path to the directory with the files to read
+ * @returns `Collection<string, unknown>`
+ */
 export function readFiles(path: string) {
 	//create variables
 	const items = new Collection<string, unknown>();
