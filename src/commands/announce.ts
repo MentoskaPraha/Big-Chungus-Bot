@@ -8,8 +8,8 @@ import {
 	ChannelType
 } from "discord.js";
 import log, { logError } from "../logger";
-import { getUserTitle } from "../functions/userDatabase";
-import { getGuildAnnouncerId } from "../functions/guildDatabase";
+import { getUserTitle } from "../functions/databaseAPI";
+import { getGuildAnnouncerId } from "../functions/databaseAPI";
 import { announcementEmbedColor } from "../config.json";
 import { checkUserPerms } from "../functions/utilities";
 

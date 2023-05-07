@@ -4,8 +4,12 @@ WORKDIR /big-chungus
 
 COPY package.json .
 
-COPY build .
+COPY build ./src
+
+COPY prisma ./prisma
 
 RUN yarn install --production
+
+RUN yarn prisma generate
 
 CMD ["yarn", "start"]

@@ -1,8 +1,7 @@
 //dependencies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { updateUserTitle } from "../functions/userDatabase";
+import { updateUserTitle, getUser } from "../functions/databaseAPI";
 import log from "../logger";
-import { getUserDBEntry } from "../functions/utilities";
 
 //command
 export = {
@@ -39,7 +38,7 @@ export = {
 		if (!interaction.isChatInputCommand()) return;
 		await interaction.deferReply({ ephemeral: true });
 
-		const dbEntry = await getUserDBEntry(interaction.user.id);
+		const dbEntry = await getUser(interaction.user.id);
 
 		switch (interaction.options.getSubcommand()) {
 			case "update": {

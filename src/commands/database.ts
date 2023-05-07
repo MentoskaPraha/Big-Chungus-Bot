@@ -5,10 +5,9 @@ import {
 	EmbedBuilder,
 	ColorResolvable
 } from "discord.js";
-import { deleteUser } from "../functions/userDatabase";
+import { deleteUser, getUser } from "../functions/databaseAPI";
 import { userColors } from "../config.json";
 import log from "../logger";
-import { getUserDBEntry } from "../functions/utilities";
 
 //command
 export = {
@@ -38,7 +37,7 @@ export = {
 		switch (interaction.options.getSubcommand()) {
 			case "view": {
 				//get userDB entry
-				const dbEntry = await getUserDBEntry(interaction.user.id);
+				const dbEntry = await getUser(interaction.user.id);
 
 				//build embed
 				const embed = new EmbedBuilder()

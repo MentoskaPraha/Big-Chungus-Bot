@@ -1,6 +1,6 @@
 //dependancies
 import { Interaction, Events } from "discord.js";
-import { commandObject } from "../types";
+import { commandObject } from "../commands/_commandList";
 import commands from "../commands/_commandList";
 import log, { logError } from "../logger";
 

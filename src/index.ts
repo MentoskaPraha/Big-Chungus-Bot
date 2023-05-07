@@ -2,10 +2,9 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import events from "./events/_eventList";
 import registerCmd from "./functions/deploy-cmds";
-import { userDBConnect } from "./functions/userDatabase";
-import { guildDBConnect } from "./functions/guildDatabase";
 import log from "./logger";
 import { shutdown } from "./functions/shutdown";
+import { connectDB } from "./functions/databaseAPI";
 
 //main function
 (async () => {
@@ -32,8 +31,7 @@ import { shutdown } from "./functions/shutdown";
 	});
 
 	log.info("Preparing databases...");
-	await userDBConnect();
-	await guildDBConnect();
+	await connectDB();
 
 	//register the commands
 	await registerCmd();

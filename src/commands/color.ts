@@ -1,10 +1,9 @@
 //libraries
 import { CommandInteraction, Role, SlashCommandBuilder } from "discord.js";
-import { updateUserColor } from "../functions/userDatabase";
-import { getGuildColor } from "../functions/guildDatabase";
+import { updateUserColor, getUserColor } from "../functions/databaseAPI";
+import { getGuildColor } from "../functions/databaseAPI";
 import { userColors } from "../config.json";
 import log from "../logger";
-import { getUserDBEntry } from "../functions/utilities";
 
 //export command
 export = {
@@ -65,14 +64,12 @@ export = {
 		await interaction.deferReply({ ephemeral: true });
 
 		//userDB entry on user
-		const dbEntry = await getUserDBEntry(interaction.user.id);
+		const userColor = await getUserColor(interaction.user.id);
 
 		//let user view their color, even if /color is disabled
 		if (interaction.options.getSubcommand() == "view") {
 			await interaction.editReply(
-				`Your color is **${
-					userColors[dbEntry.color].name
-				}** and the HEX-CODE is \`${userColors[dbEntry.color].code}\`.`
+				`Your color is **${userColors[userColor].name}** and the HEX-CODE is \`${userColors[userColor].code}\`.`
 			);
 			log.info(`${interaction.user.tag} has viewed their color.`);
 			return;
@@ -118,11 +115,11 @@ export = {
 				//remove old color roles
 				if (
 					member?.roles.cache.some(
-						(role) => role.id == colors[dbEntry.color]
+						(role) => role.id == colors[userColor]
 					)
 				) {
 					const oldRole = interaction.guild?.roles.cache.find(
-						(role) => role.id == colors[dbEntry.color]
+						(role) => role.id == colors[userColor]
 					) as Role;
 					member.roles.remove(oldRole);
 				}
@@ -141,7 +138,7 @@ export = {
 			case "refresh": {
 				//get color role
 				const role = interaction.guild?.roles.cache.find(
-					(role) => role.id == colors[dbEntry.color]
+					(role) => role.id == colors[userColor]
 				) as Role;
 
 				//give the user the color
@@ -153,11 +150,11 @@ export = {
 				//remove old color roles
 				if (
 					member?.roles.cache.some(
-						(role) => role.id == colors[dbEntry.color]
+						(role) => role.id == colors[userColor]
 					)
 				) {
 					const oldRole = interaction.guild?.roles.cache.find(
-						(role) => role.id == colors[dbEntry.color]
+						(role) => role.id == colors[userColor]
 					) as Role;
 					member.roles.remove(oldRole);
 				}

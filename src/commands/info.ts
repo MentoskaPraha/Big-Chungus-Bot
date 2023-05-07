@@ -7,8 +7,7 @@ import {
 	Guild,
 	ColorResolvable
 } from "discord.js";
-import { userDBEntry } from "../types";
-import { getUser, getUserTitle } from "../functions/userDatabase";
+import { getUser, getUserTitle } from "../functions/databaseAPI";
 import log from "../logger";
 import {
 	userInfoEmbedColor,
@@ -53,10 +52,7 @@ export = {
 				const user = interaction.options.getUser("user") as User;
 
 				//userDB entry on user
-				const potentialUserEntry = await getUser(user.id);
-				let userEntry = null;
-				if (potentialUserEntry != null)
-					userEntry = potentialUserEntry as userDBEntry;
+				const userEntry = await getUser(user.id);
 
 				//create user info message
 				const userInfo = `Username: ${user.username}\nTag: ${

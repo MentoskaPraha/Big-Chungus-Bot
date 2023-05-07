@@ -1,0 +1,28 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DISCORD_BOT_DB_URI")
+}
+
+model guildDB {
+    id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+    GuildId                String   @unique
+    colors                 Boolean  @default(false)
+    colorRoleIds           String[] @default(["N/A"])
+    announceEvents         Boolean  @default(false)
+    eventAnnounceChannelId String   @default("N/A")
+    crosspostEventAnnounce Boolean  @default(false)
+    announcementRoleId     String   @default("N/A")
+    moderatorRoleId        String   @default("N/A")
+    settingsManagerRoleId  String   @default("N/A")
+}
+
+model userDB {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    UserId String @unique
+    color  Int    @default(0)
+    title  String @default("Titleless")
+}

@@ -13,8 +13,7 @@ If you wish to aid in the bot's developement you may do so. Simple clone this re
 DISCORD_BOT_TOKEN="YOUR_DICORD_BOT_TOKEN_HERE"
 DISCORD_BOT_CLIENT_ID="YOUR_DISCORD_BOT_CLIENT_ID_HERE"
 DISCORD_BOT_OWNER_ID="YOUR_DISCORD_ID_HERE"
-DISCORD_BOT_DB_URI="YOUR_MONGODB_URI_HERE"
-DISCORD_BOT_DB_NAME="dev"
+DISCORD_BOT_DB_URI="YOUR_MONGODB_URI_WITH_DATABASE_NAME_HERE"
 ```
 
 ## Commands
@@ -43,7 +42,7 @@ DISCORD_BOT_DB_NAME="dev"
 
 ## Version
 
-Current Version: `1.5.1`
+Current Version: `1.6.0`
 
 ## Docker
 

@@ -1,6 +1,6 @@
 //dependancies
 import { Events, Guild } from "discord.js";
-import { createGuild } from "../functions/guildDatabase";
+import { createGuild } from "../functions/databaseAPI";
 import log from "../logger";
 
 export = {

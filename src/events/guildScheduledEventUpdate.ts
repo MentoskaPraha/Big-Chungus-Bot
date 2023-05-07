@@ -9,7 +9,7 @@ import {
 	getGuildEventAnnounceChannel,
 	getGuildCrosspostEventAnnounce,
 	updateGuildCrosspostEventsAnnounce
-} from "../functions/guildDatabase";
+} from "../functions/databaseAPI";
 import log from "../logger";
 
 export = {

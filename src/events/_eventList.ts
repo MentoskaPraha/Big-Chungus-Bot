@@ -1,7 +1,13 @@
 //dependencies
 import { Collection } from "discord.js";
-import { eventObject } from "../types";
 import { readFiles } from "../functions/utilities";
+
+//event handler interface
+export interface eventObject {
+	name: string;
+	once: boolean;
+	execute(...args: unknown[]): Promise<void>;
+}
 
 //create variables
 const events = readFiles(__dirname) as Collection<string, eventObject>;

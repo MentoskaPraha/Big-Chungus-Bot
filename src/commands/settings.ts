@@ -9,6 +9,7 @@ import {
 	GuildTextBasedChannel
 } from "discord.js";
 import {
+	getGuild,
 	getGuildColor,
 	getGuildSettingsManagerId,
 	updateGuildAnnounceEvents,
@@ -19,10 +20,10 @@ import {
 	updateGuildEventAnnounceChannelId,
 	updateGuildModeratorId,
 	updateGuildSettingsManagerId
-} from "../functions/guildDatabase";
+} from "../functions/databaseAPI";
 import { serverInfoEmbedColor, userColors } from "../config.json";
 import log from "../logger";
-import { checkUserPerms, getGuildDBEntry } from "../functions/utilities";
+import { checkUserPerms } from "../functions/utilities";
 
 //command
 export = {
@@ -122,7 +123,7 @@ export = {
 		await interaction.deferReply({ ephemeral: true });
 
 		//get guildDB entry for current server
-		const DBEntry = await getGuildDBEntry(interaction.guildId as string);
+		const DBEntry = await getGuild(interaction.guildId as string);
 
 		switch (interaction.options.getSubcommand()) {
 			case "view": {

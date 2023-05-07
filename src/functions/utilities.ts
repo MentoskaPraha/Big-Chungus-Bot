@@ -3,9 +3,6 @@ import {
 	CommandInteraction,
 	GuildMemberRoleManager
 } from "discord.js";
-import { createGuild, getGuild } from "./guildDatabase";
-import { guildDBEntry, userDBEntry } from "../types";
-import { createUser, getUser } from "./userDatabase";
 import { join } from "node:path";
 import { readdirSync } from "node:fs";
 
@@ -32,34 +29,6 @@ export function checkUserPerms(
 	}
 
 	return false;
-}
-
-/**
- * Function to get a guild's DB entry and handle creating one if they don't have one.
- * @param guildId the id of the guild
- * @returns guildDBEntry object containing the guild's DB entry
- */
-export async function getGuildDBEntry(guildId: string) {
-	let potentialDBEntry = await getGuild(guildId);
-	if (potentialDBEntry == null) {
-		await createGuild(guildId);
-		potentialDBEntry = await getGuild(guildId);
-	}
-	return potentialDBEntry as guildDBEntry;
-}
-
-/**
- * Function to get a user's DB entry and handle creating one if they don't have one.
- * @param userId the id of the user
- * @returns userDBEntry object containing the user's DB entry
- */
-export async function getUserDBEntry(userId: string) {
-	let potentialDBEntry = await getUser(userId);
-	if (potentialDBEntry == null) {
-		await createUser(userId);
-		potentialDBEntry = await getUser(userId);
-	}
-	return potentialDBEntry as userDBEntry;
 }
 
 /**
