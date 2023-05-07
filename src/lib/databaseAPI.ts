@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import log from "../logger";
+import log from "$lib/logger";
 
 //database interfaces
 export interface userDBEntry {

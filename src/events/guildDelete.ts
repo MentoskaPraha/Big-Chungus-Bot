@@ -1,7 +1,7 @@
 //dependancies
 import { Events, Guild } from "discord.js";
-import { deleteGuild } from "../functions/databaseAPI";
-import log from "../logger";
+import { deleteGuild } from "$lib/databaseAPI";
+import log from "$lib/logger";
 
 export = {
 	name: Events.GuildDelete,

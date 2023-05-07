@@ -1,10 +1,10 @@
 //dependancies
 import { Client, GatewayIntentBits } from "discord.js";
-import events from "./events/_eventList";
-import registerCmd from "./functions/deploy-cmds";
-import log from "./logger";
-import { shutdown } from "./functions/shutdown";
-import { connectDB } from "./functions/databaseAPI";
+import events from "$events";
+import registerCmd from "$lib/deploy-cmds";
+import log from "$lib/logger";
+import { shutdown } from "$lib/shutdown";
+import { connectDB } from "$lib/databaseAPI";
 
 //main function
 (async () => {

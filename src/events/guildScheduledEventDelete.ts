@@ -9,8 +9,8 @@ import {
 	getGuildEventAnnounceChannel,
 	getGuildCrosspostEventAnnounce,
 	updateGuildCrosspostEventsAnnounce
-} from "../functions/databaseAPI";
-import log from "../logger";
+} from "$lib/databaseAPI";
+import log from "$lib/logger";
 
 export = {
 	name: Events.GuildScheduledEventDelete,

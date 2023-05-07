@@ -1,6 +1,6 @@
 //dependencies
 import { Collection } from "discord.js";
-import { readFiles } from "../functions/utilities";
+import { readFiles } from "$lib/utilities";
 
 //event handler interface
 export interface eventObject {

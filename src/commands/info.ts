@@ -7,13 +7,13 @@ import {
 	Guild,
 	ColorResolvable
 } from "discord.js";
-import { getUser, getUserTitle } from "../functions/databaseAPI";
-import log from "../logger";
+import { getUser, getUserTitle } from "$lib/databaseAPI";
+import log from "$lib/logger";
 import {
 	userInfoEmbedColor,
 	serverInfoEmbedColor,
 	userColors
-} from "../config.json";
+} from "$config";
 
 //command
 export = {

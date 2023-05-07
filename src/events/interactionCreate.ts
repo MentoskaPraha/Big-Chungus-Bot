@@ -1,8 +1,8 @@
 //dependancies
 import { Interaction, Events } from "discord.js";
-import { commandObject } from "../commands/_commandList";
-import commands from "../commands/_commandList";
-import log, { logError } from "../logger";
+import { commandObject } from "$commands";
+import commands from "$commands";
+import log, { logError } from "$lib/logger";
 
 export = {
 	name: Events.InteractionCreate,

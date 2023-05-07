@@ -1,6 +1,6 @@
 //dependancies
 import { Client, Events, ActivityType } from "discord.js";
-import log from "../logger";
+import log from "$lib/logger";
 
 export = {
 	name: Events.ClientReady,

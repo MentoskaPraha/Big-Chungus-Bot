@@ -1,7 +1,7 @@
 version: "3.3"
 services:
     discord-bot:
-        image: mentoskapraha/big-chungus-bot:v150
+        image: mentoskapraha/big-chungus-bot:v160
         depends_on:
             - database
         volumes:

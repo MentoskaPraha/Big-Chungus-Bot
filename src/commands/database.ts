@@ -5,9 +5,9 @@ import {
 	EmbedBuilder,
 	ColorResolvable
 } from "discord.js";
-import { deleteUser, getUser } from "../functions/databaseAPI";
-import { userColors } from "../config.json";
-import log from "../logger";
+import { deleteUser, getUser } from "$lib/databaseAPI";
+import { userColors } from "$config";
+import log from "$lib/logger";
 
 //command
 export = {

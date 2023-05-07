@@ -1,7 +1,7 @@
 import { ActivityType, Client, Events } from "discord.js";
-import log from "../logger";
-import events from "../events/_eventList";
-import { disconnectDB } from "./databaseAPI";
+import log from "$lib/logger";
+import events from "$events";
+import { disconnectDB } from "$lib/databaseAPI";
 
 export async function shutdown(client: Client) {
 	log.warn("Started shutdown sequence...");

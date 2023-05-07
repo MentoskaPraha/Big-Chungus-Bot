@@ -1,6 +1,6 @@
 //dependancies
 import { Events } from "discord.js";
-import log, { logError } from "../logger";
+import log, { logError } from "$lib/logger";
 
 export = {
 	name: Events.ShardError,

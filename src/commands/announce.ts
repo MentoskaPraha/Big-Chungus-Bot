@@ -7,11 +7,10 @@ import {
 	ColorResolvable,
 	ChannelType
 } from "discord.js";
-import log, { logError } from "../logger";
-import { getUserTitle } from "../functions/databaseAPI";
-import { getGuildAnnouncerId } from "../functions/databaseAPI";
-import { announcementEmbedColor } from "../config.json";
-import { checkUserPerms } from "../functions/utilities";
+import log, { logError } from "$lib/logger";
+import { getUserTitle, getGuildAnnouncerId } from "../lib/databaseAPI";
+import { announcementEmbedColor } from "$config";
+import { checkUserPerms } from "$lib/utilities";
 
 //command
 export = {

@@ -5,8 +5,8 @@ import {
 	EmbedBuilder,
 	ColorResolvable
 } from "discord.js";
-import log from "../logger";
-import { botStatusEmbedColor } from "../config.json";
+import log from "$lib/logger";
+import { botStatusEmbedColor } from "$config";
 
 //command
 export = {

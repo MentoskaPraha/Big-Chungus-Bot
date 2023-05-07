@@ -20,10 +20,10 @@ import {
 	updateGuildEventAnnounceChannelId,
 	updateGuildModeratorId,
 	updateGuildSettingsManagerId
-} from "../functions/databaseAPI";
-import { serverInfoEmbedColor, userColors } from "../config.json";
-import log from "../logger";
-import { checkUserPerms } from "../functions/utilities";
+} from "$lib/databaseAPI";
+import { serverInfoEmbedColor, userColors } from "$config";
+import log from "$lib/logger";
+import { checkUserPerms } from "$lib/utilities";
 
 //command
 export = {

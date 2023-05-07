@@ -5,8 +5,8 @@ import {
 	CommandInteraction,
 	ColorResolvable
 } from "discord.js";
-import log from "../logger";
-import { diceRollerEmbedColor } from "../config.json";
+import log from "$lib/logger";
+import { diceRollerEmbedColor } from "$config";
 
 //command
 export = {

@@ -5,9 +5,9 @@ import {
 	CommandInteraction,
 	ColorResolvable
 } from "discord.js";
-import { getUserTitle } from "../functions/databaseAPI";
-import log from "../logger";
-import { pollEmbedColor } from "../config.json";
+import { getUserTitle } from "$lib/databaseAPI";
+import log from "$lib/logger";
+import { pollEmbedColor } from "$config";
 
 //command
 export = {

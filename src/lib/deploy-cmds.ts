@@ -4,8 +4,8 @@ import {
 	RESTPostAPIChatInputApplicationCommandsJSONBody,
 	Routes
 } from "discord.js";
-import commandFiles from "../commands/_commandList";
-import log, { logError } from "../logger";
+import commandFiles from "$commands";
+import log, { logError } from "$lib/logger";
 
 //register commands function
 export default async function () {

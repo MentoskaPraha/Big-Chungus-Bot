@@ -1,7 +1,7 @@
 //dependencies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { updateUserTitle, getUser } from "../functions/databaseAPI";
-import log from "../logger";
+import { updateUserTitle, getUser } from "$lib/databaseAPI";
+import log from "$lib/logger";
 
 //command
 export = {

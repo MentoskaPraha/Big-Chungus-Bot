@@ -8,6 +8,13 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"baseUrl": "src",
+		"paths": {
+			"$lib/*": ["lib/*"],
+			"$config": ["config.json"],
+			"$events": ["events/_eventList"],
+			"$commands": ["commands/_commandList"]
+		}
 	}
 }

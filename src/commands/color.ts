@@ -1,9 +1,8 @@
 //libraries
 import { CommandInteraction, Role, SlashCommandBuilder } from "discord.js";
-import { updateUserColor, getUserColor } from "../functions/databaseAPI";
-import { getGuildColor } from "../functions/databaseAPI";
-import { userColors } from "../config.json";
-import log from "../logger";
+import { updateUserColor, getUserColor, getGuildColor } from "$lib/databaseAPI";
+import { userColors } from "$config";
+import log from "$lib/logger";
 
 //export command
 export = {

@@ -4,7 +4,7 @@ import {
 	CommandInteraction,
 	SlashCommandBuilder
 } from "discord.js";
-import { readFiles } from "../functions/utilities";
+import { readFiles } from "$lib/utilities";
 
 //command interface
 export interface commandObject {

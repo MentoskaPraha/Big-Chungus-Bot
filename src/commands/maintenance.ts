@@ -1,7 +1,7 @@
 //dependencies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import log from "../logger";
-import { shutdown } from "../functions/shutdown";
+import log from "$lib/logger";
+import { shutdown } from "$lib/shutdown";
 
 //command
 export = {
