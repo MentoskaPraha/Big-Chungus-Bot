@@ -1,10 +1,17 @@
 import {
 	Collection,
 	CommandInteraction,
-	GuildMemberRoleManager
+	EmbedBuilder,
+	GuildMemberRoleManager,
+	GuildScheduledEvent,
+	GuildTextBasedChannel
 } from "discord.js";
 import { join } from "node:path";
 import { readdirSync } from "node:fs";
+import {
+	getGuildEventAnnounceCrosspost,
+	updateGuildEventAnnounceCrosspost
+} from "$lib/databaseAPI";
 
 /**
  * Checks whether the user has a certain role or is the server owner.
@@ -29,6 +36,53 @@ export function checkUserPerms(
 	}
 
 	return false;
+}
+
+export async function announceEvent(
+	channelId: string,
+	event: GuildScheduledEvent,
+	message: string
+) {
+	const embed = new EmbedBuilder()
+		.setTitle(event.name)
+		.setDescription(
+			event.description != ""
+				? event.description
+				: "This event has no description!"
+		)
+		.addFields(
+			{
+				name: "Start Time",
+				value: `<t:${Math.floor(
+					(event.scheduledStartTimestamp as number) / 1000
+				)}:F>`
+			},
+			{ name: "Channel or Location", value: `${event.channel?.name}` }
+		)
+		.setThumbnail(event.coverImageURL())
+		.setFooter({
+			text: `**Author:** ${
+				event.creator?.username
+			}  **Created at:** <t:${Math.floor(
+				event.createdTimestamp / 1000
+			)}:F>`
+		});
+
+	const channel = event.guild?.channels.cache.find(
+		(channel) => channel.id == channelId
+	) as GuildTextBasedChannel;
+
+	channel
+		.send({ content: message, embeds: [embed] })
+		.then(async (message) => {
+			if (await getGuildEventAnnounceCrosspost(event.guildId)) {
+				try {
+					message.crosspost();
+				} catch (error) {
+					updateGuildEventAnnounceCrosspost(event.guildId, false);
+				}
+			}
+		});
 }
 
 /**

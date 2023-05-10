@@ -1,6 +1,6 @@
 //dependencies
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { updateUserTitle, getUser } from "$lib/databaseAPI";
+import { updateUserTitle, getUserTitle } from "$lib/databaseAPI";
 import log from "$lib/logger";
 
 //command
@@ -38,8 +38,6 @@ export = {
 		if (!interaction.isChatInputCommand()) return;
 		await interaction.deferReply({ ephemeral: true });
 
-		const dbEntry = await getUser(interaction.user.id);
-
 		switch (interaction.options.getSubcommand()) {
 			case "update": {
 				//get command options
@@ -61,7 +59,9 @@ export = {
 
 			case "view": {
 				//respond with user's title
-				await interaction.editReply(`Your title is: ${dbEntry.title}`);
+				await interaction.editReply(
+					`Your title is: ${await getUserTitle(interaction.user.id)}`
+				);
 				log.info(`${interaction.user.tag} has requested their title.`);
 
 				break;

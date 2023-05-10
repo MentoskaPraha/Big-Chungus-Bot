@@ -4,7 +4,7 @@ import events from "$events";
 import registerCmd from "$lib/deploy-cmds";
 import log from "$lib/logger";
 import { shutdown } from "$lib/shutdown";
-import { connectDB } from "$lib/databaseAPI";
+import { connectDB, disconnectDB } from "$lib/databaseAPI";
 
 //main function
 (async () => {
@@ -40,13 +40,22 @@ import { connectDB } from "$lib/databaseAPI";
 	log.info("Logging in...");
 	client.login(process.env.DISCORD_BOT_TOKEN);
 
-	//handle shutdown signals
+	//handle process signals
 	process.on("SIGINT", async () => {
 		log.info("Recieved SIGINT signal from OS.");
 		await shutdown(client);
 	});
+
 	process.on("SIGTERM", async () => {
 		log.info("Recieved SIGTERM signal from OS.");
 		await shutdown(client);
+	});
+
+	process.on("uncaughtException", async (error) => {
+		await disconnectDB();
+		client.destroy();
+		log.fatal(error, "Uncaught exception, system failure.");
+		log.flush();
+		process.exit(1);
 	});
 })();

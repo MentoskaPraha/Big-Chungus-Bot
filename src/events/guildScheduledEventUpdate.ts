@@ -1,16 +1,8 @@
 //dependancies
-import {
-	Events,
-	GuildScheduledEvent,
-	EmbedBuilder,
-	GuildTextBasedChannel
-} from "discord.js";
-import {
-	getGuildEventAnnounceChannel,
-	getGuildCrosspostEventAnnounce,
-	updateGuildCrosspostEventsAnnounce
-} from "$lib/databaseAPI";
+import { Events, GuildScheduledEvent } from "discord.js";
+import { getGuildEventAnnounce } from "$lib/databaseAPI";
 import log from "$lib/logger";
+import { announceEvent } from "$lib/utilities";
 
 export = {
 	name: Events.GuildScheduledEventUpdate,
@@ -20,7 +12,7 @@ export = {
 		oldEvent: GuildScheduledEvent,
 		newEvent: GuildScheduledEvent
 	) {
-		const channelId = await getGuildEventAnnounceChannel(newEvent.guildId);
+		const channelId = await getGuildEventAnnounce(newEvent.guildId);
 		if (channelId == null) return;
 
 		let message: string;
@@ -35,41 +27,7 @@ export = {
 			}
 		}
 
-		const embed = new EmbedBuilder()
-			.setTitle(newEvent.name)
-			.setDescription(
-				newEvent.description != ""
-					? newEvent.description
-					: "This event has no description!"
-			)
-			.addFields(
-				{
-					name: "Start Time",
-					value: `<t:${Math.floor(
-						(newEvent.scheduledStartTimestamp as number) / 1000
-					)}:F>`
-				},
-				{ name: "Channel", value: `${newEvent.channel?.name}` }
-			);
-
-		const channel = newEvent.guild?.channels.cache.find(
-			(channel) => channel.id == channelId
-		) as GuildTextBasedChannel;
-
-		channel
-			.send({ content: message, embeds: [embed] })
-			.then(async (message) => {
-				if (await getGuildCrosspostEventAnnounce(newEvent.guildId)) {
-					try {
-						message.crosspost();
-					} catch (error) {
-						updateGuildCrosspostEventsAnnounce(
-							newEvent.guildId,
-							false
-						);
-					}
-				}
-			});
+		await announceEvent(channelId, newEvent, message);
 
 		log.info(
 			`Announced update/start of a Guild Scheduled Event in ${newEvent.guild?.name}`

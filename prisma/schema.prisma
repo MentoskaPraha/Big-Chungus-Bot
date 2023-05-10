@@ -1,5 +1,6 @@
 generator client {
     provider = "prisma-client-js"
+    output   = "../src/lib/prisma-client"
 }
 
 datasource db {
@@ -8,21 +9,21 @@ datasource db {
 }
 
 model guildDB {
-    id                     String   @id @default(auto()) @map("_id") @db.ObjectId
-    GuildId                String   @unique
-    colors                 Boolean  @default(false)
-    colorRoleIds           String[] @default(["N/A"])
-    announceEvents         Boolean  @default(false)
-    eventAnnounceChannelId String   @default("N/A")
-    crosspostEventAnnounce Boolean  @default(false)
-    announcementRoleId     String   @default("N/A")
-    moderatorRoleId        String   @default("N/A")
-    settingsManagerRoleId  String   @default("N/A")
+    id                             String   @id @default(auto()) @map("_id") @db.ObjectId
+    announcementRoleId             String   @default("N/A")
+    colorSettingsEnabled           Boolean  @default(false)
+    colorSettingsRoleIds           String[] @default(["N/A"])
+    eventAnnounceSettingsChannelId String   @default("N/A")
+    eventAnnounceSettingsCrosspost Boolean  @default(false)
+    eventAnnounceSettingsEnabled   Boolean  @default(false)
+    guildId                        String   @unique
+    moderatorRoleId                String   @default("N/A")
+    settingsManagerRoleId          String   @default("N/A")
 }
 
 model userDB {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
-    UserId String @unique
     color  Int    @default(0)
     title  String @default("Titleless")
+    userId String @unique
 }

@@ -6,10 +6,6 @@ COPY package.json .
 
 COPY build ./src
 
-COPY prisma ./prisma
-
 RUN yarn install --production
-
-RUN yarn prisma generate
 
 CMD ["yarn", "start"]

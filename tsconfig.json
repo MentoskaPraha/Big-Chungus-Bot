@@ -13,8 +13,11 @@
 		"paths": {
 			"$lib/*": ["lib/*"],
 			"$config": ["config.json"],
-			"$events": ["events/_eventList"],
-			"$commands": ["commands/_commandList"]
+			"$events": ["events/_eventList.ts"],
+			"$commands": ["commands/_commandList.ts"]
 		}
+	},
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
 	}
 }

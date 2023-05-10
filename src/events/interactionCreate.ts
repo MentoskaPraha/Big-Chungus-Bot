@@ -2,7 +2,7 @@
 import { Interaction, Events } from "discord.js";
 import { commandObject } from "$commands";
 import commands from "$commands";
-import log, { logError } from "$lib/logger";
+import log from "$lib/logger";
 
 export = {
 	name: Events.InteractionCreate,
@@ -44,9 +44,9 @@ export = {
 				}
 
 				log.error(
+					error,
 					`${interaction.user.tag} experienced an error while running a command.`
 				);
-				logError(error as string);
 			});
 
 			return;

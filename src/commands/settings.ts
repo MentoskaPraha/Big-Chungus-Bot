@@ -12,11 +12,11 @@ import {
 	getGuild,
 	getGuildColor,
 	getGuildSettingsManagerId,
-	updateGuildAnnounceEvents,
+	updateGuildEventAnnounceEnabled,
 	updateGuildAnnouncerId,
-	updateGuildColor,
-	updateGuildColorList,
-	updateGuildCrosspostEventsAnnounce,
+	updateGuildColorEnabled,
+	updateGuildColorRoleList,
+	updateGuildEventAnnounceCrosspost,
 	updateGuildEventAnnounceChannelId,
 	updateGuildModeratorId,
 	updateGuildSettingsManagerId
@@ -127,7 +127,7 @@ export = {
 
 		switch (interaction.options.getSubcommand()) {
 			case "view": {
-				const embedInfo = `**Colors:** ${DBEntry.colors}\n**Settings Manager Role ID:** ${DBEntry.settingsManagerRoleId}\n**Moderator Role ID:** ${DBEntry.moderatorRoleId}\n**Announcer Role ID:** ${DBEntry.announcementRoleId}\n**Announce Events:** ${DBEntry.announceEvents}\n**Event Announcement Channel ID:** ${DBEntry.eventAnnounceChannelId}`;
+				const embedInfo = `**Colors:** ${DBEntry.colorSettingsEnabled}\n**Settings Manager Role ID:** ${DBEntry.settingsManagerRoleId}\n**Moderator Role ID:** ${DBEntry.moderatorRoleId}\n**Announcer Role ID:** ${DBEntry.announcementRoleId}\n**Announce Events:** ${DBEntry.eventAnnounceSettingsEnabled}\n**Event Announcement Channel ID:** ${DBEntry.eventAnnounceSettingsChannelId}`;
 
 				const embed = new EmbedBuilder()
 					.setTitle(`${interaction.guild?.name} Settings`)
@@ -195,7 +195,7 @@ export = {
 							});
 					}
 
-					await updateGuildColorList(
+					await updateGuildColorRoleList(
 						interaction.guildId as string,
 						colorList
 					);
@@ -210,14 +210,17 @@ export = {
 
 					colorList = ["N/A"];
 
-					await updateGuildColorList(
+					await updateGuildColorRoleList(
 						interaction.guildId as string,
 						colorList
 					);
 				}
 
 				//update DB
-				await updateGuildColor(interaction.guildId as string, newValue);
+				await updateGuildColorEnabled(
+					interaction.guildId as string,
+					newValue
+				);
 
 				interaction.followUp({
 					content: "**All roles have been updated successfully!**",
@@ -354,47 +357,20 @@ export = {
 				//get output and update settings
 				let output = "**Update Announce Events Settings!**";
 				if (newSetting) {
-					//test values
-					let crosspost,
-						send = true;
-					try {
-						await newChannel
-							.send(
-								"**Big Chungus Test Message**\nThis message is of no importance. Feel free to ignore/delete it."
-							)
-							.then(async (message) => {
-								if (newCrosspost) {
-									try {
-										await message.crosspost();
-									} catch (error) {
-										crosspost = false;
-									}
-								}
-
-								await message.delete();
-							});
-					} catch (error) {
-						send = false;
-					}
-
 					//save values and prepare output
-					if (send) {
-						updateGuildAnnounceEvents(
-							interaction.guildId as string,
-							true
-						);
-						updateGuildEventAnnounceChannelId(
-							interaction.guildId as string,
-							newChannel.id
-						);
-						output += "\nEnabled Event Announcements.";
-					} else {
-						output +=
-							"\nCouldn't enable Event Announcements, invalid channel.";
-					}
 
-					if (newCrosspost && crosspost) {
-						updateGuildCrosspostEventsAnnounce(
+					updateGuildEventAnnounceEnabled(
+						interaction.guildId as string,
+						true
+					);
+					updateGuildEventAnnounceChannelId(
+						interaction.guildId as string,
+						newChannel.id
+					);
+					output += "\nEnabled Event Announcements.";
+
+					if (newCrosspost) {
+						updateGuildEventAnnounceCrosspost(
 							interaction.guildId as string,
 							true
 						);

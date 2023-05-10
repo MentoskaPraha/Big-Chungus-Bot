@@ -9,11 +9,7 @@ import {
 } from "discord.js";
 import { getUser, getUserTitle } from "$lib/databaseAPI";
 import log from "$lib/logger";
-import {
-	userInfoEmbedColor,
-	serverInfoEmbedColor,
-	userColors
-} from "$config";
+import { userInfoEmbedColor, serverInfoEmbedColor, userColors } from "$config";
 
 //command
 export = {

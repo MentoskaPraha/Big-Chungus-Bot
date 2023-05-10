@@ -23,24 +23,24 @@ export = {
 						.setDescription("The color you wish to have.")
 						.setRequired(true)
 						.addChoices(
-							{ name: "None", value: 0 },
-							{ name: "MP Blue", value: 1 },
-							{ name: "Marki Pink", value: 2 },
-							{ name: "Gljue Purple", value: 3 },
-							{ name: "Potato Green", value: 4 },
-							{ name: "Cloud Blue", value: 5 },
-							{ name: "Rikaphu Red", value: 6 },
-							{ name: "Ylliada Green", value: 7 },
-							{ name: "Passionate Red", value: 8 },
-							{ name: "Oránž", value: 9 },
-							{ name: "Crystal Blue", value: 10 },
-							{ name: "Grass Green", value: 11 },
-							{ name: "Navy Blue", value: 12 },
-							{ name: "Foggy Cyan", value: 13 },
-							{ name: "Dandelion Yellow", value: 14 },
-							{ name: "Ghostly White", value: 15 },
-							{ name: "Bullet Silver", value: 16 },
-							{ name: "Wine Maroon", value: 17 }
+							{ name: userColors[0].name, value: 0 },
+							{ name: userColors[1].name, value: 1 },
+							{ name: userColors[2].name, value: 2 },
+							{ name: userColors[3].name, value: 3 },
+							{ name: userColors[4].name, value: 4 },
+							{ name: userColors[5].name, value: 5 },
+							{ name: userColors[6].name, value: 6 },
+							{ name: userColors[7].name, value: 7 },
+							{ name: userColors[8].name, value: 8 },
+							{ name: userColors[9].name, value: 9 },
+							{ name: userColors[10].name, value: 10 },
+							{ name: userColors[11].name, value: 11 },
+							{ name: userColors[12].name, value: 12 },
+							{ name: userColors[13].name, value: 13 },
+							{ name: userColors[14].name, value: 14 },
+							{ name: userColors[15].name, value: 15 },
+							{ name: userColors[16].name, value: 16 },
+							{ name: userColors[17].name, value: 17 }
 						)
 				)
 		)
@@ -65,30 +65,17 @@ export = {
 		//userDB entry on user
 		const userColor = await getUserColor(interaction.user.id);
 
-		//let user view their color, even if /color is disabled
-		if (interaction.options.getSubcommand() == "view") {
-			await interaction.editReply(
-				`Your color is **${userColors[userColor].name}** and the HEX-CODE is \`${userColors[userColor].code}\`.`
-			);
-			log.info(`${interaction.user.tag} has viewed their color.`);
-			return;
-		}
-
-		//get server colors
-		const colors = (await getGuildColor(
-			interaction.guildId as string
-		)) as Array<string>;
-		if (colors == null) {
-			await interaction.editReply(
-				"This server doesn't have the `/color` command enabled."
-			);
-			log.warn(
-				`${interaction.user.tag} failed to use the color command as the guild has it disabled.`
-			);
-			return;
-		}
-
+		//run code depending on subcommand
 		switch (interaction.options.getSubcommand()) {
+			case "view": {
+				await interaction.editReply(
+					`Your color is **${userColors[userColor].name}** and the HEX-CODE is \`${userColors[userColor].code}\`.`
+				);
+				log.info(`${interaction.user.tag} has viewed their color.`);
+
+				break;
+			}
+
 			case "update": {
 				//get new color
 				const newColor = interaction.options.getInteger(
@@ -97,6 +84,20 @@ export = {
 
 				//update user color
 				await updateUserColor(interaction.user.id, newColor);
+
+				//get server colors
+				const colors = (await getGuildColor(
+					interaction.guildId as string
+				)) as Array<string>;
+				if (colors == null) {
+					await interaction.editReply(
+						"This server doesn't have the `/color` command enabled therefore your color could not be added however changes were recoreded to the database."
+					);
+					log.warn(
+						`${interaction.user.tag} failed to use the color command as the guild has it disabled.`
+					);
+					return;
+				}
 
 				//get the user
 				const member = interaction.guild?.members.cache.find(
@@ -135,6 +136,20 @@ export = {
 			}
 
 			case "refresh": {
+				//get server colors
+				const colors = (await getGuildColor(
+					interaction.guildId as string
+				)) as Array<string>;
+				if (colors == null) {
+					await interaction.editReply(
+						"This server doesn't have the `/color` command enabled."
+					);
+					log.warn(
+						`${interaction.user.tag} failed to use the color command as the guild has it disabled.`
+					);
+					return;
+				}
+
 				//get color role
 				const role = interaction.guild?.roles.cache.find(
 					(role) => role.id == colors[userColor]

@@ -7,7 +7,7 @@ import {
 	ColorResolvable,
 	ChannelType
 } from "discord.js";
-import log, { logError } from "$lib/logger";
+import log from "$lib/logger";
 import { getUserTitle, getGuildAnnouncerId } from "../lib/databaseAPI";
 import { announcementEmbedColor } from "$config";
 import { checkUserPerms } from "$lib/utilities";
@@ -115,8 +115,6 @@ export = {
 					try {
 						await message.crosspost();
 					} catch (error) {
-						log.error("Failed to crosspost.");
-						logError(error as string);
 						success = false;
 					}
 				}

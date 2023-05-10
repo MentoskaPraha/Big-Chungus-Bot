@@ -43,9 +43,9 @@ export = {
 				const embed = new EmbedBuilder()
 					.setTitle("Your Database Information")
 					.setDescription(
-						`Id: ${dbEntry.id}\nTitle: ${dbEntry.title}\nColor: ${
-							userColors[dbEntry.color].name
-						}`
+						`Id: ${dbEntry.userId}\nTitle: ${
+							dbEntry.title
+						}\nColor: ${userColors[dbEntry.color].name}`
 					)
 					.setColor(
 						userColors[dbEntry.color].code as ColorResolvable

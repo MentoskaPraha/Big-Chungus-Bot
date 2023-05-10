@@ -1,14 +1,12 @@
 //dependancies
 import { Events } from "discord.js";
-import log, { logError } from "$lib/logger";
+import log from "$lib/logger";
 
 export = {
 	name: Events.ShardError,
 	once: false,
 
-	async execute(error: string) {
-		log.error("Shard error (possible disconnection).");
-
-		logError(error);
+	async execute(error: unknown) {
+		log.error(error, "Shard error (possible disconnection).");
 	}
 };

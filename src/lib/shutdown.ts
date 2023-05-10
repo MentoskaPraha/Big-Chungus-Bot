@@ -25,6 +25,7 @@ export async function shutdown(client: Client) {
 	});
 
 	//TODO Write code that handles awaiting for completion of all requests.
+	////log.
 
 	//close database connections
 	log.info("Closing database connections...");
@@ -36,5 +37,6 @@ export async function shutdown(client: Client) {
 
 	//exit the application
 	log.info("Shutdown Sequence complete. Terminating process...");
+	log.flush();
 	process.exit(0);
 }

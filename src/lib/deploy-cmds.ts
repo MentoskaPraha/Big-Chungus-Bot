@@ -5,7 +5,7 @@ import {
 	Routes
 } from "discord.js";
 import commandFiles from "$commands";
-import log, { logError } from "$lib/logger";
+import log from "$lib/logger";
 
 //register commands function
 export default async function () {
@@ -30,7 +30,6 @@ export default async function () {
 		)
 		.then(() => log.info("Successfully registered application commands!"))
 		.catch((error) => {
-			log.error("Failed to register application commands!");
-			logError(error);
+			log.error(error, "Failed to register application commands!");
 		});
 }

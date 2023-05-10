@@ -5,3 +5,4 @@ yarn.lock
 .DS_Store
 build
 logs
+prisma-client
