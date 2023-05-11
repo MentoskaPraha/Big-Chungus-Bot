@@ -12,7 +12,7 @@ export = {
 	data: new SlashCommandBuilder()
 		.setName("color")
 		.setDescription("Use this command to set your own custom color.")
-		.setDMPermission(false)
+		.setDMPermission(true)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("update")
@@ -85,6 +85,12 @@ export = {
 				//update user color
 				await updateUserColor(interaction.user.id, newColor);
 
+				if(interaction.guild == null) {
+					await interaction.editReply("Your color was successfully updated.");
+					log.info(`${interaction.user.tag} updated their color in their DMs.`);
+					return;
+				}
+
 				//get server colors
 				const colors = (await getGuildColor(
 					interaction.guildId as string
@@ -136,6 +142,12 @@ export = {
 			}
 
 			case "refresh": {
+				if(interaction.guild == null) {
+					await interaction.editReply("Could not refresh your color as this command was run in the DMs.");
+					log.warn(`${interaction.user.tag} has attempted to refresh their color in their DMs.`);
+					return;
+				}
+
 				//get server colors
 				const colors = (await getGuildColor(
 					interaction.guildId as string
