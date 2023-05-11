@@ -1,6 +1,19 @@
-generator client {
-    provider = "prisma-client-js"
-    output   = "../src/lib/prisma-client"
+generator dev {
+    provider      = "prisma-client-js"
+    output        = "../src/lib/prisma-client"
+    binaryTargets = ["native"]
+}
+
+generator prodAMD64 {
+    provider      = "prisma-client-js"
+    output        = "../build/lib/prisma-client"
+    binaryTargets = ["debian-openssl-1.1.x"]
+}
+
+generator prodARM64 {
+    provider      = "prisma-client-js"
+    output        = "../build/lib/prisma-client"
+    binaryTargets = ["linux-arm64-openssl-1.1.x"]
 }
 
 datasource db {
