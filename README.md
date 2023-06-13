@@ -1,4 +1,6 @@
-# Big Chungus Bot
+# Big Chungus Bot - Unmaintained
+
+> :warning: **This project is no longer actively being worked on**: The creator of this project has decided to move on to other projects and stop maintaining this one. He'll still overview any code that you want to push to the project.
 
 It's a Big Chungus themed Discord bot, what more do you want?  
 This bot uses MongoDB as its database. It stores information such as the user's title and color. It also stores guild information such as the guild settings.
