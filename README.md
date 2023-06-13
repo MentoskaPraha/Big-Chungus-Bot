@@ -36,7 +36,7 @@ DISCORD_BOT_DB_URI="YOUR_MONGODB_URI_WITH_DATABASE_NAME_HERE"
 -   title
     -   Give yourself a title that the bot uses to refer to you.
 -   color
-    -   Get a custom color in any server from a list of colors.
+    -   Get a custom color in any server from a list of a maxiumum of 25 colors.
 -   settings
     -   Change the bot's settings for that specific guild.
 

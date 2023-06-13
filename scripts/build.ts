@@ -86,7 +86,7 @@ log.info("Compiled Typescript files.");
 
 //build Prisma for arm64
 shell.exec("yarn prisma generate --generator prodARM64");
-log.info("Built Prisma for linux/arm64");
+log.info("Built Prisma for linux/arm64.");
 
 //build docker image for arm64
 shell.exec(

@@ -6,7 +6,7 @@ export = {
 	name: Events.ShardError,
 	once: false,
 
-	async execute(error: unknown) {
+	async execute(error: Error) {
 		log.error(error, "Shard error (possible disconnection).");
 	}
 };

@@ -1,12 +1,12 @@
 //dependencies
 import {
-	CommandInteraction,
 	SlashCommandBuilder,
 	ColorResolvable,
 	EmbedBuilder,
 	PermissionsBitField,
 	Role,
-	GuildTextBasedChannel
+	GuildTextBasedChannel,
+	ChatInputCommandInteraction
 } from "discord.js";
 import {
 	getGuild,
@@ -118,8 +118,7 @@ export = {
 		),
 
 	//command code
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		//get guildDB entry for current server
@@ -174,9 +173,8 @@ export = {
 					const position = interaction.guild?.roles.cache.find(
 						(role) =>
 							role.name == interaction.client.user.username &&
-							role.members.some(
-								(user) =>
-									user.id == process.env.DISCORD_BOT_CLIENT_ID
+							!role.members.get(
+								process.env.DISCORD_BOT_CLIENT_ID as string
 							)
 					)?.position as number;
 					const colorList = ["N/A"];

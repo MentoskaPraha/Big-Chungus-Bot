@@ -2,7 +2,7 @@
 import {
 	SlashCommandBuilder,
 	EmbedBuilder,
-	CommandInteraction,
+	ChatInputCommandInteraction,
 	User,
 	Guild,
 	ColorResolvable
@@ -38,8 +38,7 @@ export = {
 		),
 
 	//command code
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
 		switch (interaction.options.getSubcommand()) {

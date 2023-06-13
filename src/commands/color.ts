@@ -1,5 +1,10 @@
 //libraries
-import { CommandInteraction, Role, SlashCommandBuilder } from "discord.js";
+import {
+	ChatInputCommandInteraction,
+	GuildMember,
+	Role,
+	SlashCommandBuilder
+} from "discord.js";
 import { updateUserColor, getUserColor, getGuildColor } from "$lib/databaseAPI";
 import { userColors } from "$config";
 import log from "$lib/logger";
@@ -17,32 +22,19 @@ export = {
 			subcommand
 				.setName("update")
 				.setDescription("Updates or creates your color.")
-				.addIntegerOption((option) =>
+				.addIntegerOption((option) => {
 					option
 						.setName("color")
 						.setDescription("The color you wish to have.")
-						.setRequired(true)
-						.addChoices(
-							{ name: userColors[0].name, value: 0 },
-							{ name: userColors[1].name, value: 1 },
-							{ name: userColors[2].name, value: 2 },
-							{ name: userColors[3].name, value: 3 },
-							{ name: userColors[4].name, value: 4 },
-							{ name: userColors[5].name, value: 5 },
-							{ name: userColors[6].name, value: 6 },
-							{ name: userColors[7].name, value: 7 },
-							{ name: userColors[8].name, value: 8 },
-							{ name: userColors[9].name, value: 9 },
-							{ name: userColors[10].name, value: 10 },
-							{ name: userColors[11].name, value: 11 },
-							{ name: userColors[12].name, value: 12 },
-							{ name: userColors[13].name, value: 13 },
-							{ name: userColors[14].name, value: 14 },
-							{ name: userColors[15].name, value: 15 },
-							{ name: userColors[16].name, value: 16 },
-							{ name: userColors[17].name, value: 17 }
-						)
-				)
+						.setRequired(true);
+
+					userColors.forEach((color, index) => {
+						if (index == 24) return;
+						option.addChoices({ name: color.name, value: index });
+					});
+
+					return option;
+				})
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
@@ -58,8 +50,7 @@ export = {
 		),
 
 	//command code
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		//userDB entry on user
@@ -85,111 +76,105 @@ export = {
 				//update user color
 				await updateUserColor(interaction.user.id, newColor);
 
-				if(interaction.guild == null) {
-					await interaction.editReply("Your color was successfully updated.");
-					log.info(`${interaction.user.tag} updated their color in their DMs.`);
-					return;
+				if (interaction.guild == null) {
+					await interaction.editReply(
+						"Color was successfully updated in database, not accross servers. Use color refresh to update the roles in a server."
+					);
+					log.warn(
+						`${interaction.user.tag} has updated their color in their DMs. Their roles weren't updated.`
+					);
+					break;
 				}
 
 				//get server colors
 				const colors = (await getGuildColor(
-					interaction.guildId as string
+					interaction.guild.id as string
 				)) as Array<string>;
 				if (colors == null) {
 					await interaction.editReply(
-						"This server doesn't have the `/color` command enabled therefore your color could not be added however changes were recoreded to the database."
+						"This guild does not have the color command enabled."
 					);
 					log.warn(
-						`${interaction.user.tag} failed to use the color command as the guild has it disabled.`
+						`${interaction.user.tag} has failed to refresh their color as the guild had the feature disabled.`
 					);
-					return;
+					break;
 				}
 
 				//get the user
-				const member = interaction.guild?.members.cache.find(
-					(member) => member.id == interaction.user.id
-				);
+				const member = interaction.guild.members.cache.get(
+					interaction.user.id
+				) as GuildMember;
+
+				//remove old color roles
+				const oldRole = member.roles.cache.get(colors[userColor]);
+				if (oldRole) member.roles.remove(oldRole);
 
 				//get color role and give it to user
 				if (newColor != 0) {
-					const role = interaction.guild?.roles.cache.find(
-						(role) => role.id == colors[newColor]
+					const role = interaction.guild.roles.cache.get(
+						colors[newColor]
 					) as Role;
-					member?.roles.add(role);
-				}
-
-				//remove old color roles
-				if (
-					member?.roles.cache.some(
-						(role) => role.id == colors[userColor]
-					)
-				) {
-					const oldRole = interaction.guild?.roles.cache.find(
-						(role) => role.id == colors[userColor]
-					) as Role;
-					member.roles.remove(oldRole);
+					member.roles.add(role);
 				}
 
 				//tell user the action was successful
 				await interaction.editReply(
-					"Your color was successfully updated!"
+					"Your color was successfully updated in database and refreshed in this guild."
 				);
-				log.info(
-					`${interaction.user.tag} has updated their new color.`
-				);
+				log.info(`${interaction.user.tag} has updated their color.`);
 
 				break;
 			}
 
 			case "refresh": {
-				if(interaction.guild == null) {
-					await interaction.editReply("Could not refresh your color as this command was run in the DMs.");
-					log.warn(`${interaction.user.tag} has attempted to refresh their color in their DMs.`);
-					return;
+				if (interaction.guild == null) {
+					await interaction.editReply(
+						"Could not refresh your color as this command was run in the DMs."
+					);
+					log.warn(
+						`${interaction.user.tag} has attempted to refresh their color in their DMs.`
+					);
+					break;
 				}
 
 				//get server colors
 				const colors = (await getGuildColor(
-					interaction.guildId as string
+					interaction.guild.id as string
 				)) as Array<string>;
 				if (colors == null) {
 					await interaction.editReply(
-						"This server doesn't have the `/color` command enabled."
+						"This guild does not have the color command enabled."
 					);
 					log.warn(
-						`${interaction.user.tag} failed to use the color command as the guild has it disabled.`
+						`${interaction.user.tag} has failed to refresh their color as the guild had the feature disabled.`
 					);
-					return;
+					break;
 				}
 
-				//get color role
-				const role = interaction.guild?.roles.cache.find(
-					(role) => role.id == colors[userColor]
-				) as Role;
-
-				//give the user the color
-				const member = interaction.guild?.members.cache.find(
-					(member) => member.id == interaction.user.id
-				);
-				member?.roles.add(role);
+				//get the user
+				const member = interaction.guild.members.cache.get(
+					interaction.user.id
+				) as GuildMember;
 
 				//remove old color roles
-				if (
-					member?.roles.cache.some(
-						(role) => role.id == colors[userColor]
-					)
-				) {
-					const oldRole = interaction.guild?.roles.cache.find(
-						(role) => role.id == colors[userColor]
+				const oldRoles = member.roles.cache.filter((role) =>
+					colors.includes(role.id)
+				);
+				oldRoles.forEach((role) => member.roles.remove(role));
+
+				//get color role and give it to user
+				if (userColor != 0) {
+					const role = interaction.guild.roles.cache.get(
+						colors[userColor]
 					) as Role;
-					member.roles.remove(oldRole);
+					member.roles.add(role);
 				}
 
 				//tell user the action was successful
 				await interaction.editReply(
-					"Your color was successfully refreshed!"
+					"Your color was successfully updated in database and refreshed in this guild."
 				);
-				log.info(`${interaction.user.tag} has refreshed their color.`);
+				log.info(`${interaction.user.tag} has updated their color.`);
 
 				break;
 			}

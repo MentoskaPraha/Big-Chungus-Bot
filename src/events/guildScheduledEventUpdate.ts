@@ -3,6 +3,7 @@ import { Events, GuildScheduledEvent } from "discord.js";
 import { getGuildEventAnnounce } from "$lib/databaseAPI";
 import log from "$lib/logger";
 import { announceEvent } from "$lib/utilities";
+import { processCountChange } from "$lib/appState";
 
 export = {
 	name: Events.GuildScheduledEventUpdate,
@@ -12,8 +13,12 @@ export = {
 		oldEvent: GuildScheduledEvent,
 		newEvent: GuildScheduledEvent
 	) {
+		processCountChange(true);
 		const channelId = await getGuildEventAnnounce(newEvent.guildId);
-		if (channelId == null) return;
+		if (channelId == null) {
+			processCountChange(false);
+			return;
+		}
 
 		let message: string;
 
@@ -32,5 +37,7 @@ export = {
 		log.info(
 			`Announced update/start of a Guild Scheduled Event in ${newEvent.guild?.name}`
 		);
+
+		processCountChange(false);
 	}
 };

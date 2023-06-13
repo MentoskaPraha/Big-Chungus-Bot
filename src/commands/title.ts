@@ -1,5 +1,5 @@
 //dependencies
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { updateUserTitle, getUserTitle } from "$lib/databaseAPI";
 import log from "$lib/logger";
 
@@ -34,8 +34,7 @@ export = {
 		),
 
 	//command code
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		switch (interaction.options.getSubcommand()) {

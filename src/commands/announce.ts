@@ -2,10 +2,10 @@
 import {
 	SlashCommandBuilder,
 	EmbedBuilder,
-	CommandInteraction,
 	GuildTextBasedChannel,
 	ColorResolvable,
-	ChannelType
+	ChannelType,
+	ChatInputCommandInteraction
 } from "discord.js";
 import log from "$lib/logger";
 import { getUserTitle, getGuildAnnouncerId } from "../lib/databaseAPI";
@@ -58,8 +58,7 @@ export = {
 		),
 
 	//command code
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		//check if user has permission to make an announcement

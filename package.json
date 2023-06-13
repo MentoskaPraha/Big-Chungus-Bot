@@ -10,7 +10,7 @@
 		"start": "node ./src/index.js"
 	},
 	"dependencies": {
-		"@types/prompt-sync": "^4.2.0",
+		"@reduxjs/toolkit": "^1.9.5",
 		"discord.js": "^14.9.0",
 		"pino": "^8.11.0",
 		"pino-pretty": "^10.0.0"
@@ -27,6 +27,7 @@
 		"prettier-plugin-prisma": "^4.13.0",
 		"prisma": "^4.13.0",
 		"prompt-sync": "^4.2.0",
+		"@types/prompt-sync": "^4.2.0",
 		"shelljs": "^0.8.5",
 		"ts-node": "^10.9.1",
 		"tsc-alias": "^1.8.6",

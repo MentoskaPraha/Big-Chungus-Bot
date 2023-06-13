@@ -18,10 +18,10 @@ const streams = [
 		stream: pino.destination({
 			dest: dir + "/" + fileName + ".log",
 			append: true,
-			sync: false
+			sync: true
 		})
 	},
-	{ stream: pretty({ colorize: true, sync: false }) }
+	{ stream: pretty({ colorize: true, sync: true }) }
 ];
 
 //create logger

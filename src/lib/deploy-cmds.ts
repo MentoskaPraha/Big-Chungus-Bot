@@ -4,14 +4,14 @@ import {
 	RESTPostAPIChatInputApplicationCommandsJSONBody,
 	Routes
 } from "discord.js";
-import commandFiles from "$commands";
+import { commandList } from "$commands";
 import log from "$lib/logger";
 
 //register commands function
 export default async function () {
 	const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
-	commandFiles.forEach((file) => {
-		commands.push(file.data.toJSON());
+	commandList.forEach((command) => {
+		commands.push(command.data.toJSON());
 	});
 
 	log.info("Registering application commands...");

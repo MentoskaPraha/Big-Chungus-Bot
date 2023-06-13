@@ -1,12 +1,13 @@
 //dependencies
 import {
-	CommandInteraction,
 	SlashCommandBuilder,
 	EmbedBuilder,
-	ColorResolvable
+	ColorResolvable,
+	ChatInputCommandInteraction
 } from "discord.js";
 import log from "$lib/logger";
 import { botStatusEmbedColor } from "$config";
+import { getMaintenanceModeState } from "$lib/appState";
 
 //command
 export = {
@@ -19,12 +20,14 @@ export = {
 		.setDMPermission(true),
 
 	//command code
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
-
+	async execute(interaction: ChatInputCommandInteraction) {
 		const embed = new EmbedBuilder()
 			.setTitle("Bot Status")
-			.setDescription("Here is the bot's current status information.")
+			.setDescription(
+				!getMaintenanceModeState()
+					? ":green_circle: - Online"
+					: ":yellow_circle: - In Maintenance"
+			)
 			.addFields(
 				{
 					name: "WS Latency",

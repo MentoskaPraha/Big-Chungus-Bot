@@ -2,7 +2,7 @@
 import {
 	SlashCommandBuilder,
 	EmbedBuilder,
-	CommandInteraction,
+	ChatInputCommandInteraction,
 	ColorResolvable
 } from "discord.js";
 import { getUserTitle } from "$lib/databaseAPI";
@@ -162,9 +162,7 @@ export = {
 		),
 
 	//command code
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
-
+	async execute(interaction: ChatInputCommandInteraction) {
 		switch (interaction.options.getSubcommand()) {
 			case "yes-or-no": {
 				//get options

@@ -2,8 +2,8 @@
 import {
 	SlashCommandBuilder,
 	EmbedBuilder,
-	CommandInteraction,
-	ColorResolvable
+	ColorResolvable,
+	ChatInputCommandInteraction
 } from "discord.js";
 import log from "$lib/logger";
 import { diceRollerEmbedColor } from "$config";
@@ -39,9 +39,7 @@ export = {
 		),
 
 	//command code
-	async execute(interaction: CommandInteraction) {
-		if (!interaction.isChatInputCommand()) return;
-
+	async execute(interaction: ChatInputCommandInteraction) {
 		//get command options
 		const diceSize = interaction.options.getInteger("dice_size") as number;
 		let diceNumbers = interaction.options.getInteger("number_of_dice");

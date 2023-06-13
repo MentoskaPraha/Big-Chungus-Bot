@@ -1,9 +1,9 @@
 //dependancies
 import { Client, GatewayIntentBits } from "discord.js";
-import events from "$events";
+import { eventList } from "$events";
 import registerCmd from "$lib/deploy-cmds";
 import log from "$lib/logger";
-import { shutdown } from "$lib/shutdown";
+import { errorShutdown, shutdown } from "$lib/appState";
 import { connectDB, disconnectDB } from "$lib/databaseAPI";
 
 //main function
@@ -22,7 +22,7 @@ import { connectDB, disconnectDB } from "$lib/databaseAPI";
 	log.info("Preparing Discord event handler...");
 
 	//set-up discord event handler
-	events.forEach((event) => {
+	eventList.forEach((event) => {
 		if (event.once) {
 			client.once(event.name, (...args) => event.execute(...args));
 		} else {
@@ -52,10 +52,6 @@ import { connectDB, disconnectDB } from "$lib/databaseAPI";
 	});
 
 	process.on("uncaughtException", async (error) => {
-		await disconnectDB();
-		client.destroy();
-		log.fatal(error, "Uncaught exception, system failure.");
-		log.flush();
-		process.exit(1);
+		await errorShutdown(client, error, "Uncaught System Exception.");
 	});
 })();

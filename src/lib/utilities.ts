@@ -23,17 +23,16 @@ export function checkUserPerms(
 	interaction: CommandInteraction,
 	checkId: string | null
 ) {
-	if (interaction.user.id != interaction.guild?.ownerId) {
-		return true;
-	}
+	if (interaction.user.id != interaction.guild?.ownerId) return true;
+
+	if (checkId == null) return false;
 
 	if (
-		!(interaction.member?.roles as GuildMemberRoleManager).cache.some(
-			(role) => role.id == checkId
+		!(interaction.member?.roles as GuildMemberRoleManager).cache.get(
+			checkId
 		)
-	) {
+	)
 		return true;
-	}
 
 	return false;
 }
@@ -68,8 +67,8 @@ export async function announceEvent(
 			)}:F>`
 		});
 
-	const channel = event.guild?.channels.cache.find(
-		(channel) => channel.id == channelId
+	const channel = event.guild?.channels.cache.get(
+		channelId
 	) as GuildTextBasedChannel;
 
 	channel
@@ -77,7 +76,7 @@ export async function announceEvent(
 		.then(async (message) => {
 			if (await getGuildEventAnnounceCrosspost(event.guildId)) {
 				try {
-					message.crosspost();
+					await message.crosspost();
 				} catch (error) {
 					updateGuildEventAnnounceCrosspost(event.guildId, false);
 				}
@@ -94,8 +93,7 @@ export async function announceEvent(
 export function readFiles(path: string) {
 	//create variables
 	const items = new Collection<string, unknown>();
-	const itemPath = join(path);
-	const itemFiles = readdirSync(itemPath).filter(
+	const itemFiles = readdirSync(path).filter(
 		(file) =>
 			(file.endsWith(".js") || file.endsWith(".ts")) &&
 			!file.startsWith("_")
@@ -103,7 +101,7 @@ export function readFiles(path: string) {
 
 	//get the items
 	itemFiles.forEach(async (file) => {
-		const filePath = join(itemPath, file);
+		const filePath = join(path, file);
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		const item = require(filePath);
 		items.set(item.name, item);
