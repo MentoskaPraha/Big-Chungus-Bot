@@ -9,22 +9,20 @@
 		"start": "node index.js"
 	},
 	"dependencies": {
-		"discord.js": "^14.9.0",
-		"mongodb": "^5.3.0",
-		"pino": "^8.11.0",
-		"pino-pretty": "^10.0.0",
-		"ps-node": "^0.1.6"
+		"discord.js": "^14.14.1",
+		"pino": "^8.16.2",
+		"pino-pretty": "^10.2.3",
+		"redis": "^4.6.11"
 	},
 	"devDependencies": {
-		"@types/ps-node": "^0.1.1",
-		"@types/node": "^18.15.11",
-		"@typescript-eslint/eslint-plugin": "^5.59.0",
-		"@typescript-eslint/parser": "^5.59.0",
-		"dotenv": "^16.0.3",
-		"eslint": "^8.38.0",
-		"prettier": "^2.8.7",
+		"@types/node": "^18.18.13",
+		"@typescript-eslint/eslint-plugin": "^5.62.0",
+		"@typescript-eslint/parser": "^5.62.0",
+		"dotenv": "^16.3.1",
+		"eslint": "^8.54.0",
+		"prettier": "^2.8.8",
 		"shelljs": "^0.8.5",
 		"ts-node": "^10.9.1",
-		"typescript": "^5.0.4"
+		"typescript": "^5.3.2"
 	}
 }
