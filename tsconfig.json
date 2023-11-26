@@ -1,6 +1,8 @@
 {
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "scripts"],
 	"compilerOptions": {
-		"target": "ES6",
+		"target": "ES2020",
 		"module": "CommonJS",
 		"rootDir": "./src",
 		"outDir": "./build",
@@ -8,6 +10,15 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"baseUrl": "src",
+		"paths": {
+			"@libs/*": ["libs/*"],
+			"$types": ["types.d.ts"],
+			"$config": ["config.json"]
+		}
+	},
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
 	}
 }

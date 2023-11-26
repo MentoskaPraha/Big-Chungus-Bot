@@ -2,7 +2,7 @@
 	"name": "big-chungus-bot",
 	"private": true,
 	"scripts": {
-		"build": "tsc",
+		"build": "tsc && tsc-alias",
 		"dev": "ts-node -r dotenv/config ./src/index.ts",
 		"lint": "prettier --check . && eslint . --ext .ts --ignore-path .gitignore",
 		"format": "prettier --write .",
@@ -22,6 +22,8 @@
 		"eslint": "^8.54.0",
 		"prettier": "^2.8.8",
 		"ts-node": "^10.9.1",
+		"tsc-alias": "^1.8.8",
+		"tsconfig-paths": "^4.2.0",
 		"typescript": "^5.3.2"
 	}
 }
