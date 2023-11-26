@@ -2,8 +2,8 @@
 	"name": "big-chungus-bot",
 	"private": true,
 	"scripts": {
-		"build": "tsc && node -e 'require(\"shelljs\").cp(\"-R\", \"src/config.json\", \"build/\");'",
-		"test": "ts-node -r dotenv/config ./src/index.ts",
+		"build": "tsc",
+		"dev": "ts-node -r dotenv/config ./src/index.ts",
 		"lint": "prettier --check . && eslint . --ext .ts --ignore-path .gitignore",
 		"format": "prettier --write .",
 		"start": "node index.js"
@@ -21,7 +21,6 @@
 		"dotenv": "^16.3.1",
 		"eslint": "^8.54.0",
 		"prettier": "^2.8.8",
-		"shelljs": "^0.8.5",
 		"ts-node": "^10.9.1",
 		"typescript": "^5.3.2"
 	}
