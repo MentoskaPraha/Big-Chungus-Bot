@@ -33,6 +33,7 @@ A funny little Discord bot that does everything me and my friends need from a Di
 -   Titles (Work in Progress)
     -   Must be obtained in some shape or form
     -   Each is unique
+-   Automatic Birthday Announcements
 -   Chungus Court (Work in Progress)
 
 ## Deployement

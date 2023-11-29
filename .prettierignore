@@ -1,6 +1,8 @@
 node_modules
 .env
-.vscode
+package-lock.json
+yarn.lock
 pnpm-lock.yaml
 .DS_Store
 build
+data

@@ -1,5 +1,5 @@
 import { Client, Events, GatewayIntentBits } from "discord.js";
-import logs from "@libs/logs";
+import log from "@libs/logs";
 
 // create a new client
 const client = new Client({
@@ -8,14 +8,17 @@ const client = new Client({
 
 // TODO Register events to client
 client.once(Events.ClientReady, (c) => {
-	logs.info("Ready!");
+	log.info("Ready!");
 });
 
 // TODO Register global commands
 
 // TODO Connect to database
 
-// TODO add SIGTERM handling
+// TODO add SIGTERM, SIGINT and SIGBREAK handling
 
 // login
-client.login(process.env.DISCORD_TOKEN);
+log.info("Logging in...");
+client.login(process.env.DISCORD_TOKEN).catch((error) => {
+	log.error(error, "Login failed");
+});
