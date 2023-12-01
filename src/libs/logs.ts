@@ -4,12 +4,12 @@ import {
 	mkdirSync,
 	readdirSync,
 	renameSync,
+	unlinkSync,
 	writeFileSync
 } from "node:fs";
 import { ScheduledTask, schedule } from "node-cron";
 import { join } from "path";
 import pino, { Logger } from "pino";
-import pretty from "pino-pretty";
 import { compress, archive } from "@utils/compress";
 
 /**
@@ -18,7 +18,7 @@ import { compress, archive } from "@utils/compress";
  * Also manages log files ensuring all log files are saved,
  * using a minimal amount of space. The logger keeps the log files
  * for the last 7 days, the last 4 weeks and the last
- * 12 months, anything older is deleted.
+ * month, anything older is deleted.
  * The files are named in the format `log-[DAILY/WEEKLY/MONTHLY]_YYYY-MM-DD.log` for files
  * that only contain logs from a day, if the log file contains logs
  * from more than one day the following format is used:
@@ -41,35 +41,73 @@ class Logs {
 	constructor(logFileDir: string) {
 		let DEV_ENV = process.env.DEV_ENV as boolean | undefined;
 		if (DEV_ENV == undefined) DEV_ENV = false;
-
-		const streams = [
-			{
-				stream: pino.destination({
-					dest: join(dir, "latest.log"),
-					append: true,
-					sync: DEV_ENV
-				})
-			},
-			{
-				stream: pretty({
-					colorize: true,
-					sync: DEV_ENV
-				})
-			}
-		];
+		const logLevel = DEV_ENV ? "debug" : "info"
 
 		this.logger = pino(
 			{
-				level: DEV_ENV == true ? "debug" : "info"
-			},
-			pino.multistream(streams)
+				level: logLevel,
+				transport: {
+					targets: [
+						{	
+							level: logLevel,
+							target: "pino-pretty",
+							options: {
+								colorize: true,
+								translateTime: "yyyy-mm-dd HH:MM:ss",
+								ignore: "pid,hostname",
+								sync: DEV_ENV,
+							}
+						},
+						{
+							level: logLevel,
+							target: "pino/file",
+							options: {
+								destination: join(dir, "latest.log"),
+								append: true,
+								sync: false
+							}
+						}
+					]
+				}
+			}
 		);
 		this.logger.debug("Logger initialised, preparing logger cron tasks...");
 
 		// setup cron task for compressing old logs.
 		this.logFileDir = logFileDir;
+
+		const nowDate = new Date(Date.now());
+		this.dailyLogCron = schedule(
+			`${nowDate.getUTCMinutes()} ${nowDate.getUTCHours()} * * *`,
+			this.dailyLogJob,
+			{
+				scheduled: true,
+				timezone: "Etc/UTC"
+			}
+		);
+		this.weeklyLogCron = schedule(
+			`${nowDate.getUTCMinutes() + 5} ${nowDate.getUTCHours()} * * ${nowDate.getUTCDay()}`,
+			this.weeklyLogJob,
+			{
+				scheduled: true,
+				timezone: "Etc/UTC"
+			}
+		);
+		this.monthlyLogCron = schedule(
+			`${nowDate.getUTCMinutes() + 10} ${nowDate.getUTCHours()} ${nowDate.getUTCDate()} * *`,
+			this.monthlyLogJob,
+			{
+				scheduled: true,
+				timezone: "Etc/UTC"
+			}
+		);
+
+		this.logger.debug("Logger fully started and ready!");
 	}
 
+	/**
+	 * Compresses the latest log into a daily log file.
+	 */
 	private async dailyLogJob() {
 		this.logger.debug("Archiving daily log...");
 
@@ -93,6 +131,10 @@ class Logs {
 		this.logger.info("Logger ran daily archiving task successfully.");
 	}
 
+	/**
+	 * Compresses all the daily log files from the last week into
+	 * one weekly log archive.
+	 */
 	private async weeklyLogJob() {
 		this.logger.debug(
 			"Archiving log from the last week, getting log files..."
@@ -102,7 +144,7 @@ class Logs {
 		const neededLogs: string[] = [];
 
 		for (const log in allLogs) {
-			if (log.includes(".log") && log.includes("DAILY")) {
+			if (log.includes("DAILY")) {
 				neededLogs.push(log);
 			}
 		}
@@ -127,10 +169,57 @@ class Logs {
 		this.logger.debug("Logger ran weekly archiving task successfully.");
 	}
 
-	private monthlyLogJob() {
-		this.logger.debug(
-			"Archiving logs from the last month and deleting oldest monthly log..."
+	/**
+	 * Compresses the all the weekly log files into one monthly log file
+	 * and deletes the oldest monthly log file if there's more than 12.
+	 */
+	private async monthlyLogJob() {
+		this.logger.debug("Archiving logs from the last month...");
+
+		const allLogs = readdirSync(this.logFileDir);
+		const neededLogs: string[] = [];
+
+		for (const log in allLogs) {
+			if (log.includes("WEEKLY")) {
+				neededLogs.push(log);
+			}
+		}
+
+		// get the oldest log file
+		const oldestWeeklyLog = this.getOldestLogFile(neededLogs);
+		const oldestWeeklyDateString = oldestWeeklyLog.match(
+			this.logsDatePattern
 		);
+		const oldestWeeklyDate = new Date(
+			oldestWeeklyDateString ? oldestWeeklyDateString[0] : Date.now()
+		);
+
+		this.logger.debug("Aquired files. Compressing now...");
+		const nowDate = new Date(Date.now());
+		await archive(
+			neededLogs,
+			join(
+				this.logFileDir,
+				`log-MONTHLY_${oldestWeeklyDate.getUTCFullYear()}-${oldestWeeklyDate.getUTCMonth()}-${oldestWeeklyDate.getUTCDate()}:${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}.tar.gz`
+			)
+		);
+
+		this.logger.debug(
+			"Archived logs from last month, deleting oldest log..."
+		);
+
+		// get the oldest log file and delete it
+		const monthlyLogs: string[] = [];
+		for (const log in allLogs) {
+			if (log.includes("MONTHLY")) {
+				monthlyLogs.push(log);
+			}
+		}
+
+		const oldestLog = this.getOldestLogFile(monthlyLogs);
+		unlinkSync(oldestLog);
+
+		this.logger.debug("Logger ran monthly archiving task successfully.");
 	}
 
 	/**
@@ -162,12 +251,25 @@ class Logs {
 	/**
 	 * Should be run when the program ends.
 	 * This ensures all the log files can be inspected later.
+	 * @param fatal Whether the function is run by the `Logs#fatal`. **Do not touch!**
 	 */
-	public shutdown() {
-		this.logger.debug(
-			"Logger has been shutdown, all messages are being flushed."
-		);
-		this.logger.flush();
+	public shutdown(fatal?: boolean) {
+		if (!fatal) {
+			this.logger.debug(
+				"Logger is beeing shutdown, all messages are being flushed..."
+			);
+			this.logger.flush();
+			this.logger.debug(
+				"All messages have been flushed. Stopping CRON tasks..."
+			);
+		}
+
+		this.dailyLogCron.stop();
+		this.weeklyLogCron.stop();
+		this.monthlyLogCron.stop();
+
+		if (!fatal)
+			this.logger.debug("All CRON tasks stopped. Logger has shutdown.");
 	}
 
 	/**
@@ -240,11 +342,28 @@ class Logs {
 				"A fatal error has occured, no message was provided!"
 			);
 		}
+
+		const crashReportDir = join(this.logFileDir, "crash-reports");
+		if (!existsSync(crashReportDir)) mkdirSync(crashReportDir);
+		const nowDate = new Date(Date.now());
+		writeFileSync(
+			join(
+				crashReportDir,
+				`crash_report:${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}_${nowDate.getUTCHours()}:${nowDate.getUTCMinutes()}:${nowDate.getUTCSeconds()}.txt`
+			),
+			`**Error:** ${error.name}\n**Message:** ${
+				error.message
+			}\n**Stacktrace:**\n${
+				error.stack ? error.stack : "No stacktrace provided!"
+			}`
+		);
+
+		this.shutdown(true);
 	}
 }
 
 // create the directory for the log files
-const dir = join(__dirname.split("/src")[0].split("/libs")[0], "data", "logs");
+const dir = join(__dirname.split("/src")[0].split("/libs")[0], "logs");
 if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
 // Compress and store the latest.log
