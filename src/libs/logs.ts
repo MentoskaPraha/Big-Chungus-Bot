@@ -41,36 +41,34 @@ class Logs {
 	constructor(logFileDir: string) {
 		let DEV_ENV = process.env.DEV_ENV as boolean | undefined;
 		if (DEV_ENV == undefined) DEV_ENV = false;
-		const logLevel = DEV_ENV ? "debug" : "info"
+		const logLevel = DEV_ENV ? "debug" : "info";
 
-		this.logger = pino(
-			{
-				level: logLevel,
-				transport: {
-					targets: [
-						{	
-							level: logLevel,
-							target: "pino-pretty",
-							options: {
-								colorize: true,
-								translateTime: "yyyy-mm-dd HH:MM:ss",
-								ignore: "pid,hostname",
-								sync: DEV_ENV,
-							}
-						},
-						{
-							level: logLevel,
-							target: "pino/file",
-							options: {
-								destination: join(dir, "latest.log"),
-								append: true,
-								sync: false
-							}
+		this.logger = pino({
+			level: logLevel,
+			transport: {
+				targets: [
+					{
+						level: logLevel,
+						target: "pino-pretty",
+						options: {
+							colorize: true,
+							translateTime: "yyyy-mm-dd HH:MM:ss",
+							ignore: "pid,hostname",
+							sync: DEV_ENV
 						}
-					]
-				}
+					},
+					{
+						level: logLevel,
+						target: "pino/file",
+						options: {
+							destination: join(dir, "latest.log"),
+							append: true,
+							sync: false
+						}
+					}
+				]
 			}
-		);
+		});
 		this.logger.debug("Logger initialised, preparing logger cron tasks...");
 
 		// setup cron task for compressing old logs.
@@ -86,7 +84,9 @@ class Logs {
 			}
 		);
 		this.weeklyLogCron = schedule(
-			`${nowDate.getUTCMinutes() + 5} ${nowDate.getUTCHours()} * * ${nowDate.getUTCDay()}`,
+			`${
+				nowDate.getUTCMinutes() + 5
+			} ${nowDate.getUTCHours()} * * ${nowDate.getUTCDay()}`,
 			this.weeklyLogJob,
 			{
 				scheduled: true,
@@ -94,7 +94,9 @@ class Logs {
 			}
 		);
 		this.monthlyLogCron = schedule(
-			`${nowDate.getUTCMinutes() + 10} ${nowDate.getUTCHours()} ${nowDate.getUTCDate()} * *`,
+			`${
+				nowDate.getUTCMinutes() + 10
+			} ${nowDate.getUTCHours()} ${nowDate.getUTCDate()} * *`,
 			this.monthlyLogJob,
 			{
 				scheduled: true,

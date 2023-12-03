@@ -40,6 +40,17 @@ A funny little Discord bot that does everything me and my friends need from a Di
 
 Currently not possible as a complete rewrite is in progress, however deployement is planned to be done through Docker.
 
+## Develoment
+
+Contribute to this bot simply fork the repo. For testing purposes a `.env` file at the root of the project is required, it should look like so:
+
+```ini
+DEV_ENV=true
+DISCORD_TOKEN="Your Discord Bot's TOKEN here."
+DISCORD_CLIENT_ID="Your Discord Bot's user ID here."
+DISCORD_OWNER_ID="Your Discord user ID here."
+```
+
 ## Dev To-Do List
 
 -   Re-organise bot structure
