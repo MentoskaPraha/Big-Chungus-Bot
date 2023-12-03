@@ -9,6 +9,9 @@ A funny little Discord bot that does everything me and my friends need from a Di
     -   Allow people to RSVP
 -   Simple Poll's Polls (Work in Progress)
 -   Simple Dice Roller (Work in Progress)
+-   Basic commands (Work in Progress)
+    -   Info command
+    -   Status command
 -   Vote Punishement from VC (Work in Progress)
     -   Can be used to mute/kick/ban a person from the VC
     -   Useful for when your friend gets a little too annoying
@@ -33,7 +36,7 @@ A funny little Discord bot that does everything me and my friends need from a Di
 -   Titles (Work in Progress)
     -   Must be obtained in some shape or form
     -   Each is unique
--   Automatic Birthday Announcements
+-   Automatic Birthday Announcements (Work in Progress)
 -   Chungus Court (Work in Progress)
 
 ## Deployement
@@ -54,6 +57,7 @@ DISCORD_OWNER_ID="Your Discord user ID here."
 ## Dev To-Do List
 
 -   Re-organise bot structure
+    -   Create system for event and command registring for subsystems
 -   Rewrite user response handling
 -   Rewrite embed handling
 -   Shutdown Handling
