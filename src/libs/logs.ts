@@ -10,19 +10,18 @@ import {
 import { ScheduledTask, schedule } from "node-cron";
 import { join } from "path";
 import pino, { Logger } from "pino";
-import { compress, archive } from "@utils/compress";
+import { compress, archive } from "@libs/utils/compress";
 
 /**
  * Is used to log stuff to the console and log files.
  *
  * Also manages log files ensuring all log files are saved,
  * using a minimal amount of space. The logger keeps the log files
- * for the last 7 days, the last 4 weeks and the last
- * month, anything older is deleted.
- * The files are named in the format `log-[DAILY/WEEKLY/MONTHLY]_YYYY-MM-DD.log` for files
+ * for the last 7 days the last 4 weeks. anything older is deleted.
+ * The files are named in the format `log-[DAILY/WEEKLY]_YYYY-MM-DD.log` for files
  * that only contain logs from a day, if the log file contains logs
  * from more than one day the following format is used:
- * `log-[DAILY/WEEKLY/MONTHLY]_YYYY-MM-DD:YYYY-MM-DD.log`, this is the period of time from which
+ * `log-[DAILY/WEEKLY]_YYYY-MM-DD:YYYY-MM-DD.log`, this is the period of time from which
  * the contained logs are.
  */
 class Logs {
@@ -74,29 +73,29 @@ class Logs {
 		// setup cron task for compressing old logs.
 		this.logFileDir = logFileDir;
 
-		const nowDate = new Date(Date.now());
+		const dailyTaskDate = new Date(Date.now() - 900000);
 		this.dailyLogCron = schedule(
-			`${nowDate.getUTCMinutes()} ${nowDate.getUTCHours()} * * *`,
+			`${dailyTaskDate.getUTCMinutes()} ${dailyTaskDate.getUTCHours()} * * *`,
 			this.dailyLogJob,
 			{
 				scheduled: true,
 				timezone: "Etc/UTC"
 			}
 		);
+
+		const weeklyTaskDate = new Date(Date.now() - 600000);
 		this.weeklyLogCron = schedule(
-			`${
-				nowDate.getUTCMinutes() + 5
-			} ${nowDate.getUTCHours()} * * ${nowDate.getUTCDay()}`,
+			`${weeklyTaskDate.getUTCMinutes()} ${weeklyTaskDate.getUTCHours()} * * ${weeklyTaskDate.getUTCDay()}`,
 			this.weeklyLogJob,
 			{
 				scheduled: true,
 				timezone: "Etc/UTC"
 			}
 		);
+
+		const monthlyTaskDate = new Date(Date.now() - 300000);
 		this.monthlyLogCron = schedule(
-			`${
-				nowDate.getUTCMinutes() + 10
-			} ${nowDate.getUTCHours()} ${nowDate.getUTCDate()} * *`,
+			`${monthlyTaskDate.getUTCMinutes()} ${monthlyTaskDate.getUTCHours()} ${monthlyTaskDate.getUTCDate()} * *`,
 			this.monthlyLogJob,
 			{
 				scheduled: true,
@@ -176,7 +175,7 @@ class Logs {
 	 * and deletes the oldest monthly log file if there's more than 12.
 	 */
 	private async monthlyLogJob() {
-		this.logger.debug("Archiving logs from the last month...");
+		this.logger.debug("Deleting oldest logs from the 4 weeks...");
 
 		const allLogs = readdirSync(this.logFileDir);
 		const neededLogs: string[] = [];
@@ -188,37 +187,7 @@ class Logs {
 		}
 
 		// get the oldest log file
-		const oldestWeeklyLog = this.getOldestLogFile(neededLogs);
-		const oldestWeeklyDateString = oldestWeeklyLog.match(
-			this.logsDatePattern
-		);
-		const oldestWeeklyDate = new Date(
-			oldestWeeklyDateString ? oldestWeeklyDateString[0] : Date.now()
-		);
-
-		this.logger.debug("Aquired files. Compressing now...");
-		const nowDate = new Date(Date.now());
-		await archive(
-			neededLogs,
-			join(
-				this.logFileDir,
-				`log-MONTHLY_${oldestWeeklyDate.getUTCFullYear()}-${oldestWeeklyDate.getUTCMonth()}-${oldestWeeklyDate.getUTCDate()}:${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}.tar.gz`
-			)
-		);
-
-		this.logger.debug(
-			"Archived logs from last month, deleting oldest log..."
-		);
-
-		// get the oldest log file and delete it
-		const monthlyLogs: string[] = [];
-		for (const log in allLogs) {
-			if (log.includes("MONTHLY")) {
-				monthlyLogs.push(log);
-			}
-		}
-
-		const oldestLog = this.getOldestLogFile(monthlyLogs);
+		const oldestLog = this.getOldestLogFile(neededLogs);
 		unlinkSync(oldestLog);
 
 		this.logger.debug("Logger ran monthly archiving task successfully.");
@@ -283,8 +252,8 @@ class Logs {
 	 * @param message A log message.
 	 * @param object The variable that needs to be logged.
 	 */
-	public debug(message: string, object?: Object) {
-		if (object != undefined) {
+	public debug(message: string, object?: unknown) {
+		if (object) {
 			this.logger.debug(object, message);
 		} else {
 			this.logger.debug(message);
@@ -353,9 +322,7 @@ class Logs {
 				crashReportDir,
 				`crash_report:${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}_${nowDate.getUTCHours()}:${nowDate.getUTCMinutes()}:${nowDate.getUTCSeconds()}.txt`
 			),
-			`**Error:** ${error.name}\n**Message:** ${
-				error.message
-			}\n**Stacktrace:**\n${
+			`${error.name}\n"${error.message}"\n\n${
 				error.stack ? error.stack : "No stacktrace provided!"
 			}`
 		);
@@ -374,7 +341,7 @@ if (existsSync(latestLog)) {
 	const nowDate = new Date(Date.now());
 	const newFileName = join(
 		dir,
-		`log_${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}.log`
+		`log_${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}_${nowDate.getUTCHours()}:${nowDate.getUTCMinutes()}.log`
 	);
 	renameSync(latestLog, newFileName);
 	compress(newFileName);
