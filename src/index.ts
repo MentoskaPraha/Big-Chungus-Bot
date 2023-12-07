@@ -30,17 +30,17 @@ log.info("Registered events with client.");
 
 // TODO add SIGTERM, SIGINT and SIGBREAK handling
 
-// TODO Register commands
+//* Register commands
 log.debug("Registering application commands...");
 const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
 globalCommands.forEach((command) => {
 	commands.push(command.data.toJSON());
 	log.debug(`Recognized command "${command.name}".`);
 });
-const rest = new REST({ version: "10" }).setToken(
-	process.env.DISCORD_TOKEN as string
-);
-rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID as string))
+const rest = new REST().setToken(process.env.DISCORD_TOKEN as string);
+rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID as string), {
+	body: commands
+})
 	.then(() => log.info("Registered application commands to Discord."))
 	.catch((error) =>
 		log.warn(

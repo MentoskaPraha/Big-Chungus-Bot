@@ -10,7 +10,7 @@ const files = readdirSync(__dirname).filter(
 		(file.endsWith(".js") || file.endsWith(".ts")) && !file.startsWith("_")
 );
 
-files.forEach(async (file) => {
+files.forEach((file) => {
 	const filePath = join(__dirname, file);
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const { default: item } = require(filePath);

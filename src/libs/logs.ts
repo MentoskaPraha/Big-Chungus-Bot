@@ -252,7 +252,7 @@ class Logs {
 	 * @param message A log message.
 	 * @param object The variable that needs to be logged.
 	 */
-	public debug(message: string, object?: unknown) {
+	public async debug(message: string, object?: unknown) {
 		if (object) {
 			this.logger.debug(object, message);
 		} else {
@@ -264,7 +264,7 @@ class Logs {
 	 * Log something.
 	 * @param message The message that will be logged.
 	 */
-	public info(message: string) {
+	public async info(message: string) {
 		this.logger.info(message);
 	}
 
@@ -273,7 +273,7 @@ class Logs {
 	 * @param message A warning message.
 	 * @param error An error that got thrown with the warning.
 	 */
-	public warn(message: string, error?: Error) {
+	public async warn(message: string, error?: Error) {
 		if (error != undefined) {
 			this.logger.warn(error, message);
 		} else {
@@ -286,7 +286,7 @@ class Logs {
 	 * @param error The error getting logged.
 	 * @param message A nice message to go along with it.
 	 */
-	public error(error: Error, message?: string) {
+	public async error(error: Error, message?: string) {
 		if (message != undefined) {
 			this.logger.error(error, message);
 		} else {
@@ -329,6 +329,37 @@ class Logs {
 
 		this.shutdown(true);
 	}
+
+	/**
+	 * Logs that a Discord event has been recieved by the client.
+	 * @param name The name of the event.
+	 * @param source The source of the event, so the guild or user or scheduled event, etc.
+	 */
+	public async eventRecieved(name: string, source: string) {
+		this.logger.debug(
+			`Recieved event ${name} from ${source} and executing the event's code...`
+		);
+	}
+
+	/**
+	 * Logs that a Discord event's code has been executed successfully.
+	 * @param name The name of the event.
+	 * @param source The source of the event, so the guild or user or scheduled event, etc.
+	 */
+	public async eventExecuted(name: string, source: string) {
+		this.logger.info(`Executed event "${name}" from ${source}.`);
+	}
+
+	/**
+	 * Logs that a Discord event has been recieved by the client.
+	 * @param name The name of the event.
+	 * @param source The source of the event, so the guild or user or scheduled event, etc.
+	 */
+	public async commandExecuted(name: string, source: string) {
+		this.logger.info(
+			`Executed and replied to command "${name}" which was ran by ${source}.`
+		);
+	}
 }
 
 // create the directory for the log files
@@ -341,7 +372,7 @@ if (existsSync(latestLog)) {
 	const nowDate = new Date(Date.now());
 	const newFileName = join(
 		dir,
-		`log_${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}_${nowDate.getUTCHours()}:${nowDate.getUTCMinutes()}.log`
+		`log_${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}_${nowDate.getUTCHours()}:${nowDate.getUTCMinutes()}:${nowDate.getUTCSeconds()}.log`
 	);
 	renameSync(latestLog, newFileName);
 	compress(newFileName);
