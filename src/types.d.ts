@@ -9,7 +9,10 @@ export interface eventObject {
 export interface commandObject {
 	name: string;
 	global: boolean;
+	dev: boolean;
 	ephemeral: boolean;
+	defer: boolean;
 	data: SlashCommandBuilder;
 	execute(interaction: ChatInputCommandInteraction): Promise<void>;
+	autocomplete?(interaction: AutocompleteInteraction): Promise<void>;
 }

@@ -5,8 +5,8 @@ import {
 	RESTPostAPIChatInputApplicationCommandsJSONBody,
 	Routes
 } from "discord.js";
-import globalEvents from "$globalEvents";
-import globalCommands from "$globalCommands";
+import events from "$events";
+import commands from "$commands";
 import log from "$logger";
 
 // create a new client
@@ -16,7 +16,7 @@ const client = new Client({
 
 //* Register events to client
 log.debug("Registering events...");
-globalEvents.forEach((event) => {
+events.forEach((event) => {
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
 	} else {
@@ -32,14 +32,14 @@ log.info("Registered events with client.");
 
 //* Register commands
 log.debug("Registering application commands...");
-const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
-globalCommands.forEach((command) => {
-	commands.push(command.data.toJSON());
+const register: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
+commands.forEach((command) => {
+	register.push(command.data.toJSON());
 	log.debug(`Recognized command "${command.name}".`);
 });
 const rest = new REST().setToken(process.env.DISCORD_TOKEN as string);
 rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID as string), {
-	body: commands
+	body: register
 })
 	.then(() => log.info("Registered application commands to Discord."))
 	.catch((error) =>

@@ -14,8 +14,8 @@
 		"baseUrl": "src",
 		"paths": {
 			"@libs/*": ["libs/*"],
-			"$globalCommands": ["global-commands/_register"],
-			"$globalEvents": ["global-events/_register"],
+			"$commands": ["commands/_register"],
+			"$events": ["events/_register"],
 			"$logger": ["libs/logs"],
 			"$types": ["types.d.ts"],
 			"$config": ["config.json"]

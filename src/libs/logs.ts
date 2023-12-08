@@ -34,7 +34,6 @@ class Logs {
 
 	/**
 	 * Creates a new Logger using pino logger as a base.
-	 * @param destinationFile The initial log file, logs will be streamed to.
 	 * @param logFileDir The directory all log files will be stored in.
 	 */
 	constructor(logFileDir: string) {
@@ -42,36 +41,62 @@ class Logs {
 		if (DEV_ENV == undefined) DEV_ENV = false;
 		const logLevel = DEV_ENV ? "debug" : "info";
 
-		this.logger = pino({
-			level: logLevel,
-			transport: {
-				targets: [
-					{
-						level: logLevel,
-						target: "pino-pretty",
-						options: {
-							colorize: true,
-							translateTime: "yyyy-mm-dd HH:MM:ss",
-							ignore: "pid,hostname",
-							sync: DEV_ENV
+		this.logFileDir = logFileDir;
+
+		if (DEV_ENV) {
+			this.logger = pino({
+				level: logLevel,
+				transport: {
+					targets: [
+						{
+							level: logLevel,
+							target: "pino-pretty",
+							options: {
+								colorize: true,
+								translateTime: "yyyy-mm-dd HH:MM:ss",
+								ignore: "pid,hostname",
+								sync: true
+							}
 						}
-					},
-					{
-						level: logLevel,
-						target: "pino/file",
-						options: {
-							destination: join(dir, "latest.log"),
-							append: true,
-							sync: false
+					]
+				}
+			});
+		} else {
+			this.logger = pino({
+				level: logLevel,
+				transport: {
+					targets: [
+						{
+							level: logLevel,
+							target: "pino-pretty",
+							options: {
+								colorize: true,
+								translateTime: "yyyy-mm-dd HH:MM:ss",
+								ignore: "pid,hostname",
+								sync: true
+							}
+						},
+						{
+							level: logLevel,
+							target: "pino/file",
+							options: {
+								destination: join(dir, "latest.log"),
+								append: true,
+								sync: false
+							}
 						}
-					}
-				]
-			}
-		});
-		this.logger.debug("Logger initialised, preparing logger cron tasks...");
+					]
+				}
+			});
+		}
+
+		if (DEV_ENV) {
+			this.logger.debug("Logger fully started and ready!");
+			return;
+		}
 
 		// setup cron task for compressing old logs.
-		this.logFileDir = logFileDir;
+		this.logger.debug("Logger initialised, preparing logger cron tasks...");
 
 		const dailyTaskDate = new Date(Date.now() - 900000);
 		this.dailyLogCron = schedule(
