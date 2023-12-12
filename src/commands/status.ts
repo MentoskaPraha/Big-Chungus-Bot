@@ -16,7 +16,7 @@ export default {
 		await replySuccess(
 			interaction,
 			`Ping: ${interaction.client.ws.ping}`,
-			false
+			this.ephemeral
 		);
 	}
 };

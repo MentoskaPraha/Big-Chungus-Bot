@@ -67,7 +67,7 @@ export default {
 				replySuccess(
 					interaction,
 					`Successfully refreshed command "${commandName}".`,
-					true
+					this.ephemeral
 				);
 				break;
 			}
@@ -77,7 +77,7 @@ export default {
 				replySuccess(
 					interaction,
 					"Successfully refreshed all commands!",
-					true
+					this.ephemeral
 				);
 				break;
 			}
@@ -97,7 +97,7 @@ export default {
 				replySuccess(
 					interaction,
 					`Successfully refreshed event "${eventName}".`,
-					true
+					this.ephemeral
 				);
 				break;
 			}
@@ -109,7 +109,7 @@ export default {
 				replySuccess(
 					interaction,
 					"Successfully refreshed all events!",
-					true
+					this.ephemeral
 				);
 				break;
 			}

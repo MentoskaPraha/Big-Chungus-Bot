@@ -52,9 +52,9 @@ export function refreshEvent(eventName: string, client: Client) {
 	delete require.cache[require.resolve(eventPath)];
 
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const { default: newCommand } = require(eventPath);
+	const { default: newEvent } = require(eventPath);
 
-	events.set(event.name, newCommand);
+	events.set(event.name, newEvent);
 
 	client.removeAllListeners(event.name);
 	if (event.once) {
