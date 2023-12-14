@@ -16,6 +16,7 @@ const files = readDir(__dirname).filter((file) => {
 files.forEach((file) => {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const { default: item } = require(file);
+	if (item == undefined) return;
 	events.set(item.name, item);
 });
 

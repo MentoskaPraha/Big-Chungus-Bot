@@ -2,14 +2,14 @@ import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 import { replySuccess } from "@libs/reply";
 
 export default {
-	name: "status",
+	name: "poll",
 	global: true,
 	dev: false,
 	ephemeral: false,
 	defer: false,
 	data: new SlashCommandBuilder()
-		.setName("status")
-		.setDescription("Get the status of the bot.")
+		.setName("poll")
+		.setDescription("Create a simple reaction poll.")
 		.setDMPermission(true),
 
 	async execute(interaction: ChatInputCommandInteraction) {

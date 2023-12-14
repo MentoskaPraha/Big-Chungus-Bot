@@ -32,10 +32,10 @@ export default function createEmbed(
 	const embed = new EmbedBuilder()
 		.setTitle(title)
 		.setDescription(description)
-		.setColor(color ? color : (defaultEmbedColor as ColorResolvable));
+		.setColor(color ? color : (defaultEmbedColor as ColorResolvable))
+		.setTimestamp(timestamp ? timestamp : new Date(Date.now()));
 
 	if (author) embed.setAuthor(author);
-	if (timestamp) embed.setTimestamp(timestamp);
 	if (thumbnail) embed.setThumbnail(thumbnail);
 	if (footer) embed.setFooter(footer);
 	if (fields) embed.addFields(fields);
