@@ -9,13 +9,13 @@ import { successEmbedColor, failureEmbedColor } from "$config";
 /**
  * Replies to a command with a generic embed.
  * @param interaction The interaction to reply to.
- * @param message An extra message if you wish to provide more details about the success.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
+ * @param reply The response to the command.
  */
 export async function reply(
 	interaction: ChatInputCommandInteraction,
-	reply: string,
-	ephemeral: boolean
+	ephemeral: boolean,
+	reply: string
 ) {
 	const embed = createEmbed(
 		interaction.commandName[0].toUpperCase() +
@@ -82,15 +82,42 @@ export async function replyEmbed(
 }
 
 /**
+ * Replies to a command with a simple string response.
+ * @param interaction The interaction to reply to.
+ * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
+ * @param string The string that will be sent as a response to the command.
+ */
+export async function replyString(
+	interaction: ChatInputCommandInteraction,
+	ephemeral: boolean,
+	string: string
+) {
+	if (interaction.replied) {
+		await interaction.followUp(string);
+		return;
+	}
+
+	if (interaction.deferred) {
+		await interaction.editReply(string);
+		return;
+	}
+
+	await interaction.reply({
+		ephemeral: ephemeral != undefined ? ephemeral : false,
+		content: string
+	});
+}
+
+/**
  * Reply with a small success embed.
  * @param interaction The interaction to reply to.
- * @param message An extra message if you wish to provide more details about the success.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
+ * @param message An extra message if you wish to provide more details about the success.
  */
 export async function replySuccess(
 	interaction: ChatInputCommandInteraction,
-	message?: string,
-	ephemeral?: boolean
+	ephemeral?: boolean,
+	message?: string
 ) {
 	const embed = createEmbed(
 		"Success!",

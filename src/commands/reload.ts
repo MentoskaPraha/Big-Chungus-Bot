@@ -66,8 +66,8 @@ export default {
 
 				replySuccess(
 					interaction,
-					`Successfully refreshed command "${commandName}".`,
-					this.ephemeral
+					this.ephemeral,
+					`Successfully refreshed command "${commandName}".`
 				);
 				break;
 			}
@@ -76,8 +76,8 @@ export default {
 				commands.forEach((command) => refreshCommand(command.name));
 				replySuccess(
 					interaction,
-					"Successfully refreshed all commands!",
-					this.ephemeral
+					this.ephemeral,
+					"Successfully refreshed all commands!"
 				);
 				break;
 			}
@@ -96,8 +96,8 @@ export default {
 
 				replySuccess(
 					interaction,
-					`Successfully refreshed event "${eventName}".`,
-					this.ephemeral
+					this.ephemeral,
+					`Successfully refreshed event "${eventName}".`
 				);
 				break;
 			}
@@ -108,8 +108,8 @@ export default {
 				);
 				replySuccess(
 					interaction,
-					"Successfully refreshed all events!",
-					this.ephemeral
+					this.ephemeral,
+					"Successfully refreshed all events!"
 				);
 				break;
 			}

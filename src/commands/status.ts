@@ -15,8 +15,8 @@ export default {
 	async execute(interaction: ChatInputCommandInteraction) {
 		await replySuccess(
 			interaction,
-			`Ping: ${interaction.client.ws.ping}ms`,
-			this.ephemeral
+			this.ephemeral,
+			`Ping: ${interaction.client.ws.ping}ms`
 		);
 	}
 };
