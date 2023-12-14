@@ -8,7 +8,7 @@ A funny little Discord bot that does everything me and my friends need from a Di
     -   Handle Discord's scheduled events
     -   Allow people to RSVP
 -   Simple Poll's Polls (Work in Progress)
--   Simple Dice Roller (Work in Progress)
+-   Simple Dice Roller
 -   Basic commands (Work in Progress)
     -   Info command
     -   Status command
@@ -58,8 +58,7 @@ DISCORD_OWNER_ID="Your Discord user ID here."
 
 -   Re-organise bot structure
     -   Create system for event and command registring for subsystems
--   Rewrite user response handling
--   Rewrite embed handling
+-   ~~Rewrite user response handling~~
+-   ~~Rewrite embed handling~~
 -   Shutdown Handling
 -   Rewrite database API to use Redis
--   Implement above features
