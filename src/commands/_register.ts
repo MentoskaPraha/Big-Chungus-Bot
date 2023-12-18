@@ -26,12 +26,12 @@ export default commands;
  * Update the import of a specific command.
  * @param commandName The command to be updated.
  */
-export function refreshCommand(commandName: string) {
+export function reloadCommand(commandName: string) {
 	const command = commands.get(commandName);
 
 	if (!command)
 		throw new Error(
-			`Command "${commandName}" could not be refreshed as it doesn't exist.`
+			`Command "${commandName}" could not be reloaded as it doesn't exist.`
 		);
 
 	const commandPath = readDir(__dirname)

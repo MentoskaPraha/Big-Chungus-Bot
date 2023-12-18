@@ -20,8 +20,8 @@ import { defaultEmbedColor } from "$config";
  *
  */
 export default function createEmbed(
-	title: string,
-	description: string,
+	title: string | null,
+	description: string | null,
 	color?: ColorResolvable,
 	author?: EmbedAuthorData,
 	timestamp?: Date,

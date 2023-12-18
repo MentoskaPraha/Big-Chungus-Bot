@@ -27,12 +27,12 @@ export default events;
  * @param eventName The command to be updated.
  * @param client The main Discord.js client.
  */
-export function refreshEvent(eventName: string, client: Client) {
+export function reloadEvent(eventName: string, client: Client) {
 	const event = events.get(eventName);
 
 	if (!event)
 		throw new Error(
-			`Event "${eventName}" could not be refreshed as it doesn't exist.`
+			`Event "${eventName}" could not be reloaded as it doesn't exist.`
 		);
 
 	const eventPath = readDir(__dirname)

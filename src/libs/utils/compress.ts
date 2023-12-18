@@ -1,4 +1,4 @@
-import { createGunzip, createGzip } from "node:zlib";
+import { createGunzip } from "node:zlib";
 import { pipeline } from "node:stream";
 import { createReadStream, createWriteStream, unlinkSync } from "node:fs";
 import { promisify } from "node:util";
@@ -15,13 +15,15 @@ const pipe = promisify(pipeline);
 export async function compress(input: string) {
 	if (input.includes(".gz")) return;
 
-	const gzip = createGzip();
-	const source = createReadStream(input);
+	const zipper = archiver("tar", {
+		gzip: true,
+		zlib: { level: 9 }
+	});
+	zipper.pipe(createWriteStream(input));
 
-	const dest = input + ".gz";
-	const destination = createWriteStream(dest);
+	zipper.file(input, { name: basename(input) });
 
-	await pipe(source, gzip, destination);
+	await zipper.finalize();
 
 	unlinkSync(input);
 }

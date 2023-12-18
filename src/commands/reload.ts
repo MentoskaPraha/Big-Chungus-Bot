@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
-import commands, { refreshCommand } from "$commands";
+import commands, { reloadCommand } from "$commands";
 import { replySuccess } from "@libs/reply";
-import events, { refreshEvent } from "$events";
+import events, { reloadEvent } from "$events";
 
 export default {
 	name: "reload",
@@ -62,22 +62,22 @@ export default {
 						`Command "${commandName}" was not found in the list of commands.`
 					);
 
-				refreshCommand(commandName);
+				reloadCommand(commandName);
 
 				replySuccess(
 					interaction,
 					this.ephemeral,
-					`Successfully refreshed command "${commandName}".`
+					`Successfully reloaded command "${commandName}".`
 				);
 				break;
 			}
 
 			case "commands": {
-				commands.forEach((command) => refreshCommand(command.name));
+				commands.forEach((command) => reloadCommand(command.name));
 				replySuccess(
 					interaction,
 					this.ephemeral,
-					"Successfully refreshed all commands!"
+					"Successfully reloaded all commands!"
 				);
 				break;
 			}
@@ -89,27 +89,27 @@ export default {
 				const event = events.get(eventName);
 				if (!event)
 					throw new Error(
-						`Command "${eventName}" was not found in the list of commands.`
+						`Event "${eventName}" was not found in the list of events.`
 					);
 
-				refreshEvent(eventName, interaction.client);
+				reloadEvent(eventName, interaction.client);
 
 				replySuccess(
 					interaction,
 					this.ephemeral,
-					`Successfully refreshed event "${eventName}".`
+					`Successfully reloaded event "${eventName}".`
 				);
 				break;
 			}
 
 			case "events": {
 				events.forEach((event) =>
-					refreshEvent(event.name, interaction.client)
+					reloadEvent(event.name, interaction.client)
 				);
 				replySuccess(
 					interaction,
 					this.ephemeral,
-					"Successfully refreshed all events!"
+					"Successfully reloaded all events!"
 				);
 				break;
 			}

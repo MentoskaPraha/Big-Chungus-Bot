@@ -48,6 +48,43 @@ export async function reply(
 }
 
 /**
+ * Replies to a command with a custom embed and a simple string response, the embeds footer and timestamp will be overriden to math the default format.
+ * @param interaction The interaction to reply to.
+ * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
+ * @param string The string that will be used in the reply.
+ * @param embeds The embed or embeds that will be attached to the reply.
+ */
+export async function replyStringEmbed(
+	interaction: ChatInputCommandInteraction,
+	ephemeral: boolean,
+	string: string,
+	...embeds: EmbedBuilder[]
+) {
+	embeds.forEach((embed) => {
+		embed.setTimestamp(new Date(Date.now())).setFooter({
+			text: `This is a reply to the command "${interaction.commandName}" ran by ${interaction.user.tag}.`,
+			iconURL: interaction.client.user.displayAvatarURL()
+		});
+	});
+
+	if (interaction.replied) {
+		await interaction.followUp({ content: string, embeds: embeds });
+		return;
+	}
+
+	if (interaction.deferred) {
+		await interaction.editReply({ content: string, embeds: embeds });
+		return;
+	}
+
+	await interaction.reply({
+		ephemeral: ephemeral != undefined ? ephemeral : false,
+		content: string,
+		embeds: embeds
+	});
+}
+
+/**
  * Replies to a command with a custom embed, the embeds footer and timestamp will be overriden to math the default format.
  * @param interaction The interaction to reply to.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
