@@ -1,11 +1,11 @@
-import log from "@libs/logs";
-import { replyEmbed, replyString } from "@libs/reply";
+import { replyString, replyStringEmbed } from "@libs/reply";
 import createEmbed from "@libs/utils/embedBuilder";
 import {
 	SlashCommandBuilder,
 	ChatInputCommandInteraction,
 	bold
 } from "discord.js";
+import emojiRegex from "emoji-regex";
 
 export default {
 	name: "poll",
@@ -152,13 +152,10 @@ export default {
 		for (let i = 1; i <= 20; i++) {
 			const choice = interaction.options.getString(`choice_${i}`);
 			if (choice == null) continue;
-			choice.trimStart();
-			choice.trimEnd();
+			////choice.trim()
 			choices.push(choice);
 		}
-
-		question.trimStart();
-		question.trimEnd();
+		////question.trim();
 
 		//* No choices response
 		if (choices.length == 0) {
@@ -201,25 +198,29 @@ export default {
 		let response = "";
 
 		choices.forEach((choice, index) => {
-			const emojiRE = /\p{EPres}|\p{ExtPict}/gu;
+			// Get emojis in string
+			const emojisInChoice = choice.match(emojiRegex());
 
-			const firstChar = choice.charAt(0);
-			log.debug(firstChar);
-			log.debug(choice);
-			if (firstChar.match(emojiRE)) {
-				emojis.push(firstChar);
-				choice = choice.slice(1, choice.length);
-				choice.trimStart();
-			} else {
+			if(emojisInChoice == null){
 				emojis.push(defaultEmojis[index]);
+				return;
+			} else {
+				// Remove the custom emoji from the choice and add it to the response
+				let customEmoji = emojisInChoice[0];
+				choice = choice.replace(customEmoji, "").trim();
+				emojis.push(customEmoji);
+				response += `${emojis[index]} ${choice}\n`;
 			}
-
-			response += `${emojis[index]} ${choice}\n\n`;
 		});
 
-		const embed = createEmbed(question, response);
+		const embed = createEmbed(null, response);
 
-		await replyEmbed(interaction, this.ephemeral, embed);
+		await replyStringEmbed(
+			interaction,
+			this.ephemeral,
+			`📊 ${question}`,
+			embed
+		);
 		const message = await interaction.fetchReply();
 		emojis.forEach(async (emoji) => {
 			await message.react(emoji);

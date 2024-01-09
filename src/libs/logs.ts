@@ -10,7 +10,7 @@ import {
 import { ScheduledTask, schedule } from "node-cron";
 import { join } from "path";
 import pino, { Logger } from "pino";
-import { compress, archive } from "@libs/utils/compress";
+import compress from "@libs/utils/compress";
 
 /**
  * Is used to log stuff to the console and log files.
@@ -27,10 +27,7 @@ import { compress, archive } from "@libs/utils/compress";
 class Logs {
 	private logger!: Logger;
 	private logFileDir!: string;
-	private dailyLogCron!: ScheduledTask;
-	private weeklyLogCron!: ScheduledTask;
-	private monthlyLogCron!: ScheduledTask;
-	private logsDatePattern = /\d{4}-\d{2}-\d{2}/;
+	private cronTask!: ScheduledTask;
 
 	/**
 	 * Creates a new Logger using pino logger as a base.
@@ -98,30 +95,10 @@ class Logs {
 		// setup cron task for compressing old logs.
 		this.logger.debug("Logger initialised, preparing logger cron tasks...");
 
-		const dailyTaskDate = new Date(Date.now() - 900000);
-		this.dailyLogCron = schedule(
-			`${dailyTaskDate.getUTCMinutes()} ${dailyTaskDate.getUTCHours()} * * *`,
-			this.dailyLogJob,
-			{
-				scheduled: true,
-				timezone: "Etc/UTC"
-			}
-		);
-
-		const weeklyTaskDate = new Date(Date.now() - 600000);
-		this.weeklyLogCron = schedule(
-			`${weeklyTaskDate.getUTCMinutes()} ${weeklyTaskDate.getUTCHours()} * * ${weeklyTaskDate.getUTCDay()}`,
-			this.weeklyLogJob,
-			{
-				scheduled: true,
-				timezone: "Etc/UTC"
-			}
-		);
-
-		const monthlyTaskDate = new Date(Date.now() - 300000);
-		this.monthlyLogCron = schedule(
-			`${monthlyTaskDate.getUTCMinutes()} ${monthlyTaskDate.getUTCHours()} ${monthlyTaskDate.getUTCDate()} * *`,
-			this.monthlyLogJob,
+		const cronTaskDate = new Date(Date.now());
+		this.cronTask = schedule(
+			`${cronTaskDate.getUTCMinutes()} ${cronTaskDate.getUTCHours()} * * *`,
+			this.chronTask,
 			{
 				scheduled: true,
 				timezone: "Etc/UTC"
@@ -132,9 +109,9 @@ class Logs {
 	}
 
 	/**
-	 * Compresses the latest log into a daily log file.
+	 * Compresses the latest log into a daily log file and delete the seven oldest log file.
 	 */
-	private async dailyLogJob() {
+	private async chronTask() {
 		this.logger.debug("Archiving daily log...");
 
 		const latestLog = join(this.logFileDir, "latest.log");
@@ -152,96 +129,34 @@ class Logs {
 		writeFileSync(latestLog, "");
 
 		this.logger.debug("Compressing log...");
-		await compress(logFile);
+		await compress(logFile.split(".log")[0], logFile);
+
+		this.logger.debug("Checking for stale log file...");
+		const logFiles = readdirSync(this.logFileDir).filter(
+			(file) => !file.includes("latest.log")
+		);
+		if (logFiles.length > 7) {
+			let oldestDate = new Date(Date.now());
+			let oldestFile = logFiles[0];
+
+			logFiles.forEach((file) => {
+				const match = file.match(/\d{4}-\d{2}-\d{2}/);
+				if (!match) return;
+
+				const currentDate = new Date(match[0]);
+				if (currentDate < oldestDate) {
+					oldestDate = currentDate;
+					oldestFile = file;
+				}
+			});
+
+			this.logger.debug("Deleting oldest log file...");
+			unlinkSync(oldestFile);
+		} else {
+			this.logger.debug("No stale log file found.");
+		}
 
 		this.logger.info("Logger ran daily archiving task successfully.");
-	}
-
-	/**
-	 * Compresses all the daily log files from the last week into
-	 * one weekly log archive.
-	 */
-	private async weeklyLogJob() {
-		this.logger.debug(
-			"Archiving log from the last week, getting log files..."
-		);
-
-		const allLogs = readdirSync(this.logFileDir);
-		const neededLogs: string[] = [];
-
-		for (const log in allLogs) {
-			if (log.includes("DAILY")) {
-				neededLogs.push(log);
-			}
-		}
-
-		// get the oldest log file
-		const oldestFile = this.getOldestLogFile(neededLogs);
-		const oldestDateString = oldestFile.match(this.logsDatePattern);
-		const oldestDate = new Date(
-			oldestDateString ? oldestDateString[0] : Date.now()
-		);
-
-		this.logger.debug("Aquired files. Compressing now...");
-		const nowDate = new Date(Date.now());
-		await archive(
-			neededLogs,
-			join(
-				this.logFileDir,
-				`log-WEEKLY_${oldestDate.getUTCFullYear()}-${oldestDate.getUTCMonth()}-${oldestDate.getUTCDate()}:${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}.tar.gz`
-			)
-		);
-
-		this.logger.debug("Logger ran weekly archiving task successfully.");
-	}
-
-	/**
-	 * Compresses the all the weekly log files into one monthly log file
-	 * and deletes the oldest monthly log file if there's more than 12.
-	 */
-	private async monthlyLogJob() {
-		this.logger.debug("Deleting oldest logs from the 4 weeks...");
-
-		const allLogs = readdirSync(this.logFileDir);
-		const neededLogs: string[] = [];
-
-		for (const log in allLogs) {
-			if (log.includes("WEEKLY")) {
-				neededLogs.push(log);
-			}
-		}
-
-		// get the oldest log file
-		const oldestLog = this.getOldestLogFile(neededLogs);
-		unlinkSync(oldestLog);
-
-		this.logger.debug("Logger ran monthly archiving task successfully.");
-	}
-
-	/**
-	 * Returns the oldest log file from a list of log files,
-	 * the log files should have a date in the following pattern:
-	 * `YYYY-MM-DD`, if the file has 2 dates, only the first is
-	 * checked.
-	 * @param files The array of files to check.
-	 * @returns The path of the oldest file.
-	 */
-	private getOldestLogFile(files: string[]) {
-		let oldestDate = new Date(Date.now());
-		let oldestFile = files[0];
-
-		files.forEach((file) => {
-			const match = file.match(this.logsDatePattern);
-			if (!match) return;
-
-			const currentDate = new Date(match[0]);
-			if (currentDate < oldestDate) {
-				oldestDate = currentDate;
-				oldestFile = file;
-			}
-		});
-
-		return oldestFile;
 	}
 
 	/**
@@ -260,9 +175,7 @@ class Logs {
 			);
 		}
 
-		this.dailyLogCron.stop();
-		this.weeklyLogCron.stop();
-		this.monthlyLogCron.stop();
+		this.cronTask.stop();
 
 		if (!fatal)
 			this.logger.debug("All CRON tasks stopped. Logger has shutdown.");
