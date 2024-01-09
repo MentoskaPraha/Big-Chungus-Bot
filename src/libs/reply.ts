@@ -48,7 +48,7 @@ export async function reply(
 }
 
 /**
- * Replies to a command with a custom embed and a simple string response, the embeds footer and timestamp will be overriden to math the default format.
+ * Replies to a command with a custom embed and a simple string response, the embeds footer and timestamp will be overriden to match the default format.
  * @param interaction The interaction to reply to.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
  * @param string The string that will be used in the reply.
@@ -85,7 +85,7 @@ export async function replyStringEmbed(
 }
 
 /**
- * Replies to a command with a custom embed, the embeds footer and timestamp will be overriden to math the default format.
+ * Replies to a command with a custom embed, the embeds footer and timestamp will be overriden to match the default format.
  * @param interaction The interaction to reply to.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
  * @param embeds The embed or embeds that will be attached to the reply.

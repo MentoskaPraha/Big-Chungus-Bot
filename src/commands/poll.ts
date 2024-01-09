@@ -152,10 +152,8 @@ export default {
 		for (let i = 1; i <= 20; i++) {
 			const choice = interaction.options.getString(`choice_${i}`);
 			if (choice == null) continue;
-			////choice.trim()
 			choices.push(choice);
 		}
-		////question.trim();
 
 		//* No choices response
 		if (choices.length == 0) {
@@ -198,19 +196,24 @@ export default {
 		let response = "";
 
 		choices.forEach((choice, index) => {
-			// Get emojis in string
-			const emojisInChoice = choice.match(emojiRegex());
+			const emojisInChoice = choice.match(
+				new RegExp(`${/<a?:.+?:\d+>/gu.source}|${emojiRegex().source}`)
+			);
 
-			if(emojisInChoice == null){
+			if (emojisInChoice == null) {
 				emojis.push(defaultEmojis[index]);
-				return;
 			} else {
-				// Remove the custom emoji from the choice and add it to the response
-				let customEmoji = emojisInChoice[0];
-				choice = choice.replace(customEmoji, "").trim();
+				let customEmoji: string;
+				if (emojis.includes(emojisInChoice[0])) {
+					customEmoji = defaultEmojis[index];
+				} else {
+					customEmoji = emojisInChoice[0];
+					choice = choice.replace(customEmoji, "").trim();
+				}
+
 				emojis.push(customEmoji);
-				response += `${emojis[index]} ${choice}\n`;
 			}
+			response += `${emojis[index]} ${choice}\n`;
 		});
 
 		const embed = createEmbed(null, response);

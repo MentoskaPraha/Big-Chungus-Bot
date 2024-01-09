@@ -13,23 +13,22 @@
 		"discord.js": "^14.14.1",
 		"emoji-regex": "^10.3.0",
 		"node-cron": "^3.0.3",
-		"pino": "^8.16.2",
-		"pino-pretty": "^10.2.3",
-		"redis": "^4.6.11"
+		"pino": "^8.17.2",
+		"pino-pretty": "^10.3.1",
+		"redis": "^4.6.12"
 	},
 	"devDependencies": {
-		"@types/emoji-regex": "^9.2.0",
 		"@types/archiver": "^6.0.2",
-		"@types/node": "^18.18.13",
+		"@types/node": "^18.19.6",
 		"@types/node-cron": "^3.0.11",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
 		"dotenv": "^16.3.1",
-		"eslint": "^8.54.0",
+		"eslint": "^8.56.0",
 		"prettier": "^2.8.8",
-		"ts-node": "^10.9.1",
+		"ts-node": "^10.9.2",
 		"tsc-alias": "^1.8.8",
 		"tsconfig-paths": "^4.2.0",
-		"typescript": "^5.3.2"
+		"typescript": "^5.3.3"
 	}
 }

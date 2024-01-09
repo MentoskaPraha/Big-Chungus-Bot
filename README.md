@@ -7,7 +7,7 @@ A funny little Discord bot that does everything me and my friends need from a Di
 -   Event Scheduling (Work in Progress)
     -   Handle Discord's scheduled events
     -   Allow people to RSVP
--   Simple Poll's Polls (Work in Progress)
+-   Simple Poll's Polls
 -   Simple Dice Roller
 -   Basic commands (Work in Progress)
     -   Info command
@@ -45,7 +45,7 @@ Currently not possible as a complete rewrite is in progress, however deployement
 
 ## Develoment
 
-Contribute to this bot simply fork the repo. For testing purposes a `.env` file at the root of the project is required, it should look like so:
+To contribute to this bot simply fork the repo. For testing purposes a `.env` file at the root of the project is required, it should look like so:
 
 ```ini
 DEV_ENV=true
