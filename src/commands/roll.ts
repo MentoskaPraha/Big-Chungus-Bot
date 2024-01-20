@@ -1,6 +1,11 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 import { replyEmbed } from "@libs/reply";
-import createEmbed from "@libs/utils/embedBuilder";
+import { defaultEmbedColor } from "$config";
+import {
+	SlashCommandBuilder,
+	ChatInputCommandInteraction,
+	EmbedBuilder,
+	ColorResolvable
+} from "discord.js";
 
 /**
  * Rolls the specified dice.
@@ -152,10 +157,11 @@ export default {
 		let diceNum = interaction.options.getNumber("dice_num");
 		if (diceNum == null) diceNum = 1;
 
-		const embed = createEmbed(
-			"Dice Roller Results",
-			"The results of your use of the dice roller."
-		);
+		const embed = new EmbedBuilder()
+			.setTitle("Dice Roller Results")
+			.setDescription("The results of your use of the dice roller.")
+			.setColor(defaultEmbedColor as ColorResolvable);
+
 		switch (interaction.options.getSubcommand()) {
 			case "all": {
 				embed.addFields(

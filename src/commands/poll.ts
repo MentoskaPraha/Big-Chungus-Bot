@@ -1,9 +1,11 @@
 import { replyString, replyStringEmbed } from "@libs/reply";
-import createEmbed from "@libs/utils/embedBuilder";
+import { defaultEmbedColor } from "$config";
 import {
 	SlashCommandBuilder,
 	ChatInputCommandInteraction,
-	bold
+	bold,
+	EmbedBuilder,
+	ColorResolvable
 } from "discord.js";
 import emojiRegex from "emoji-regex";
 
@@ -157,12 +159,11 @@ export default {
 
 		//* No choices response
 		if (choices.length == 0) {
-			await replyString(
+			const message = await replyString(
 				interaction,
 				this.ephemeral,
 				`📊 ${bold(question)}`
 			);
-			const message = await interaction.fetchReply();
 			await message.react("👍");
 			await message.react("👎");
 			return;
@@ -216,15 +217,16 @@ export default {
 			response += `${emojis[index]} ${choice}\n`;
 		});
 
-		const embed = createEmbed(null, response);
+		const embed = new EmbedBuilder()
+			.setDescription(response)
+			.setColor(defaultEmbedColor as ColorResolvable);
 
-		await replyStringEmbed(
+		const message = await replyStringEmbed(
 			interaction,
 			this.ephemeral,
 			`📊 ${question}`,
 			embed
 		);
-		const message = await interaction.fetchReply();
 		emojis.forEach(async (emoji) => {
 			await message.react(emoji);
 		});

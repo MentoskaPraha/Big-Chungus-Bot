@@ -26,7 +26,7 @@ export default {
 			if (command.defer)
 				await interaction.deferReply({ ephemeral: command.ephemeral });
 
-			await command
+			command
 				.execute(interaction)
 				.then(() => {
 					log.commandExecuted(command.name, interaction.user.tag);

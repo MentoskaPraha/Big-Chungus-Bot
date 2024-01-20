@@ -3,47 +3,52 @@ import {
 	ColorResolvable,
 	EmbedBuilder
 } from "discord.js";
-import createEmbed from "@libs/utils/embedBuilder";
-import { successEmbedColor, failureEmbedColor } from "$config";
+import {
+	defaultEmbedColor,
+	successEmbedColor,
+	failureEmbedColor
+} from "$config";
 
 /**
  * Replies to a command with a generic embed.
  * @param interaction The interaction to reply to.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
  * @param reply The response to the command.
+ * @returns The message that was sent as a reply.
  */
 export async function reply(
 	interaction: ChatInputCommandInteraction,
 	ephemeral: boolean,
 	reply: string
 ) {
-	const embed = createEmbed(
-		interaction.commandName[0].toUpperCase() +
-			interaction.commandName.substring(1).toLowerCase(),
-		reply,
-		undefined,
-		undefined,
-		new Date(Date.now()),
-		undefined,
-		{
+	const embed = new EmbedBuilder()
+		.setTitle(
+			interaction.commandName[0].toUpperCase() +
+				interaction.commandName.substring(1).toLowerCase()
+		)
+		.setDescription(reply)
+		.setColor(defaultEmbedColor as ColorResolvable)
+		.setTimestamp(Date.now())
+		.setFooter({
 			text: `This is a reply to the command "${interaction.commandName}" ran by ${interaction.user.tag}.`,
 			iconURL: interaction.client.user.displayAvatarURL()
-		}
-	);
+		});
 
 	if (interaction.replied) {
-		await interaction.followUp({ embeds: [embed] });
-		return;
+		return await interaction.followUp({ embeds: [embed] });
 	}
 
 	if (interaction.deferred) {
-		await interaction.editReply({ embeds: [embed] });
-		return;
+		return await interaction.editReply({ embeds: [embed] });
 	}
 
-	await interaction.reply({
-		ephemeral: ephemeral != undefined ? ephemeral : false,
-		embeds: [embed]
+	return await interaction.reply({
+		ephemeral:
+			ephemeral != undefined && interaction.guild != null
+				? ephemeral
+				: false,
+		embeds: [embed],
+		fetchReply: true
 	});
 }
 
@@ -53,6 +58,7 @@ export async function reply(
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
  * @param string The string that will be used in the reply.
  * @param embeds The embed or embeds that will be attached to the reply.
+ * @returns The message that was sent as a reply.
  */
 export async function replyStringEmbed(
 	interaction: ChatInputCommandInteraction,
@@ -68,19 +74,21 @@ export async function replyStringEmbed(
 	});
 
 	if (interaction.replied) {
-		await interaction.followUp({ content: string, embeds: embeds });
-		return;
+		return await interaction.followUp({ content: string, embeds: embeds });
 	}
 
 	if (interaction.deferred) {
-		await interaction.editReply({ content: string, embeds: embeds });
-		return;
+		return await interaction.editReply({ content: string, embeds: embeds });
 	}
 
-	await interaction.reply({
-		ephemeral: ephemeral != undefined ? ephemeral : false,
+	return await interaction.reply({
+		ephemeral:
+			ephemeral != undefined && interaction.guild != null
+				? ephemeral
+				: false,
 		content: string,
-		embeds: embeds
+		embeds: embeds,
+		fetchReply: true
 	});
 }
 
@@ -89,6 +97,7 @@ export async function replyStringEmbed(
  * @param interaction The interaction to reply to.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
  * @param embeds The embed or embeds that will be attached to the reply.
+ * @returns The message that was sent as a reply.
  */
 export async function replyEmbed(
 	interaction: ChatInputCommandInteraction,
@@ -103,18 +112,20 @@ export async function replyEmbed(
 	});
 
 	if (interaction.replied) {
-		await interaction.followUp({ embeds: embeds });
-		return;
+		return await interaction.followUp({ embeds: embeds });
 	}
 
 	if (interaction.deferred) {
-		await interaction.editReply({ embeds: embeds });
-		return;
+		return await interaction.editReply({ embeds: embeds });
 	}
 
-	await interaction.reply({
-		ephemeral: ephemeral != undefined ? ephemeral : false,
-		embeds: embeds
+	return await interaction.reply({
+		ephemeral:
+			ephemeral != undefined && interaction.guild != null
+				? ephemeral
+				: false,
+		embeds: embeds,
+		fetchReply: true
 	});
 }
 
@@ -123,6 +134,7 @@ export async function replyEmbed(
  * @param interaction The interaction to reply to.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
  * @param string The string that will be sent as a response to the command.
+ * @returns The message that was sent as a reply.
  */
 export async function replyString(
 	interaction: ChatInputCommandInteraction,
@@ -130,18 +142,20 @@ export async function replyString(
 	string: string
 ) {
 	if (interaction.replied) {
-		await interaction.followUp(string);
-		return;
+		return await interaction.followUp(string);
 	}
 
 	if (interaction.deferred) {
-		await interaction.editReply(string);
-		return;
+		return await interaction.editReply(string);
 	}
 
-	await interaction.reply({
-		ephemeral: ephemeral != undefined ? ephemeral : false,
-		content: string
+	return await interaction.reply({
+		ephemeral:
+			ephemeral != undefined && interaction.guild != null
+				? ephemeral
+				: false,
+		content: string,
+		fetchReply: true
 	});
 }
 
@@ -150,38 +164,38 @@ export async function replyString(
  * @param interaction The interaction to reply to.
  * @param ephemeral Whether the reply should only be visible to the user. Default is false. **Will be ignore if the message is already replied to.**
  * @param message An extra message if you wish to provide more details about the success.
+ * @returns The message that was sent as a reply.
  */
 export async function replySuccess(
 	interaction: ChatInputCommandInteraction,
 	ephemeral?: boolean,
 	message?: string
 ) {
-	const embed = createEmbed(
-		"Success!",
-		message ? message : "The action was successful!",
-		successEmbedColor as ColorResolvable,
-		undefined,
-		new Date(Date.now()),
-		undefined,
-		{
+	const embed = new EmbedBuilder()
+		.setTitle("Success!")
+		.setDescription(message ? message : "The action was successful.")
+		.setColor(successEmbedColor as ColorResolvable)
+		.setTimestamp(Date.now())
+		.setFooter({
 			text: `This is a reply to the command "${interaction.commandName}" ran by ${interaction.user.tag}.`,
 			iconURL: interaction.client.user.displayAvatarURL()
-		}
-	);
+		});
 
 	if (interaction.replied) {
-		await interaction.followUp({ embeds: [embed] });
-		return;
+		return await interaction.followUp({ embeds: [embed] });
 	}
 
 	if (interaction.deferred) {
-		await interaction.editReply({ embeds: [embed] });
-		return;
+		return await interaction.editReply({ embeds: [embed] });
 	}
 
-	await interaction.reply({
-		ephemeral: ephemeral != undefined ? ephemeral : false,
-		embeds: [embed]
+	return await interaction.reply({
+		ephemeral:
+			ephemeral != undefined && interaction.guild != null
+				? ephemeral
+				: false,
+		embeds: [embed],
+		fetchReply: true
 	});
 }
 
@@ -189,33 +203,47 @@ export async function replySuccess(
  * Reply with a small failure embed, if something goes wrong.
  * @param interaction The interaction to reply to.
  * @param message An extra message if you wish to provide more details about the failure.
+ * @returns The message that was sent as a reply.
  */
 export async function replyFailure(
 	interaction: ChatInputCommandInteraction,
 	message?: string
 ) {
-	const embed = createEmbed(
-		"Failure!",
-		message ? message : "The action has failed!",
-		failureEmbedColor as ColorResolvable,
-		undefined,
-		new Date(Date.now()),
-		undefined,
-		{
+	const embed = new EmbedBuilder()
+		.setTitle("Failure!")
+		.setDescription(message ? message : "The action has failed.")
+		.setColor(failureEmbedColor as ColorResolvable)
+		.setTimestamp(Date.now())
+		.setFooter({
 			text: `This is a reply to the command "${interaction.commandName}" ran by ${interaction.user.tag}.`,
 			iconURL: interaction.client.user.displayAvatarURL()
-		}
-	);
+		});
 
 	if (interaction.replied) {
-		await interaction.followUp({ embeds: [embed] });
-		return;
+		return await interaction.followUp({ embeds: [embed] });
 	}
 
 	if (interaction.deferred) {
-		await interaction.editReply({ embeds: [embed] });
-		return;
+		return await interaction.editReply({ embeds: [embed] });
 	}
 
-	await interaction.reply({ ephemeral: true, embeds: [embed] });
+	return await interaction.reply({
+		ephemeral: interaction.guild != null ? true : false,
+		embeds: [embed],
+		fetchReply: true
+	});
+}
+
+/**
+ * Add new data to the reply without altering the old data.
+ */
+export async function appendReply() {
+	
+}
+
+/**
+ * Replace the data in the reply with new data.
+ */
+export async function alterReply() {
+	
 }

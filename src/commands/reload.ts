@@ -1,7 +1,7 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 import commands, { reloadCommand } from "$commands";
-import { replySuccess } from "@libs/reply";
 import events, { reloadEvent } from "$events";
+import { replySuccess } from "@libs/reply";
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 
 export default {
 	name: "reload",

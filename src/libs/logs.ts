@@ -2,6 +2,7 @@ import {
 	copyFileSync,
 	existsSync,
 	mkdirSync,
+	readFileSync,
 	readdirSync,
 	renameSync,
 	unlinkSync,
@@ -17,12 +18,8 @@ import compress from "@libs/utils/compress";
  *
  * Also manages log files ensuring all log files are saved,
  * using a minimal amount of space. The logger keeps the log files
- * for the last 7 days the last 4 weeks. anything older is deleted.
- * The files are named in the format `log-[DAILY/WEEKLY]_YYYY-MM-DD.log` for files
- * that only contain logs from a day, if the log file contains logs
- * from more than one day the following format is used:
- * `log-[DAILY/WEEKLY]_YYYY-MM-DD:YYYY-MM-DD.log`, this is the period of time from which
- * the contained logs are.
+ * for the last 7 days, anything older is deleted.
+ * The files are named in the format `log-YYYY-MM-DD.log` and contain 
  */
 class Logs {
 	private logger!: Logger;
@@ -70,7 +67,7 @@ class Logs {
 								colorize: true,
 								translateTime: "yyyy-mm-dd HH:MM:ss",
 								ignore: "pid,hostname",
-								sync: true
+								sync: false
 							}
 						},
 						{
@@ -98,7 +95,7 @@ class Logs {
 		const cronTaskDate = new Date(Date.now());
 		this.cronTask = schedule(
 			`${cronTaskDate.getUTCMinutes()} ${cronTaskDate.getUTCHours()} * * *`,
-			this.chronTask,
+			this.cronTaskRun,
 			{
 				scheduled: true,
 				timezone: "Etc/UTC"
@@ -111,14 +108,14 @@ class Logs {
 	/**
 	 * Compresses the latest log into a daily log file and delete the seven oldest log file.
 	 */
-	private async chronTask() {
+	private async cronTaskRun() {
 		this.logger.debug("Archiving daily log...");
 
 		const latestLog = join(this.logFileDir, "latest.log");
 		const nowDate = new Date(Date.now());
 		const logFile = join(
 			this.logFileDir,
-			`log-DAILY_${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}.log`
+			`log-${nowDate.getUTCFullYear()}-${nowDate.getUTCMonth()}-${nowDate.getUTCDate()}.log`
 		);
 
 		this.logger.debug("Flushing log and copying...");
@@ -306,7 +303,7 @@ if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
 // Compress and store the latest.log
 const latestLog = join(dir, "latest.log");
-if (existsSync(latestLog)) {
+if (existsSync(latestLog) && readFileSync(latestLog).length == 0) {
 	const nowDate = new Date(Date.now());
 	const newFileName = join(
 		dir,
