@@ -149,7 +149,7 @@ export default {
 		),
 	async execute(interaction: ChatInputCommandInteraction) {
 		//* Get question and responses
-		const question = interaction.options.getString("question") as string;
+		const question = interaction.options.getString("question", true);
 		const choices: string[] = [];
 		for (let i = 1; i <= 20; i++) {
 			const choice = interaction.options.getString(`choice_${i}`);

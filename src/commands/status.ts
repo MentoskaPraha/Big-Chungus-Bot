@@ -1,5 +1,6 @@
 import { defaultEmbedColor } from "$config";
-import { replyEmbed, replyString } from "@libs/reply";
+import { checkBlockNew } from "@database/state";
+import { alterReply, replyString } from "@libs/reply";
 import {
 	SlashCommandBuilder,
 	ChatInputCommandInteraction,
@@ -35,7 +36,9 @@ export default {
 			.addFields(
 				{
 					name: "Bot Status",
-					value: "🟢 - Online"
+					value: (await checkBlockNew())
+						? "🔴 - Not Accepting new Requests!"
+						: "🟢 - Online"
 				},
 				{
 					name: "Database Status",
@@ -43,7 +46,9 @@ export default {
 				},
 				{
 					name: "Functionality",
-					value: `🟡 - Partial (${italic("database offline")})`
+					value: (await checkBlockNew())
+						? `🔴 - None (${italic("all systems disabled")})`
+						: `🟡 - Partial (${italic("database offline")})`
 				},
 				{
 					name: "Websocket Hearbeat",
@@ -57,9 +62,6 @@ export default {
 				}
 			);
 
-		replyEmbed(interaction, this.ephemeral, embed);
-		interaction.editReply(`${bold(
-			"Ping!"
-		)}\nData Fetched (see follow up)!`);
+		alterReply(interaction, bold("Ping!"), embed);
 	}
 };

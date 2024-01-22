@@ -8,6 +8,7 @@ import {
 import events from "$events";
 import commands from "$commands";
 import log from "$logger";
+import shutdown from "@libs/shutdown";
 
 // create a new client
 const client = new Client({
@@ -26,9 +27,9 @@ events.forEach((event) => {
 });
 log.info("Registered events with client.");
 
-// TODO Connect to database
-
-// TODO add SIGTERM, SIGINT and SIGBREAK handling
+process.on("SIGTERM", () => shutdown(client));
+process.on("SIGBREAK", () => shutdown(client));
+process.on("SIGINT", () => shutdown(client));
 
 //* Register commands
 log.debug("Registering application commands...");

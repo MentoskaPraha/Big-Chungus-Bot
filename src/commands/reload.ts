@@ -54,8 +54,9 @@ export default {
 		switch (interaction.options.getSubcommand()) {
 			case "command": {
 				const commandName = interaction.options.getString(
-					"command"
-				) as string;
+					"command",
+					true
+				);
 				const command = commands.get(commandName);
 				if (!command)
 					throw new Error(
@@ -83,9 +84,7 @@ export default {
 			}
 
 			case "event": {
-				const eventName = interaction.options.getString(
-					"event"
-				) as string;
+				const eventName = interaction.options.getString("event", true);
 				const event = events.get(eventName);
 				if (!event)
 					throw new Error(

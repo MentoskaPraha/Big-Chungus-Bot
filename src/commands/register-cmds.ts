@@ -1,4 +1,4 @@
-import log from "@libs/logs";
+import log from "$logger";
 import commands from "$commands";
 import {
 	ChatInputCommandInteraction,

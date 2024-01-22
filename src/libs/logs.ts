@@ -19,7 +19,7 @@ import compress from "@libs/utils/compress";
  * Also manages log files ensuring all log files are saved,
  * using a minimal amount of space. The logger keeps the log files
  * for the last 7 days, anything older is deleted.
- * The files are named in the format `log-YYYY-MM-DD.log` and contain 
+ * The files are named in the format `log-YYYY-MM-DD.log` and contain
  */
 class Logs {
 	private logger!: Logger;
@@ -172,7 +172,7 @@ class Logs {
 			);
 		}
 
-		this.cronTask.stop();
+		if (this.cronTask != undefined) this.cronTask.stop();
 
 		if (!fatal)
 			this.logger.debug("All CRON tasks stopped. Logger has shutdown.");
@@ -274,6 +274,10 @@ class Logs {
 		this.logger.debug(
 			`Recieved event ${name} from ${source} and executing the event's code...`
 		);
+	}
+
+	public async eventIgnored(name: string, source: string) {
+		log.debug(`Event "${name}" from ${source} was ignored.`);
 	}
 
 	/**

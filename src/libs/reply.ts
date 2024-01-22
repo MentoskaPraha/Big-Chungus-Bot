@@ -1,4 +1,5 @@
 import {
+	APIEmbed,
 	ChatInputCommandInteraction,
 	ColorResolvable,
 	EmbedBuilder
@@ -235,15 +236,71 @@ export async function replyFailure(
 }
 
 /**
- * Add new data to the reply without altering the old data.
+ * Add new data to the reply without altering the old data, the embeds footer and timestamp will be overriden to match the default format
+ * @param interaction The interaction to reply to.
+ * @param message The message to be appended to the reply.
+ * @param embeds The embeds to be appended to the reply.
+ * @returns The message with the appended data.
  */
-export async function appendReply() {
-	
+export async function appendReply(
+	interaction: ChatInputCommandInteraction,
+	message?: string,
+	...embeds: EmbedBuilder[]
+) {
+	if (!interaction.replied) {
+		throw new Error(
+			"Cannot edit reply to an interaction that wasn't replied yet!"
+		);
+	}
+
+	const reply = await interaction.fetchReply();
+	const replyEmbeds: APIEmbed[] = [];
+
+	reply.embeds.forEach((embed) => {
+		replyEmbeds.push(embed.toJSON());
+	});
+
+	embeds.forEach((embed) => {
+		embed.setTimestamp(new Date(Date.now())).setFooter({
+			text: `This is a reply to the command "${interaction.commandName}" ran by ${interaction.user.tag}.`,
+			iconURL: interaction.client.user.displayAvatarURL()
+		});
+		replyEmbeds.push(embed.toJSON());
+	});
+
+	return await interaction.editReply({
+		content: reply.content + message ? message : "",
+		embeds: replyEmbeds
+	});
 }
 
 /**
- * Replace the data in the reply with new data.
+ * Replace the data in the reply with new data, the embeds footer and timestamp will be overriden to match the default format
+ * @param interaction The interaction to reply to.
+ * @param message The message to replace the original.
+ * @param embeds The embeds to replace the original.
+ * @returns The message with the new data.
  */
-export async function alterReply() {
-	
+export async function alterReply(
+	interaction: ChatInputCommandInteraction,
+	message?: string,
+	...embeds: EmbedBuilder[]
+) {
+	if (!interaction.replied) {
+		throw new Error(
+			"Cannot edit reply to an interaction that wasn't replied yet!"
+		);
+	}
+
+	embeds.forEach((embed) => {
+		embed.setTimestamp(new Date(Date.now())).setFooter({
+			text: `This is a reply to the command "${interaction.commandName}" ran by ${interaction.user.tag}.`,
+			iconURL: interaction.client.user.displayAvatarURL()
+		});
+	});
+
+	return await interaction.editReply({
+		content: message ? message : "",
+		embeds: embeds
+	});
 }

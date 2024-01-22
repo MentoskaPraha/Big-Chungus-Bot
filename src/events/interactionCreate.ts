@@ -1,7 +1,8 @@
-import log from "@libs/logs";
-import globalCommands from "commands/_register";
+import log from "$logger";
+import globalCommands from "$commands";
 import { Events, BaseInteraction } from "discord.js";
 import { replyFailure } from "@libs/reply";
+import { checkBlockAll, checkBlockNew } from "@database/state";
 
 export default {
 	name: Events.InteractionCreate,
@@ -11,6 +12,25 @@ export default {
 		log.eventRecieved(Events.InteractionCreate, interaction.user.tag);
 
 		if (interaction.isChatInputCommand()) {
+			// Check whether or not the command should be replied to
+			if (
+				((await checkBlockAll()) || (await checkBlockNew())) &&
+				!(
+					interaction.commandName == "status" ||
+					interaction.commandName == "maintenance"
+				)
+			) {
+				replyFailure(
+					interaction,
+					"The bot is not accepting requests at the moment, please try again later!"
+				);
+				log.eventIgnored(
+					Events.InteractionCreate,
+					interaction.user.tag
+				);
+				return;
+			}
+
 			const command = globalCommands.get(interaction.commandName);
 			if (!command) {
 				replyFailure(interaction, "The command was not found.").then(
@@ -41,8 +61,6 @@ export default {
 			return;
 		}
 
-		log.debug(
-			`Event "${Events.InteractionCreate}" from ${interaction.user.tag} was ignored.`
-		);
+		log.eventIgnored(Events.InteractionCreate, interaction.user.tag);
 	}
 };
