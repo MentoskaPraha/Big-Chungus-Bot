@@ -9,7 +9,7 @@
 		"start": "node index.js"
 	},
 	"dependencies": {
-		"@keyv/redis": "^2.8.3",
+		"@keyv/offline": "^3.0.7",
 		"archiver": "^6.0.1",
 		"discord.js": "^14.14.1",
 		"emoji-regex": "^10.3.0",

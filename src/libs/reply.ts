@@ -36,7 +36,13 @@ export async function reply(
 		});
 
 	if (interaction.replied) {
-		return await interaction.followUp({ embeds: [embed] });
+		return await interaction.followUp({
+			embeds: [embed],
+			ephemeral:
+				ephemeral != undefined && interaction.guild != null
+					? ephemeral
+					: false
+		});
 	}
 
 	if (interaction.deferred) {
@@ -75,7 +81,14 @@ export async function replyStringEmbed(
 	});
 
 	if (interaction.replied) {
-		return await interaction.followUp({ content: string, embeds: embeds });
+		return await interaction.followUp({
+			content: string,
+			embeds: embeds,
+			ephemeral:
+				ephemeral != undefined && interaction.guild != null
+					? ephemeral
+					: false
+		});
 	}
 
 	if (interaction.deferred) {
@@ -113,7 +126,13 @@ export async function replyEmbed(
 	});
 
 	if (interaction.replied) {
-		return await interaction.followUp({ embeds: embeds });
+		return await interaction.followUp({
+			embeds: embeds,
+			ephemeral:
+				ephemeral != undefined && interaction.guild != null
+					? ephemeral
+					: false
+		});
 	}
 
 	if (interaction.deferred) {
@@ -143,7 +162,13 @@ export async function replyString(
 	string: string
 ) {
 	if (interaction.replied) {
-		return await interaction.followUp(string);
+		return await interaction.followUp({
+			content: string,
+			ephemeral:
+				ephemeral != undefined && interaction.guild != null
+					? ephemeral
+					: false
+		});
 	}
 
 	if (interaction.deferred) {
@@ -183,7 +208,13 @@ export async function replySuccess(
 		});
 
 	if (interaction.replied) {
-		return await interaction.followUp({ embeds: [embed] });
+		return await interaction.followUp({
+			embeds: [embed],
+			ephemeral:
+				ephemeral != undefined && interaction.guild != null
+					? ephemeral
+					: false
+		});
 	}
 
 	if (interaction.deferred) {
@@ -221,7 +252,10 @@ export async function replyFailure(
 		});
 
 	if (interaction.replied) {
-		return await interaction.followUp({ embeds: [embed] });
+		return await interaction.followUp({
+			embeds: [embed],
+			ephemeral: interaction.guild != null ? true : false
+		});
 	}
 
 	if (interaction.deferred) {

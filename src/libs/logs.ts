@@ -299,10 +299,25 @@ class Logs {
 			`Executed and replied to command "${name}" which was ran by ${source}.`
 		);
 	}
+
+	public async dbOnline(name: string) {
+		this.logger.info(`${name} is online and ready!`);
+	}
+
+	public async dbError(name: string, error: Error, msg?: string) {
+		this.logger.error(
+			error,
+			`${name} suffered an error: ${msg ? msg : "no message given."}`
+		);
+	}
+
+	public async dbDisconnected(name: string) {
+		this.logger.warn(`${name} has been disconnected!`);
+	}
 }
 
 // create the directory for the log files
-const dir = join(__dirname.split("/src")[0].split("/libs")[0], "logs");
+const dir = join(__dirname.split("/src")[0].split("/libs")[0], "data", "logs");
 if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
 // Compress and store the latest.log

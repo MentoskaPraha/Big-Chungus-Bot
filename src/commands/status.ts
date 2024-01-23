@@ -42,7 +42,7 @@ export default {
 				},
 				{
 					name: "Database Status",
-					value: "🔴 - Offline"
+					value: `🔴 - Offline (${italic("feature unfinished")})`
 				},
 				{
 					name: "Functionality",

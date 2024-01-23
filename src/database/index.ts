@@ -5,7 +5,8 @@ import Keyv from "keyv";
 
 // Setup in memory database
 export const inMemDB = new Keyv();
-inMemDB.once("ready", () => log.info("In memory database is ready!"));
-inMemDB.on("error", (error) => log.error(error, error.message));
+inMemDB.on("error", (error) => log.dbError("inMemDB", error, error.message));
+inMemDB.on("disconnect", () => log.dbDisconnected("inMemDB"));
 inMemDB.set("BlockAllInteractions", false);
 inMemDB.set("BlockNewInteractions", false);
+log.dbOnline("inMemDB");
