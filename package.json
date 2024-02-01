@@ -9,8 +9,9 @@
 		"start": "node index.js"
 	},
 	"dependencies": {
-		"@keyv/offline": "^3.0.7",
+		"@keyv/sqlite": "^3.6.7",
 		"archiver": "^6.0.1",
+		"dayjs": "^1.11.10",
 		"discord.js": "^14.14.1",
 		"emoji-regex": "^10.3.0",
 		"keyv": "^4.5.4",

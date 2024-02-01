@@ -9,7 +9,7 @@ import {
 	writeFileSync
 } from "node:fs";
 import { ScheduledTask, schedule } from "node-cron";
-import { join } from "path";
+import { join } from "node:path";
 import pino, { Logger } from "pino";
 import compress from "@libs/utils/compress";
 

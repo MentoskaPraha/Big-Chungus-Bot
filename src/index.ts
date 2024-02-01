@@ -5,6 +5,7 @@ import {
 	RESTPostAPIChatInputApplicationCommandsJSONBody,
 	Routes
 } from "discord.js";
+import birthdayCron from "@subsystems/birthdays/cron-task";
 import events from "$events";
 import commands from "$commands";
 import log from "$logger";
@@ -27,9 +28,9 @@ events.forEach((event) => {
 });
 log.info("Registered events with client.");
 
-process.on("SIGTERM", () => shutdown(client));
-process.on("SIGBREAK", () => shutdown(client));
-process.on("SIGINT", () => shutdown(client));
+process.on("SIGTERM", () => shutdown());
+process.on("SIGBREAK", () => shutdown());
+process.on("SIGINT", () => shutdown());
 
 //* Register commands
 log.debug("Registering application commands...");
@@ -56,3 +57,10 @@ client.login(process.env.DISCORD_TOKEN).catch((error) => {
 	log.fatal(error, "Login failed.");
 	process.exit(1);
 });
+
+//* Start cron tasks
+log.info("Starting cron tasts...");
+birthdayCron.start();
+
+//* Export client to be used elsewhere
+export default client;

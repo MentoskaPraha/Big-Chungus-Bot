@@ -1,4 +1,5 @@
 import { defaultEmbedColor } from "$config";
+import { getUserBirthday } from "@database/users";
 import { replyEmbed } from "@libs/reply";
 import {
 	SlashCommandBuilder,
@@ -70,6 +71,10 @@ export default {
 						{
 							name: "Joined",
 							value: time(target.createdAt, "F")
+						},
+						{
+							name: "Birthday",
+							value: await getUserBirthday(target.id) == undefined ? time(await getUserBirthday(target.id) as Date, "F") : "Birthday not on record."
 						}
 					);
 

@@ -5,7 +5,7 @@ import readDir from "@libs/utils/readDir";
 const events = new Collection<string, eventObject>();
 
 const files = readDir(__dirname).filter((file) => {
-	const fileLocal = file.split("/events")[1].split("/")[1];
+	const fileLocal = file.slice(file.lastIndexOf("/") + 1);
 	if (
 		(fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
 		!fileLocal.startsWith("_")
@@ -37,7 +37,7 @@ export function reloadEvent(eventName: string, client: Client) {
 
 	const eventPath = readDir(__dirname)
 		.filter((file) => {
-			const fileLocal = file.split("/events")[1].split("/")[1];
+			const fileLocal = file.slice(file.lastIndexOf("/"));
 			if (
 				(fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
 				!fileLocal.startsWith("_")

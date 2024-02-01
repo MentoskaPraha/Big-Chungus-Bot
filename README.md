@@ -9,7 +9,7 @@ A funny little Discord bot that does everything me and my friends need from a Di
     -   Allow people to RSVP
 -   Simple Poll's Polls
 -   Simple Dice Roller
--   Basic commands (Work in Progress)
+-   Basic commands
     -   Info command
     -   Status command
 -   Vote Punishement from VC (Work in Progress)
@@ -27,8 +27,6 @@ A funny little Discord bot that does everything me and my friends need from a Di
     -   There is one global whitelist and each server can enable it's own (This will override the global whitelist)
     -   Whitelists are based on userID
     -   Bots are ignore
--   Server References (Work in Progress)
-    -   Each server the bot is in will have invite links to all the others
 -   Minigames (Work in Progress)
     -   Can be played across servers
     -   Winning grants you special titles

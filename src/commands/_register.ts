@@ -1,17 +1,32 @@
 import { commandObject } from "$types";
 import readDir from "@libs/utils/readDir";
 import { Collection } from "discord.js";
+import { join } from "node:path";
 
 const commands = new Collection<string, commandObject>();
 
-const files = readDir(__dirname).filter((file) => {
-	const fileLocal = file.split("/commands")[1].split("/")[1];
+const commandFolder = readDir(__dirname).filter((file) => {
+	const fileLocal = file.slice(file.lastIndexOf("/") + 1);
 	if (
 		(fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
 		!fileLocal.startsWith("_")
 	)
 		return file;
 });
+
+const subsystemFolder = readDir(
+	join(__dirname.split("/commands")[0], "subsystems")
+).filter((file) => {
+	const fileLocal = file.slice(file.lastIndexOf("/") + 1);
+
+	if (
+		(fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
+		fileLocal.startsWith("command")
+	)
+		return file;
+});
+
+const files = Array<string>().concat(commandFolder, subsystemFolder);
 
 files.forEach((file) => {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -34,9 +49,9 @@ export function reloadCommand(commandName: string) {
 			`Command "${commandName}" could not be reloaded as it doesn't exist.`
 		);
 
-	const commandPath = readDir(__dirname)
+	let commandPath = readDir(__dirname)
 		.filter((file) => {
-			const fileLocal = file.split("/commands")[1].split("/")[1];
+			const fileLocal = file.slice(file.lastIndexOf("/") + 1);
 			if (
 				(fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
 				!fileLocal.startsWith("_")
@@ -44,6 +59,21 @@ export function reloadCommand(commandName: string) {
 				return file;
 		})
 		.find((file) => file.includes(command.name));
+
+	if (commandPath == undefined) {
+		commandPath = readDir(
+			join(__dirname.split("/commands")[1], "subsystems")
+		)
+			.filter((file) => {
+				const fileLocal = file.slice(file.lastIndexOf("/") + 1);
+				if (
+					(fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
+					!fileLocal.startsWith("_")
+				)
+					return file;
+			})
+			.find((file) => file.includes(command.name));
+	}
 
 	if (commandPath == undefined) {
 		throw new Error(

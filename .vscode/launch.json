@@ -1,0 +1,16 @@
+{
+	"version": "1.0.0",
+	"configurations": [
+		{
+			"name": "Debug File",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "${workspaceRoot}/node_modules/.bin/ts-node",
+			"runtimeArgs": ["--transpile-only"],
+			"program": "${file}",
+			"cwd": "${workspaceRoot}",
+			"internalConsoleOptions": "openOnSessionStart",
+			"skipFiles": ["<node_internals>/**", "node_modules/**"]
+		}
+	]
+}

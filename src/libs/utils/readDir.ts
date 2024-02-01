@@ -7,7 +7,7 @@ import { join } from "node:path";
  * @returns An array of file paths.
  */
 export default function (dir: string) {
-	const files = readdirSync(dir, { withFileTypes: true })
+	let files = readdirSync(dir, { withFileTypes: true })
 		.filter((entry) => entry.isFile())
 		.map((entry) => join(dir, entry.name));
 	const folders = readdirSync(dir, { withFileTypes: true })
@@ -19,8 +19,9 @@ export default function (dir: string) {
 	folders.forEach((folder) => {
 		const children = readdirSync(folder, { withFileTypes: true })
 			.filter((entry) => entry.isFile())
-			.map((entry) => entry.name);
-		files.concat(children);
+			.map((entry) => join(folder, entry.name));
+		if (children.length == 0) return;
+		files = files.concat(children);
 	});
 
 	return files;
