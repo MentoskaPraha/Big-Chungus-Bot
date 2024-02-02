@@ -1,7 +1,11 @@
 import commands, { reloadCommand } from "$commands";
 import events, { reloadEvent } from "$events";
 import { replySuccess } from "@libs/reply";
-import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
+import {
+	SlashCommandBuilder,
+	ChatInputCommandInteraction,
+	AutocompleteInteraction
+} from "discord.js";
 
 export default {
 	name: "reload",
@@ -24,7 +28,7 @@ export default {
 						.setName("command")
 						.setDescription("The command that will be reloaded.")
 						.setRequired(true)
-						.setAutocomplete(false)
+						.setAutocomplete(true)
 				)
 		)
 		.addSubcommand((subcommand) =>
@@ -36,7 +40,7 @@ export default {
 						.setName("event")
 						.setDescription("The event that will be reloaded.")
 						.setRequired(true)
-						.setAutocomplete(false)
+						.setAutocomplete(true)
 				)
 		)
 		.addSubcommand((subcommand) =>
@@ -109,6 +113,36 @@ export default {
 					interaction,
 					this.ephemeral,
 					"Successfully reloaded all events!"
+				);
+				break;
+			}
+		}
+	},
+
+	async autocomplete(interaction: AutocompleteInteraction) {
+		const focused = interaction.options.getFocused(true);
+		switch (focused.name) {
+			case "command": {
+				const filtered = commands.filter((command) =>
+					command.name.startsWith(focused.value)
+				);
+				await interaction.respond(
+					filtered.map((command) => ({
+						name: command.name,
+						value: command.name
+					}))
+				);
+				break;
+			}
+			case "event": {
+				const filtered = events.filter((event) =>
+					event.name.startsWith(focused.value)
+				);
+				await interaction.respond(
+					filtered.map((event) => ({
+						name: event.name,
+						value: event.name
+					}))
 				);
 				break;
 			}

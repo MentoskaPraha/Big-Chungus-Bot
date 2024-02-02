@@ -7,6 +7,7 @@ import { join } from "node:path";
 export const inMemDB = new Keyv();
 inMemDB.on("error", (error) => log.dbError("inMemDB", error, error.message));
 inMemDB.on("disconnect", () => log.dbDisconnected("inMemDB"));
+inMemDB.on("clear", () => log.dbCleared("inMemDB"));
 inMemDB.set("BlockAllInteractions", false);
 inMemDB.set("BlockNewInteractions", false);
 log.dbOnline("inMemDB");
@@ -22,6 +23,7 @@ export const userDB = new Keyv(
 );
 userDB.on("error", (error) => log.dbError("userDB", error, error.message));
 userDB.on("disconnect", () => log.dbDisconnected("userDB"));
+inMemDB.on("clear", () => log.dbCleared("userDB"));
 log.dbOnline("userDB");
 
 // Setup guild database
@@ -35,4 +37,5 @@ export const guildDB = new Keyv(
 );
 guildDB.on("error", (error) => log.dbError("guildDB", error, error.message));
 guildDB.on("disconnect", () => log.dbDisconnected("guildDB"));
+inMemDB.on("clear", () => log.dbCleared("guildDB"));
 log.dbOnline("guildDB");

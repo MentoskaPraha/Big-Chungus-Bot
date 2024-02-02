@@ -90,10 +90,7 @@ export default {
 				);
 
 				const delay = interaction.options.getInteger("delay", true);
-				setTimeout(
-					() => shutdown(interaction.client),
-					delay * 60 * 1000
-				);
+				setTimeout(shutdown, delay * 60 * 1000);
 			}
 		}
 	}

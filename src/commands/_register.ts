@@ -62,7 +62,7 @@ export function reloadCommand(commandName: string) {
 
 	if (commandPath == undefined) {
 		commandPath = readDir(
-			join(__dirname.split("/commands")[1], "subsystems")
+			join(__dirname.split("/commands")[0], "subsystems")
 		)
 			.filter((file) => {
 				const fileLocal = file.slice(file.lastIndexOf("/") + 1);

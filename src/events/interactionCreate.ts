@@ -9,7 +9,11 @@ export default {
 	once: false,
 
 	async execute(interaction: BaseInteraction) {
-		log.eventRecieved(Events.InteractionCreate, interaction.user.tag);
+		log.eventRecieved(
+			Events.InteractionCreate,
+			interaction.user.tag,
+			"MAIN"
+		);
 
 		if (interaction.isChatInputCommand()) {
 			// Check whether or not the command should be replied to
@@ -26,7 +30,8 @@ export default {
 				);
 				log.eventIgnored(
 					Events.InteractionCreate,
-					interaction.user.tag
+					interaction.user.tag,
+					"MAIN"
 				);
 				return;
 			}
@@ -48,9 +53,9 @@ export default {
 
 			command
 				.execute(interaction)
-				.then(() => {
-					log.commandExecuted(command.name, interaction.user.tag);
-				})
+				.then(() =>
+					log.commandExecuted(command.name, interaction.user.tag)
+				)
 				.catch((error: Error) => {
 					replyFailure(interaction, error.message);
 					log.error(
@@ -61,6 +66,39 @@ export default {
 			return;
 		}
 
-		log.eventIgnored(Events.InteractionCreate, interaction.user.tag);
+		if (interaction.isAutocomplete()) {
+			const command = globalCommands.get(interaction.commandName);
+
+			if (!command) {
+				log.warn(
+					`The command ${interaction.commandName} was not found!`
+				);
+				return;
+			}
+
+			if (command.autocomplete) {
+				await command
+					.autocomplete(interaction)
+					.then(() =>
+						log.autocompleteResponded(
+							interaction.commandName,
+							interaction.user.tag
+						)
+					)
+					.catch((error) =>
+						log.error(
+							error,
+							`An error occured during the autocomplete request for command ${interaction.commandName} by ${interaction.user.tag}.`
+						)
+					);
+			}
+			return;
+		}
+
+		log.eventIgnored(
+			Events.InteractionCreate,
+			interaction.user.tag,
+			"MAIN"
+		);
 	}
 };

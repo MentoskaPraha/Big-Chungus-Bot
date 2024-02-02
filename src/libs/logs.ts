@@ -269,30 +269,42 @@ class Logs {
 	 * Logs that a Discord event has been recieved by the client.
 	 * @param name The name of the event.
 	 * @param source The source of the event, so the guild or user or scheduled event, etc.
+	 * @param handler The handler that was tasked with handling the event.
 	 */
-	public async eventRecieved(name: string, source: string) {
+	public async eventRecieved(name: string, source: string, handler: string) {
 		this.logger.debug(
-			`Recieved event ${name} from ${source} and executing the event's code...`
+			`HANDLER-${handler}: Recieved event ${name} from ${source} and executing the event's code...`
 		);
 	}
 
-	public async eventIgnored(name: string, source: string) {
-		log.debug(`Event "${name}" from ${source} was ignored.`);
+	/**
+	 * Logs that an event was ignored.
+	 * @param name The name of the event that was ignore.
+	 * @param source The source of the event so the guild or user or scheduled event, etc.
+	 * @param handler The handler that was tasked with handling the event.
+	 */
+	public async eventIgnored(name: string, source: string, handler: string) {
+		log.debug(
+			`HANDLER-${handler}: Event "${name}" from ${source} was ignored.`
+		);
 	}
 
 	/**
 	 * Logs that a Discord event's code has been executed successfully.
 	 * @param name The name of the event.
 	 * @param source The source of the event, so the guild or user or scheduled event, etc.
+	 * @param handler The handler that was tasked with handling the event.
 	 */
-	public async eventExecuted(name: string, source: string) {
-		this.logger.info(`Executed event "${name}" from ${source}.`);
+	public async eventExecuted(name: string, source: string, handler: string) {
+		this.logger.info(
+			`HANDLER-${handler}: Executed event "${name}" from ${source}.`
+		);
 	}
 
 	/**
-	 * Logs that a Discord event has been recieved by the client.
-	 * @param name The name of the event.
-	 * @param source The source of the event, so the guild or user or scheduled event, etc.
+	 * Logs that a command has been executed successfully.
+	 * @param name The name of the command.
+	 * @param source The user who rant he command.
 	 */
 	public async commandExecuted(name: string, source: string) {
 		this.logger.info(
@@ -300,10 +312,31 @@ class Logs {
 		);
 	}
 
+	/**
+	 * Logs that a autocomplete event was responded to
+	 * @param name The name of the command the autocomplete was triggered by.
+	 * @param source The user that triggered it.
+	 */
+	public async autocompleteResponded(name: string, source: string) {
+		this.logger.info(
+			`Responded to autocomplete request for command "${name}" by ${source}.`
+		);
+	}
+
+	/**
+	 * Logs that a database is online.
+	 * @param name The name of the database.
+	 */
 	public async dbOnline(name: string) {
 		this.logger.info(`${name} is online and ready!`);
 	}
 
+	/**
+	 * Logs that there was an error with a database.
+	 * @param name The name of the database.
+	 * @param error The error object.
+	 * @param msg A Custom message providing more details.
+	 */
 	public async dbError(name: string, error: Error, msg?: string) {
 		this.logger.error(
 			error,
@@ -311,8 +344,32 @@ class Logs {
 		);
 	}
 
+	/**
+	 * Logs that a database has disconnected.
+	 * @param name The name of the database.
+	 */
 	public async dbDisconnected(name: string) {
 		this.logger.warn(`${name} has been disconnected!`);
+	}
+
+	/**
+	 * Logs that a database was cleared.
+	 * @param name The name of the database.
+	 */
+	public async dbCleared(name: string) {
+		this.logger.warn(
+			`${name} has been cleared! Data, functionality or both may have been lost.`
+		);
+	}
+
+	/**
+	 * Logs that a value in the database was manipulated via an dev only method.
+	 * @param db The database in which the manipulation occured.
+	 * @param key The key of the manipulated entry.
+	 * @param value The entry's new value.
+	 */
+	public async dbValueManipulated(db: string, key: string, value: string) {
+		this.logger.info(`Key ${key} was manually set to ${value} in ${db}.`);
 	}
 }
 

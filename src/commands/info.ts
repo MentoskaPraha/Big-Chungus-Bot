@@ -74,7 +74,15 @@ export default {
 						},
 						{
 							name: "Birthday",
-							value: await getUserBirthday(target.id) == undefined ? time(await getUserBirthday(target.id) as Date, "F") : "Birthday not on record."
+							value:
+								(await getUserBirthday(target.id)) == undefined
+									? time(
+											(await getUserBirthday(
+												target.id
+											)) as Date,
+											"F"
+									  )
+									: "Birthday not on record."
 						}
 					);
 
