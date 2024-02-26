@@ -6,7 +6,7 @@ import {
 	setGuildBirthdayChannel
 } from "@database/guilds";
 import log from "$logger";
-import { ColorResolvable, EmbedBuilder, GuildMember, time } from "discord.js";
+import { Collection, ColorResolvable, EmbedBuilder, GuildMember, Snowflake, inlineCode, time } from "discord.js";
 import { getUserBirthday } from "@database/users";
 
 const cron = schedule("0 8 * * *", async () => {
@@ -26,8 +26,8 @@ const cron = schedule("0 8 * * *", async () => {
 		});
 
 		const today = new Date(Date.now());
-		const birthdayMsg: string[] = [];
-		const birthdayBois: GuildMember[] = [];
+		const birthdayBois = new Collection<Snowflake, GuildMember>();
+		const birthdays = new Collection<Snowflake, Date>();
 		members.forEach(async (member) => {
 			const birthday = await getUserBirthday(member.id);
 			if (birthday == undefined) return;
@@ -35,16 +35,12 @@ const cron = schedule("0 8 * * *", async () => {
 				birthday.getUTCDate() == today.getUTCDate() &&
 				birthday.getUTCMonth() == today.getUTCMonth()
 			) {
-				birthdayMsg.push(
-					`${member.user.displayName} who is turning ${
-						birthday.getUTCFullYear() - today.getUTCFullYear()
-					}`
-				);
-				birthdayBois.push(member);
+				birthdays.set(member.id, birthday);
+				birthdayBois.set(member.id, member);
 			}
 		});
 
-		if (birthdayBois.length == 0) return;
+		if (birthdayBois.size == 0) return;
 
 		const channel = await guild.channels.fetch(channelId);
 		if (channel == null) {
@@ -63,10 +59,16 @@ const cron = schedule("0 8 * * *", async () => {
 			return;
 		}
 
-		if (birthdayBois.length > 1) {
+		if (birthdayBois.size > 1) {
+			let embedDesc = "";
+			birthdayBois.forEach((boi) => {
+				const birthday = birthdays.get(boi.id) as Date;
+				embedDesc = `${boi.displayName}, who's turning ${inlineCode((today.getUTCFullYear() - birthday.getUTCFullYear()).toString())}!\n`
+			});
+
 			const embed = new EmbedBuilder()
 				.setTitle("Birthday Peeps")
-				.setDescription(birthdayMsg.join("\n"))
+				.setDescription(embedDesc)
 				.setColor(defaultEmbedColor as ColorResolvable)
 				.setTimestamp(Date.now())
 				.setFooter({
@@ -93,37 +95,35 @@ const cron = schedule("0 8 * * *", async () => {
 					)
 				);
 		} else {
+			const birthdayBoi = birthdayBois.at(0) as GuildMember;
+			const birthday = birthdays.at(0) as Date;
+
 			const embed = new EmbedBuilder()
 				.setColor(
-					birthdayBois[0].user.hexAccentColor != null
-						? birthdayBois[0].user.hexAccentColor
+					birthdayBoi.user.hexAccentColor != null
+						? birthdayBoi.user.hexAccentColor
 						: (defaultEmbedColor as ColorResolvable)
 				)
-				.setTitle(birthdayBois[0].displayName)
-				.setThumbnail(birthdayBois[0].displayAvatarURL())
-				.setDescription(
-					birthdayBois[0].user.bot
-						? "This user is a bot and not a real person."
-						: null
-				)
+				.setTitle(birthdayBoi.displayName)
+				.setThumbnail(birthdayBoi.displayAvatarURL())
 				.addFields(
 					{
 						name: "ID",
-						value: birthdayBois[0].id
+						value: birthdayBoi.id
 					},
 					{
 						name: "Username",
-						value: birthdayBois[0].user.tag
+						value: birthdayBoi.user.tag
 					},
 					{
 						name: "Joined",
-						value: time(birthdayBois[0].user.createdAt, "F")
+						value: time(birthdayBoi.user.createdAt, "F")
 					}
 				);
 
 			channel
 				.send({
-					content: `Good Morning @everyone!\nPlease congratulate ${birthdayBois[0].displayName} on their birthday!`,
+					content: `Good Morning @everyone!\nPlease congratulate ${birthdayBoi.displayName} on their ${inlineCode((today.getUTCFullYear() - birthday.getUTCFullYear()).toString())} birthday!`,
 					embeds: [embed]
 				})
 				.catch((error) => {
