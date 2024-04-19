@@ -2,7 +2,7 @@ import { userDB } from "@database";
 import { Snowflake } from "discord.js";
 
 export interface userEntry {
-	birthday: Date | undefined;
+  birthday: Date | undefined;
 }
 
 /**
@@ -11,11 +11,11 @@ export interface userEntry {
  * @returns the new user that got created in the database.
  */
 export async function createUser(id: Snowflake) {
-	const newUser: userEntry = {
-		birthday: undefined
-	};
-	await userDB.set(id, newUser);
-	return newUser;
+  const newUser: userEntry = {
+    birthday: undefined
+  };
+  await userDB.set(id, newUser);
+  return newUser;
 }
 
 /**
@@ -24,9 +24,9 @@ export async function createUser(id: Snowflake) {
  * @returns The specified user.
  */
 export async function getUser(id: Snowflake) {
-	const user = (await userDB.get(id)) as userEntry | undefined;
-	if (user == undefined) return await createUser(id);
-	return user;
+  const user = (await userDB.get(id)) as userEntry | undefined;
+  if (user == undefined) return await createUser(id);
+  return user;
 }
 
 /**
@@ -35,9 +35,9 @@ export async function getUser(id: Snowflake) {
  * @returns The Date or undefined if the user doesn't have one.
  */
 export async function getUserBirthday(id: Snowflake) {
-	const user = (await userDB.get(id)) as userEntry | undefined;
-	if (user == undefined) return undefined;
-	return user.birthday;
+  const user = (await userDB.get(id)) as userEntry | undefined;
+  if (user == undefined) return undefined;
+  return user.birthday;
 }
 
 /**
@@ -46,7 +46,7 @@ export async function getUserBirthday(id: Snowflake) {
  * @param newBirthday The new date the birthday should be set to. Ommit if you wish to unset this property.
  */
 export async function setUserBirthday(id: Snowflake, newBirthday?: Date) {
-	let user = (await getUser(id)) as userEntry;
-	user.birthday = newBirthday;
-	await userDB.set(id, user);
+  let user = (await getUser(id)) as userEntry;
+  user.birthday = newBirthday;
+  await userDB.set(id, user);
 }

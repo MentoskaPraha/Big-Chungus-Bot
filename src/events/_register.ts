@@ -5,19 +5,19 @@ import readDir from "@libs/utils/readDir";
 const events = new Collection<string, eventObject>();
 
 const files = readDir(__dirname).filter((file) => {
-	const fileLocal = file.slice(file.lastIndexOf("/") + 1);
-	if (
-		(fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
-		!fileLocal.startsWith("_")
-	)
-		return file;
+  const fileLocal = file.slice(file.lastIndexOf("/") + 1);
+  if (
+    (fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
+    !fileLocal.startsWith("_")
+  )
+    return file;
 });
 
 files.forEach((file) => {
-	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const { default: item } = require(file);
-	if (item == undefined) return;
-	events.set(item.name, item);
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { default: item } = require(file);
+  if (item == undefined) return;
+  events.set(item.name, item);
 });
 
 export default events;
@@ -28,39 +28,39 @@ export default events;
  * @param client The main Discord.js client.
  */
 export function reloadEvent(eventName: string, client: Client) {
-	const event = events.get(eventName);
+  const event = events.get(eventName);
 
-	if (!event)
-		throw new Error(
-			`Event "${eventName}" could not be reloaded as it doesn't exist.`
-		);
+  if (!event)
+    throw new Error(
+      `Event "${eventName}" could not be reloaded as it doesn't exist.`
+    );
 
-	const eventPath = readDir(__dirname)
-		.filter((file) => {
-			const fileLocal = file.slice(file.lastIndexOf("/"));
-			if (
-				(fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
-				!fileLocal.startsWith("_")
-			)
-				return file;
-		})
-		.find((file) => file.includes(event.name));
+  const eventPath = readDir(__dirname)
+    .filter((file) => {
+      const fileLocal = file.slice(file.lastIndexOf("/"));
+      if (
+        (fileLocal.endsWith(".js") || fileLocal.endsWith(".ts")) &&
+        !fileLocal.startsWith("_")
+      )
+        return file;
+    })
+    .find((file) => file.includes(event.name));
 
-	if (eventPath == undefined) {
-		throw new Error(`Could not resolve file for "${event.name}" event.`);
-	}
+  if (eventPath == undefined) {
+    throw new Error(`Could not resolve file for "${event.name}" event.`);
+  }
 
-	delete require.cache[require.resolve(eventPath)];
+  delete require.cache[require.resolve(eventPath)];
 
-	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const { default: newEvent } = require(eventPath);
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { default: newEvent } = require(eventPath);
 
-	events.set(event.name, newEvent);
+  events.set(event.name, newEvent);
 
-	client.removeAllListeners(event.name);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
-	}
+  client.removeAllListeners(event.name);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
+  }
 }

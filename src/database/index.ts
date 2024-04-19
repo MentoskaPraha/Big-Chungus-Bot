@@ -14,12 +14,12 @@ log.dbOnline("inMemDB");
 
 // Setup user database
 export const userDB = new Keyv(
-	`sqlite://${join(
-		__dirname.split("/src")[0].split("/libs")[0],
-		"data",
-		"database.sqlite"
-	)}`,
-	{ namespace: "users" }
+  `sqlite://${join(
+    __dirname.split("/src")[0].split("/libs")[0],
+    "data",
+    "database.sqlite"
+  )}`,
+  { namespace: "users" }
 );
 userDB.on("error", (error) => log.dbError("userDB", error, error.message));
 userDB.on("disconnect", () => log.dbDisconnected("userDB"));
@@ -28,12 +28,12 @@ log.dbOnline("userDB");
 
 // Setup guild database
 export const guildDB = new Keyv(
-	`sqlite://${join(
-		__dirname.split("/src")[0].split("/libs")[0],
-		"data",
-		"database.sqlite"
-	)}`,
-	{ namespace: "guilds" }
+  `sqlite://${join(
+    __dirname.split("/src")[0].split("/libs")[0],
+    "data",
+    "database.sqlite"
+  )}`,
+  { namespace: "guilds" }
 );
 guildDB.on("error", (error) => log.dbError("guildDB", error, error.message));
 guildDB.on("disconnect", () => log.dbDisconnected("guildDB"));

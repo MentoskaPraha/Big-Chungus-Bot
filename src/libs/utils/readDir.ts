@@ -7,22 +7,22 @@ import { join } from "node:path";
  * @returns An array of file paths.
  */
 export default function (dir: string) {
-	let files = readdirSync(dir, { withFileTypes: true })
-		.filter((entry) => entry.isFile())
-		.map((entry) => join(dir, entry.name));
-	const folders = readdirSync(dir, { withFileTypes: true })
-		.filter((entry) => entry.isDirectory())
-		.map((entry) => join(dir, entry.name));
+  let files = readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isFile())
+    .map((entry) => join(dir, entry.name));
+  const folders = readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => join(dir, entry.name));
 
-	if (folders.length == 0) return files;
+  if (folders.length == 0) return files;
 
-	folders.forEach((folder) => {
-		const children = readdirSync(folder, { withFileTypes: true })
-			.filter((entry) => entry.isFile())
-			.map((entry) => join(folder, entry.name));
-		if (children.length == 0) return;
-		files = files.concat(children);
-	});
+  folders.forEach((folder) => {
+    const children = readdirSync(folder, { withFileTypes: true })
+      .filter((entry) => entry.isFile())
+      .map((entry) => join(folder, entry.name));
+    if (children.length == 0) return;
+    files = files.concat(children);
+  });
 
-	return files;
+  return files;
 }

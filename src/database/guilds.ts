@@ -2,7 +2,7 @@ import { guildDB } from "@database";
 import { Snowflake } from "discord.js";
 
 export interface guildEntry {
-	birthdayChannel: Snowflake | undefined;
+  birthdayChannel: Snowflake | undefined;
 }
 
 /**
@@ -11,11 +11,11 @@ export interface guildEntry {
  * @returns the new user that got created in the database.
  */
 export async function createGuild(id: Snowflake) {
-	const newUser: guildEntry = {
-		birthdayChannel: undefined
-	};
-	await guildDB.set(id, newUser);
-	return newUser;
+  const newUser: guildEntry = {
+    birthdayChannel: undefined
+  };
+  await guildDB.set(id, newUser);
+  return newUser;
 }
 
 /**
@@ -24,9 +24,9 @@ export async function createGuild(id: Snowflake) {
  * @returns The specified user.
  */
 export async function getGuild(id: Snowflake) {
-	const user = (await guildDB.get(id)) as guildEntry | undefined;
-	if (user == undefined) return await createGuild(id);
-	return user;
+  const user = (await guildDB.get(id)) as guildEntry | undefined;
+  if (user == undefined) return await createGuild(id);
+  return user;
 }
 
 /**
@@ -35,8 +35,8 @@ export async function getGuild(id: Snowflake) {
  * @returns The channel id or undefined if the property is unset.
  */
 export async function getGuildBirthdayChannel(id: Snowflake) {
-	const guild = (await getGuild(id)) as guildEntry;
-	return guild.birthdayChannel;
+  const guild = (await getGuild(id)) as guildEntry;
+  return guild.birthdayChannel;
 }
 
 /**
@@ -45,10 +45,10 @@ export async function getGuildBirthdayChannel(id: Snowflake) {
  * @param newChannel The new channel birthdays will be announced in. Ommit if you wish to unset this property.
  */
 export async function setGuildBirthdayChannel(
-	id: Snowflake,
-	newChannel?: Snowflake
+  id: Snowflake,
+  newChannel?: Snowflake
 ) {
-	let guild = (await getGuild(id)) as guildEntry;
-	guild.birthdayChannel = newChannel;
-	await guildDB.set(id, guild);
+  let guild = (await getGuild(id)) as guildEntry;
+  guild.birthdayChannel = newChannel;
+  await guildDB.set(id, guild);
 }

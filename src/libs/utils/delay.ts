@@ -3,5 +3,5 @@
  * @param time the number of milliseconds to wait.
  */
 export default function delay(time: number) {
-	return new Promise((resolve) => setTimeout(resolve, time));
+  return new Promise((resolve) => setTimeout(resolve, time));
 }

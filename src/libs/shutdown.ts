@@ -5,22 +5,22 @@ import { setBlockAll } from "@database/state";
 import client from "$client";
 
 export default async function shutdown() {
-	log.warn("Shutting down bot!");
+  log.warn("Shutting down bot!");
 
-	log.info("Blocking all requests...");
-	setBlockAll(true);
+  log.info("Blocking all requests...");
+  setBlockAll(true);
 
-	log.info("Disconnecting databases...");
-	await inMemDB.disconnect();
-	await guildDB.disconnect();
-	await userDB.disconnect();
+  log.info("Disconnecting databases...");
+  await inMemDB.disconnect();
+  await guildDB.disconnect();
+  await userDB.disconnect();
 
-	log.info("Stopping cron tasts...");
-	birthdayCron.stop();
+  log.info("Stopping cron tasts...");
+  birthdayCron.stop();
 
-	log.info("Flushing logs and exitting program...");
-	log.shutdown();
-	await client.destroy();
+  log.info("Flushing logs and exitting program...");
+  log.shutdown();
+  await client.destroy();
 
-	process.exit(0);
+  process.exit(0);
 }

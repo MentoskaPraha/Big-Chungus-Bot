@@ -1,36 +1,36 @@
 {
-	"name": "big-chungus-bot",
-	"private": true,
-	"scripts": {
-		"build": "tsc && tsc-alias",
-		"dev": "ts-node -r dotenv/config ./src/index.ts",
-		"lint": "prettier --check . && eslint . --ext .ts --ignore-path .gitignore",
-		"format": "prettier --write .",
-		"start": "node index.js"
-	},
-	"dependencies": {
-		"@keyv/sqlite": "^3.6.7",
-		"archiver": "^6.0.1",
-		"dayjs": "^1.11.10",
-		"discord.js": "^14.14.1",
-		"emoji-regex": "^10.3.0",
-		"keyv": "^4.5.4",
-		"node-cron": "^3.0.3",
-		"pino": "^8.17.2",
-		"pino-pretty": "^10.3.1"
-	},
-	"devDependencies": {
-		"@types/archiver": "^6.0.2",
-		"@types/node": "^18.19.6",
-		"@types/node-cron": "^3.0.11",
-		"@typescript-eslint/eslint-plugin": "^5.62.0",
-		"@typescript-eslint/parser": "^5.62.0",
-		"dotenv": "^16.3.1",
-		"eslint": "^8.56.0",
-		"prettier": "^2.8.8",
-		"ts-node": "^10.9.2",
-		"tsc-alias": "^1.8.8",
-		"tsconfig-paths": "^4.2.0",
-		"typescript": "^5.3.3"
-	}
+  "name": "big-chungus-bot",
+  "private": true,
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "dev": "ts-node -r dotenv/config ./src/index.ts",
+    "lint": "prettier --check . && eslint . --ext .ts --ignore-path .gitignore",
+    "format": "prettier --write .",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@keyv/sqlite": "^3.6.7",
+    "archiver": "^6.0.2",
+    "dayjs": "^1.11.10",
+    "discord.js": "^14.14.1",
+    "emoji-regex": "^10.3.0",
+    "keyv": "^4.5.4",
+    "node-cron": "^3.0.3",
+    "pino": "^8.20.0",
+    "pino-pretty": "^10.3.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.2",
+    "@types/node": "^18.19.31",
+    "@types/node-cron": "^3.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
+    "prettier": "^2.8.8",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.8",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.5"
+  }
 }

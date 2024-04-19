@@ -1,31 +1,31 @@
 {
-	"include": ["src/**/*"],
-	"exclude": ["node_modules", "scripts"],
-	"compilerOptions": {
-		"target": "ES2020",
-		"module": "CommonJS",
-		"rootDir": "./src",
-		"outDir": "./build",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"resolveJsonModule": true,
-		"baseUrl": "src",
-		"paths": {
-			"@libs/*": ["libs/*"],
-			"@database": ["database/index"],
-			"@database/*": ["database/*"],
-			"@subsystems/*": ["subsystems/*"],
-			"$client": ["index.ts"],
-			"$commands": ["commands/_register"],
-			"$events": ["events/_register"],
-			"$logger": ["libs/logs"],
-			"$types": ["types.d.ts"],
-			"$config": ["config.json"]
-		}
-	},
-	"ts-node": {
-		"require": ["tsconfig-paths/register"]
-	}
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "scripts"],
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "rootDir": "./src",
+    "outDir": "./build",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "baseUrl": "src",
+    "paths": {
+      "@libs/*": ["libs/*"],
+      "@database": ["database/index"],
+      "@database/*": ["database/*"],
+      "@subsystems/*": ["subsystems/*"],
+      "$client": ["index.ts"],
+      "$commands": ["commands/_register"],
+      "$events": ["events/_register"],
+      "$logger": ["libs/logs"],
+      "$types": ["types.d.ts"],
+      "$config": ["config.json"]
+    }
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }

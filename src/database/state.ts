@@ -7,7 +7,7 @@ import { inMemDB } from "@database";
  * @returns The block all value.
  */
 export async function checkBlockAll() {
-	return (await inMemDB.get("BlockAllInteractions")) as boolean;
+  return (await inMemDB.get("BlockAllInteractions")) as boolean;
 }
 
 /**
@@ -17,7 +17,7 @@ export async function checkBlockAll() {
  * @returns The block value.
  */
 export async function checkBlockNew() {
-	return (await inMemDB.get("BlockNewInteraction")) as boolean;
+  return (await inMemDB.get("BlockNewInteraction")) as boolean;
 }
 
 /**
@@ -27,7 +27,7 @@ export async function checkBlockNew() {
  * @param newValue The new block value.
  */
 export async function setBlockAll(newValue: boolean) {
-	await inMemDB.set("BlockAllInteractions", newValue);
+  await inMemDB.set("BlockAllInteractions", newValue);
 }
 
 /**
@@ -37,5 +37,5 @@ export async function setBlockAll(newValue: boolean) {
  * @param newValue The new block value.
  */
 export async function setBlockNew(newValue: boolean) {
-	await inMemDB.set("BlockNewInteraction", newValue);
+  await inMemDB.set("BlockNewInteraction", newValue);
 }

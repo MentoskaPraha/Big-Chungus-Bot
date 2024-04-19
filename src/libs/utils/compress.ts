@@ -9,29 +9,29 @@ import { basename } from "node:path";
  * @param files The files to be compressed.
  */
 export default async function compress(
-	destination: string,
-	...files: string[]
+  destination: string,
+  ...files: string[]
 ) {
-	const zipper = archiver("tar", {
-		gzip: true,
-		zlib: { level: 9 }
-	});
+  const zipper = archiver("tar", {
+    gzip: true,
+    zlib: { level: 9 }
+  });
 
-	if (destination.endsWith(".tar.gz")) {
-		zipper.pipe(createWriteStream(destination));
-	} else {
-		zipper.pipe(createWriteStream(`${destination}.tar.gz`));
-	}
+  if (destination.endsWith(".tar.gz")) {
+    zipper.pipe(createWriteStream(destination));
+  } else {
+    zipper.pipe(createWriteStream(`${destination}.tar.gz`));
+  }
 
-	const archiveFiles = files.filter((file) => !file.endsWith(".tar.gz"));
+  const archiveFiles = files.filter((file) => !file.endsWith(".tar.gz"));
 
-	archiveFiles.forEach((file) => {
-		zipper.file(file, { name: basename(file) });
-	});
+  archiveFiles.forEach((file) => {
+    zipper.file(file, { name: basename(file) });
+  });
 
-	await zipper.finalize();
+  await zipper.finalize();
 
-	archiveFiles.forEach((file) => {
-		unlinkSync(file);
-	});
+  archiveFiles.forEach((file) => {
+    unlinkSync(file);
+  });
 }
